@@ -1,0 +1,225 @@
+<template>
+  <div class="layout">
+    <Layout style="height: 100%;">
+      <!-- 侧边导航栏 -->
+      <Sider
+        ref="side1"
+        breakpoint="lg"
+        collapsible
+        :collapsed-width="78"
+        v-model="isCollapsed"
+      >
+        <div class="layout-logo-left">
+          <span>异构实验平台</span>
+        </div>
+        <div class="menu-list">
+          <CustomMenu
+            :active-name="MenuActiveName"
+            theme="custom"
+            width="auto"
+            :class="menuitemClasses"
+            @on-select="handleSelectItem"
+          >
+            <MenuItem
+              name="overview"
+            >
+              <Icon type="ios-paper-outline"/>
+              &nbsp;概览
+            </MenuItem>
+            <Submenu name="title">
+              <template slot="title">
+                <Icon type="ios-search"/>
+                计算资源
+              </template>
+              <MenuItem
+                name="gpuFpga"
+              >GPU/FPGA资源
+              </MenuItem>
+              <MenuItem
+                name="machine"
+              >机器学习资源
+              </MenuItem>
+            </Submenu>
+            <MenuItem
+              name="datas"
+            >
+              <Icon type="ios-stats-outline"/>
+              &nbsp;数据管理
+            </MenuItem>
+            <MenuItem
+              name="example"
+            >
+              <Icon type="ios-archive-outline"/>
+              &nbsp;实例管理
+            </MenuItem>
+            <MenuItem
+              name="tasks"
+            >
+              <Icon type="ios-hammer-outline"/>
+              &nbsp;任务管理
+            </MenuItem>
+            <MenuItem
+              name="results"
+            >
+              <Icon type="ios-list-box-outline"/>
+              &nbsp;结果管理
+            </MenuItem>
+            <MenuItem
+              name="costs"
+            >
+              <Icon type="ios-cash-outline"/>
+              &nbsp;费用管理
+            </MenuItem>
+          </CustomMenu>
+        </div>
+      </Sider>
+      <Layout>
+        <!-- 页头 -->
+        <Header class="layout-header-bar">
+          <div>{{this.Area}}</div>
+          <div
+            class="layout-header-title"
+            id="layout-header-title"
+          ></div>
+          <div
+            class="select"
+            trigger="custom"
+          >
+            <Dropdown :visible="visible">
+              <a @click="handleOpen">
+                {{this.UserName}}
+                <Icon type="ios-arrow-down"></Icon>
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem @click.native="Logout">
+                  <i class="iconfont icon icon-dengchu"></i>
+                  登出
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        </Header>
+        <!-- 内容 -->
+        <Content :style="{margin: '20px', background: '#fff', minHeight: '220px'}">
+          <router-view></router-view>
+        </Content>
+      </Layout>
+    </Layout>
+  </div>
+</template>
+
+<script>
+  import CustomMenu from 'components/customMenu/customMenu'
+
+  export default {
+    name: "principal",
+    components: {CustomMenu}
+  }
+</script>
+
+<style scoped lang="scss">
+  @import "principal";
+</style>
+<style lang="scss">
+  .ivu-layout-content {
+    min-height: auto !important;
+  }
+
+  .layout-logo-left {
+    width: 90%;
+    height: 30px;
+    background: #2869cf;
+    border-radius: 3px;
+    margin: 15px auto;
+  }
+
+  .menu-icon {
+    transition: all 0.3s;
+  }
+
+  .rotate-icon {
+    transform: rotate(-90deg);
+  }
+
+  .menu-item span {
+    display: inline-block;
+    overflow: hidden;
+    width: 69px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+    transition: width 0.2s ease 0.2s;
+  }
+
+  .menu-item i {
+    transform: translateX(0px);
+    transition: font-size 0.2s ease, transform 0.2s ease;
+    vertical-align: middle;
+    font-size: 16px;
+  }
+
+  .collapsed-menu span {
+    width: 0px;
+    transition: width 0.2s ease;
+  }
+
+  .collapsed-menu i {
+    transform: translateX(5px);
+    transition: font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s;
+    vertical-align: middle;
+    font-size: 22px;
+  }
+
+  .menu-list {
+    overflow-y: auto;
+    height: calc(100% - 60px + 3px); //layout-logo-height+margin=70px
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .ivu-menu-submenu-title:hover {
+    color: #ebf3ff !important;
+  }
+
+  .ivu-layout-sider-zero-width-trigger {
+    opacity: 0.5 !important;
+  }
+
+  .ivu-layout-sider-trigger {
+    background: none !important;
+  }
+
+  .ivu-layout-sider {
+    z-index: 1000;
+  }
+
+  .ivu-dropdown-rel :first-child {
+    color: #515a6e !important;
+  }
+
+  @media screen and (min-width: 1200px) {
+    .ivu-layout-sider-trigger {
+      display: none !important;
+    }
+  }
+
+  // 布局
+  .ivu-layout-sider {
+    //  width:200px
+  }
+
+  .ivu-layout-header, .ivu-layout-content {
+    width: calc(100 vw-200px);
+  }
+
+  .ivu-layout-header {
+    height: 64px;
+    z-index: 999;
+  }
+
+  .ivu-layout-content {
+    height: calc(100 vh-64px);
+    overflow: scroll;
+  }
+</style>
