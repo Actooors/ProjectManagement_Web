@@ -4,8 +4,10 @@ import Principal from 'group/principal'
 import User from 'group/user'
 import Expert from 'group/expert'
 import Leader from 'group/leader'
+import AvaProject from 'pages/user/avaProject/avaProject'
+import ReqProject from 'pages/user/reqProject/reqProject'
+import MyProject from 'pages/user/myProject/myProject'
 import PrincipalMainPage from 'pages/principal/mainpage/mainpage'
-import UserMainPage from 'pages/user/mainpage/mainpage'
 import ExpertMainPage from 'pages/expert/mainpage/mainpage'
 import LeaderMainPage from 'pages/leader/mainpage/mainpage'
 
@@ -17,15 +19,23 @@ export default new Router({
     {
       path: '/user',
       component: User,
-      redirect: {name: 'mainpage'},
+      redirect: {name: 'avaProject'},
       children: [
         {
           path: '',
-          redirect: 'mainpage'
+          redirect: 'avaProject'
         },
         {
-          path: 'mainpage',
-          component: UserMainPage
+          path: 'avaProject',
+          component: AvaProject
+        },
+        {
+          path: 'reqProject',
+          component: ReqProject
+        },
+        {
+          path: 'myProject',
+          component:MyProject
         }
       ]
     },
@@ -75,4 +85,4 @@ export default new Router({
       ]
     },
   ]
-})
+});

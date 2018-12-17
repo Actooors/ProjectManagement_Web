@@ -24,35 +24,21 @@
             <MenuItem
               name="avaProject"
             >
-              <Icon type="ios-add-circle-outline" />
+              <Icon type="ios-add-circle-outline"/>
               &nbsp;可申请项目
             </MenuItem>
             <MenuItem
               name="reqProject"
             >
-              <Icon type="ios-fastforward-outline" />
+              <Icon type="ios-fastforward-outline"/>
               &nbsp;申请中项目
             </MenuItem>
             <MenuItem
-              name="reqProject"
+              name="myProject"
             >
               <Icon type="ios-archive-outline"/>
               &nbsp;我的项目
             </MenuItem>
-            <!--<Submenu name="title">-->
-              <!--<template slot="title">-->
-                <!--<Icon type="ios-search"/>-->
-                <!--我的项目-->
-              <!--</template>-->
-              <!--<MenuItem-->
-                <!--name="gpuFpga"-->
-              <!--&gt;我能够申请的项目-->
-              <!--</MenuItem>-->
-              <!--<MenuItem-->
-                <!--name="machine"-->
-              <!--&gt;机器学习资源-->
-              <!--</MenuItem>-->
-            <!--</Submenu>-->
           </CustomMenu>
         </div>
       </Sider>
@@ -93,16 +79,20 @@
 
 <script>
   import CustomMenu from 'components/customMenu/customMenu'
+
   export default {
     name: "user",
     components: {CustomMenu},
-    data(){
+    data() {
       return {
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
         UserName: '普通用户'
       }
+    },
+    mounted() {
+      this.initMenuActive();
     },
     watch: {
       $route() {
@@ -144,7 +134,7 @@
 </script>
 
 <style scoped lang="scss">
-@import "group";
+  @import "group";
 </style>
 <style lang="scss">
   .ivu-layout-content {
@@ -236,8 +226,8 @@
     z-index: 999;
   }
 
-  .ivu-layout-content {
-    height: calc(100 vh-64px);
-    overflow: scroll;
-  }
+  /*.ivu-layout-content {*/
+    /*height: calc(100 vh-64px);*/
+    /*overflow: scroll;*/
+  /*}*/
 </style>
