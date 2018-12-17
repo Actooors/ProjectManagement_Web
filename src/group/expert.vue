@@ -20,56 +20,20 @@
             :class="menuitemClasses"
             @on-select="handleSelectItem"
           >
-            <MenuItem
-              name=""
-            >
-              <Icon type="ios-paper-outline"/>
-              &nbsp;概览
-            </MenuItem>
-            <Submenu name="title">
+            <Submenu name="project">
               <template slot="title">
                 <Icon type="ios-search"/>
-                计算资源
+                待审核项目
               </template>
               <MenuItem
-                name="gpuFpga"
-              >GPU/FPGA资源
+                name="reqProject"
+              >项目申请
               </MenuItem>
               <MenuItem
-                name="machine"
-              >机器学习资源
+                name="endProject"
+              >项目结题
               </MenuItem>
             </Submenu>
-            <MenuItem
-              name="datas"
-            >
-              <Icon type="ios-stats-outline"/>
-              &nbsp;数据管理
-            </MenuItem>
-            <MenuItem
-              name="example"
-            >
-              <Icon type="ios-archive-outline"/>
-              &nbsp;实例管理
-            </MenuItem>
-            <MenuItem
-              name="tasks"
-            >
-              <Icon type="ios-hammer-outline"/>
-              &nbsp;任务管理
-            </MenuItem>
-            <MenuItem
-              name="results"
-            >
-              <Icon type="ios-list-box-outline"/>
-              &nbsp;结果管理
-            </MenuItem>
-            <MenuItem
-              name="costs"
-            >
-              <Icon type="ios-cash-outline"/>
-              &nbsp;费用管理
-            </MenuItem>
           </CustomMenu>
         </div>
       </Sider>
@@ -112,14 +76,14 @@
   import CustomMenu from 'components/customMenu/customMenu'
 
   export default {
-    name: "admin",
+    name: "expert",
     components: {CustomMenu},
     data(){
       return {
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
-        UserName: '管理员'
+        UserName: '审核专家'
       }
     },
     watch: {

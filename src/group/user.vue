@@ -21,55 +21,37 @@
             @on-select="handleSelectItem"
           >
             <MenuItem
-              name=""
-            >
-              <Icon type="ios-paper-outline"/>
-              &nbsp;概览
-            </MenuItem>
-            <Submenu name="title">
-              <template slot="title">
-                <Icon type="ios-search"/>
-                计算资源
-              </template>
-              <MenuItem
-                name="gpuFpga"
-              >GPU/FPGA资源
-              </MenuItem>
-              <MenuItem
-                name="machine"
-              >机器学习资源
-              </MenuItem>
-            </Submenu>
-            <MenuItem
-              name="datas"
+              name="avaProject"
             >
               <Icon type="ios-stats-outline"/>
-              &nbsp;数据管理
+              &nbsp;可申请项目
             </MenuItem>
             <MenuItem
-              name="example"
+              name="reqProject"
             >
               <Icon type="ios-archive-outline"/>
-              &nbsp;实例管理
+              &nbsp;申请中项目
             </MenuItem>
             <MenuItem
-              name="tasks"
+              name="reqProject"
             >
-              <Icon type="ios-hammer-outline"/>
-              &nbsp;任务管理
+              <Icon type="ios-archive-outline"/>
+              &nbsp;我的项目
             </MenuItem>
-            <MenuItem
-              name="results"
-            >
-              <Icon type="ios-list-box-outline"/>
-              &nbsp;结果管理
-            </MenuItem>
-            <MenuItem
-              name="costs"
-            >
-              <Icon type="ios-cash-outline"/>
-              &nbsp;费用管理
-            </MenuItem>
+            <!--<Submenu name="title">-->
+              <!--<template slot="title">-->
+                <!--<Icon type="ios-search"/>-->
+                <!--我的项目-->
+              <!--</template>-->
+              <!--<MenuItem-->
+                <!--name="gpuFpga"-->
+              <!--&gt;我能够申请的项目-->
+              <!--</MenuItem>-->
+              <!--<MenuItem-->
+                <!--name="machine"-->
+              <!--&gt;机器学习资源-->
+              <!--</MenuItem>-->
+            <!--</Submenu>-->
           </CustomMenu>
         </div>
       </Sider>

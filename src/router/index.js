@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Principal from 'group/principal'
 import User from 'group/user'
-import Admin from 'group/admin'
+import Expert from 'group/expert'
 import Leader from 'group/leader'
 import PrincipalMainPage from 'pages/principal/mainpage/mainpage'
 import UserMainPage from 'pages/user/mainpage/mainpage'
-import AdminMainPage from 'pages/admin/mainpage/mainpage'
+import ExpertMainPage from 'pages/expert/mainpage/mainpage'
 import LeaderMainPage from 'pages/leader/mainpage/mainpage'
 
 Vue.use(Router)
@@ -45,8 +45,8 @@ export default new Router({
       ]
     },
     {
-      path: '/admin',
-      component: Admin,
+      path: '/expert',
+      component: Expert,
       redirect: {name: 'mainpage'},
       children: [
         {
@@ -55,7 +55,7 @@ export default new Router({
         },
         {
           path: 'mainpage',
-          component: AdminMainPage
+          component: ExpertMainPage
         }
       ]
     },

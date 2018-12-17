@@ -21,55 +21,34 @@
             @on-select="handleSelectItem"
           >
             <MenuItem
-              name=""
+              name="newCategory"
             >
               <Icon type="ios-paper-outline"/>
-              &nbsp;概览
+              &nbsp;开通一个新的类别
             </MenuItem>
-            <Submenu name="title">
-              <template slot="title">
+            <Submenu name="exProject">
+              <template slot="exProject">
                 <Icon type="ios-search"/>
-                计算资源
+                待审核项目
               </template>
               <MenuItem
-                name="gpuFpga"
-              >GPU/FPGA资源
+                name="oneEx"
+              >待初审
               </MenuItem>
               <MenuItem
-                name="machine"
-              >机器学习资源
+                name="twoEx"
+              >待专家审核
+              </MenuItem>
+              <MenuItem
+                name="threeEx"
+              >待会评
+              </MenuItem>
+              <MenuItem
+                name="fourEx"
+              >待终审
               </MenuItem>
             </Submenu>
-            <MenuItem
-              name="datas"
-            >
-              <Icon type="ios-stats-outline"/>
-              &nbsp;数据管理
-            </MenuItem>
-            <MenuItem
-              name="example"
-            >
-              <Icon type="ios-archive-outline"/>
-              &nbsp;实例管理
-            </MenuItem>
-            <MenuItem
-              name="tasks"
-            >
-              <Icon type="ios-hammer-outline"/>
-              &nbsp;任务管理
-            </MenuItem>
-            <MenuItem
-              name="results"
-            >
-              <Icon type="ios-list-box-outline"/>
-              &nbsp;结果管理
-            </MenuItem>
-            <MenuItem
-              name="costs"
-            >
-              <Icon type="ios-cash-outline"/>
-              &nbsp;费用管理
-            </MenuItem>
+            
           </CustomMenu>
         </div>
       </Sider>

@@ -1,5 +1,5 @@
 <template>
-    <div>这是管理员</div>
+    <div>这是审核专家</div>
 </template>
 
 <script>
