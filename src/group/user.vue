@@ -8,6 +8,7 @@
         collapsible
         :collapsed-width="78"
         v-model="isCollapsed"
+        :width="250"
       >
         <div class="layout-logo-left">
           <img src="../assets/img/title.png" style="width: 200px;">

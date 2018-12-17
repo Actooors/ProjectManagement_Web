@@ -8,6 +8,7 @@
         collapsible
         :collapsed-width="78"
         v-model="isCollapsed"
+        :width="250"
       >
         <div class="layout-logo-left">
           <img src="../assets/img/title.png" style="width: 200px;">
@@ -27,7 +28,7 @@
               &nbsp;开通一个新的类别
             </MenuItem>
             <Submenu name="exProject">
-              <template slot="exProject">
+              <template slot="title">
                 <Icon type="ios-search"/>
                 待审核项目
               </template>
@@ -48,7 +49,6 @@
               >待终审
               </MenuItem>
             </Submenu>
-            
           </CustomMenu>
         </div>
       </Sider>

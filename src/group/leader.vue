@@ -8,6 +8,7 @@
         collapsible
         :collapsed-width="78"
         v-model="isCollapsed"
+        :width="250"
       >
         <div class="layout-logo-left">
           <img src="../assets/img/title.png" style="width: 200px;">
@@ -20,8 +21,13 @@
             :class="menuitemClasses"
             @on-select="handleSelectItem"
           >
+            <MenuItem
+              name="project">
+              <Icon type="ios-stats-outline"/>
+              &nbsp;所有项目
+            </MenuItem>
             <Submenu name="exProject">
-              <template slot="exProject">
+              <template slot="title">
                 <Icon type="ios-search"/>
                 待终审项目
               </template>
@@ -34,14 +40,8 @@
               >项目结题
               </MenuItem>
             </Submenu>
-            <MenuItem
-              name="project"
-            >
-              <Icon type="ios-stats-outline"/>
-              &nbsp;所有项目
-            </MenuItem>
             <Submenu name="Project">
-              <template slot="Project">
+              <template slot="title">
                 <Icon type="ios-search"/>
                 我管理的项目
               </template>
