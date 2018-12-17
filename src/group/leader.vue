@@ -23,12 +23,12 @@
           >
             <MenuItem
               name="project">
-              <Icon type="ios-stats-outline"/>
+              <Icon type="md-menu" />
               &nbsp;所有项目
             </MenuItem>
             <Submenu name="exProject">
               <template slot="title">
-                <Icon type="ios-search"/>
+                <Icon type="ios-stopwatch-outline" />
                 待终审项目
               </template>
               <MenuItem
@@ -42,7 +42,7 @@
             </Submenu>
             <Submenu name="Project">
               <template slot="title">
-                <Icon type="ios-search"/>
+                <Icon type="ios-archive-outline"/>
                 我管理的项目
               </template>
               <MenuItem

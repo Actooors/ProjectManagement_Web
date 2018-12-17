@@ -23,7 +23,7 @@
           >
             <Submenu name="project">
               <template slot="title">
-                <Icon type="ios-search"/>
+                <Icon type="ios-stopwatch-outline" />
                 待审核项目
               </template>
               <MenuItem

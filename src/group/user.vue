@@ -24,13 +24,13 @@
             <MenuItem
               name="avaProject"
             >
-              <Icon type="ios-stats-outline"/>
+              <Icon type="ios-add-circle-outline" />
               &nbsp;可申请项目
             </MenuItem>
             <MenuItem
               name="reqProject"
             >
-              <Icon type="ios-archive-outline"/>
+              <Icon type="ios-fastforward-outline" />
               &nbsp;申请中项目
             </MenuItem>
             <MenuItem
