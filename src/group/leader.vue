@@ -112,14 +112,14 @@
   import CustomMenu from 'components/customMenu/customMenu'
 
   export default {
-    name: "admin",
+    name: "leader",
     components: {CustomMenu},
-    data(){
+    data() {
       return {
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
-        UserName: '管理员'
+        UserName: '领导'
       }
     },
     watch: {

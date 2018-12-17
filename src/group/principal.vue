@@ -10,7 +10,7 @@
         v-model="isCollapsed"
       >
         <div class="layout-logo-left">
-          <span>异构实验平台</span>
+          <img src="../assets/img/title.png" style="width: 200px;">
         </div>
         <div class="menu-list">
           <CustomMenu
@@ -21,7 +21,7 @@
             @on-select="handleSelectItem"
           >
             <MenuItem
-              name="overview"
+              name=""
             >
               <Icon type="ios-paper-outline"/>
               &nbsp;概览
@@ -76,7 +76,6 @@
       <Layout>
         <!-- 页头 -->
         <Header class="layout-header-bar">
-          <div>{{this.Area}}</div>
           <div
             class="layout-header-title"
             id="layout-header-title"
@@ -85,6 +84,7 @@
             class="select"
             trigger="custom"
           >
+            <Avatar icon="ios-person" style="margin-bottom: 5px;margin-right: 5px;"/>
             <Dropdown :visible="visible">
               <a @click="handleOpen">
                 {{this.UserName}}
@@ -113,24 +113,64 @@
 
   export default {
     name: "principal",
-    components: {CustomMenu}
+    components: {CustomMenu},
+    data() {
+      return {
+        MenuActiveName: null,
+        visible: false,
+        isCollapsed: false,
+        UserName: '业务员'
+      }
+    },
+    // 让页头出现标题，这里每个页面还没做出来
+    // mounted() {
+    //   this.initMenuActive();
+    // },
+    watch: {
+      $route() {
+        this.$nextTick(() => {
+          this.initMenuActive();
+        });
+      }
+    },
+    methods: {
+      handleOpen() {
+        this.visible = true
+      },
+      handleSelectItem(name) {
+        const that = this
+        this.$nextTick(() => {
+          that.$router.push(name)
+        })
+      },
+      initMenuActive(activeName) {
+        this.MenuActiveName =
+          activeName ||
+          this.$route.matched[this.$route.matched.length - 1].components.default
+            .name;
+        this.$nextTick(() => {
+          document.querySelector(
+            "#layout-header-title"
+          ).innerHTML = document.querySelector(
+            ".ivu-menu-item-selected"
+          ).innerHTML;
+        });
+      },
+    },
+    computed: {
+      menuitemClasses() {
+        return ["menu-item", this.isCollapsed ? "collapsed-menu" : ""];
+      }
+    }
   }
 </script>
 
 <style scoped lang="scss">
-  @import "principal";
+  @import "group";
 </style>
 <style lang="scss">
   .ivu-layout-content {
     min-height: auto !important;
-  }
-
-  .layout-logo-left {
-    width: 90%;
-    height: 30px;
-    background: #2869cf;
-    border-radius: 3px;
-    margin: 15px auto;
   }
 
   .menu-icon {

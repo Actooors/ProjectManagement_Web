@@ -1,10 +1,5 @@
 <template>
-  <div class="page-wrapper">
-    <Button>test</Button>
-    <div class="center">
-      <p>首页</p>
-    </div>
-  </div>
+  <div>这是业务员</div>
 </template>
 
 <script>
