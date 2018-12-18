@@ -39,6 +39,12 @@
               <Icon type="ios-archive-outline"/>
               &nbsp;我的项目
             </MenuItem>
+            <MenuItem
+              name="myInfo"
+            >
+              <Icon type="ios-person-outline"/>
+              &nbsp;个人信息
+            </MenuItem>
           </CustomMenu>
         </div>
       </Sider>
@@ -53,15 +59,19 @@
             class="select"
             trigger="custom"
           >
-            <Avatar icon="ios-person" style="margin-bottom: 5px;margin-right: 5px;"/>
-            <Dropdown :visible="visible">
+            <Avatar icon="ios-person" style="margin-bottom: 3px;margin-right: 5px;"/>
+            <Dropdown :visible="visible" trigger="click" >
               <a @click="handleOpen">
-                {{this.UserName}}
+                {{this.userName}}
                 <Icon type="ios-arrow-down"></Icon>
               </a>
               <DropdownMenu slot="list">
-                <DropdownItem @click.native="Logout">
-                  <i class="iconfont icon icon-dengchu"></i>
+                <DropdownItem  @click.native="$router.push('myInfo')">
+                  <Icon type="ios-person" style="margin-bottom: 3px" size="17" />
+                  我的信息
+                </DropdownItem>
+                <DropdownItem @click.native="Logout" divided>
+                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17" />
                   登出
                 </DropdownItem>
               </DropdownMenu>
@@ -88,8 +98,8 @@
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
-        UserName: '普通用户'
-      }
+        userName: '李瑞轩',
+      };
     },
     mounted() {
       this.initMenuActive();
@@ -204,6 +214,9 @@
 
   .ivu-dropdown-rel :first-child {
     color: #515a6e !important;
+  }
+  .ivu-select-dropdown {
+    width: 100px;
   }
 
   @media screen and (min-width: 1200px) {

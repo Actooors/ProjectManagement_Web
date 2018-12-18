@@ -9,24 +9,26 @@
     <Modal
       v-model="model1"
       title="申报项目"
-      width="900"
+      width="700"
       maxHeight="800"
       :mask-closable="false"
-      :closable="false"
+      ref="modal"
+      @on-cancel="cancel"
     >
       <!--对话框中内容-->
-      <Steps :current="index" size="small">
+      <Steps :current="stepIndex" size="small" style="padding-left: 80px">
         <Step :title="title1" content="阅读协议"></Step>
-        <Step :title="title2" content="填写表单"></Step>
-        <Step :title="title3" content="这里是该步骤的描述信息"></Step>
-        <Step :title="title4" content="这里是该步骤的描述信息"></Step>
+        <Step :title="title2" content="填写团队成员信息"></Step>
+        <Step :title="title3" content="上传申报书"></Step>
       </Steps>
       <Carousel
         ref="carousel"
-        v-model="index"
+        v-model="stepIndex"
         dots="none"
         :height="600"
-        arrow="never">
+        arrow="never"
+        v-if="model1"
+      >
         <CarouselItem>
           <div class="step1">
             <div class="title">请阅读以下协议</div>
@@ -103,14 +105,24 @@
         </CarouselItem>
         <CarouselItem>
           <div class="step2">
-
+            <Form v-for="(item,index) in forms.items" :key="index" :label-width="100" style="width: 100%">
+              <FormItem label="合作者姓名" prop="item.name">
+                <Input v-model="name" placeholder="输入合作者姓名"></Input>
+              </FormItem>
+              <FormItem label="合作者性别" prop="item.gender">
+                <RadioGroup v-model="gender">
+                  <Radio label="男"></Radio>
+                  <Radio label="女"></Radio>
+                </RadioGroup>
+              </FormItem>
+              <FormItem label="合作者手机" prop="item.telphone">
+                <Input v-model="telphone"></Input>
+              </FormItem>
+            </Form>
           </div>
         </CarouselItem>
         <CarouselItem>
           <div class="demo-carousel">这是第三页</div>
-        </CarouselItem>
-        <CarouselItem>
-          <div class="demo-carousel">这是第四页</div>
         </CarouselItem>
       </Carousel>
       <!--对话框底部自定义插槽-->
@@ -127,13 +139,30 @@
       return {
         loading: false,
         model1: false,
-        index: 0,
+        stepIndex: 0,
         read: false,
         step1disable: true,
         title1: '进行中',
         title2: '待进行',
         title3: '待进行',
         title4: '待进行',
+        name: '',
+        gender: '',
+        telphone: '',
+        forms: {
+          items: [
+            {
+              name: '李瑞轩',
+              gender: '男',
+              telphone: '18101971575'
+            },
+            {
+              name: '',
+              gender: '',
+              telphone: ''
+            }
+          ],
+        },
         columns: [
           {
             title: '项目名称',
@@ -213,34 +242,40 @@
       };
     },
     methods: {
+      cancel() {
+        this.model1 = false
+      },
       download(index) {
         this.$Message.info('点击下载文件')
       },
       declare(index) {
         this.$Message.info('点击申报')
         this.model1 = true
+        this.$nextTick(() => {
+          this.$forceUpdate(this.$refs.modal);
+        })
       },
       agreed() {
         this.step1disable = false
       },
       nextStep() {
-        this.index = this.index + 1
-        if (this.index === 0) {
+        this.stepIndex = this.stepIndex + 1
+        if (this.stepIndex === 0) {
           this.title1 = '进行中'
           this.title2 = '待进行'
           this.title3 = '待进行'
           this.title4 = '待进行'
-        }else if(this.index===1) {
+        } else if (this.index === 1) {
           this.title1 = '已完成'
           this.title2 = '进行中'
           this.title3 = '待进行'
           this.title4 = '待进行'
-        }else if(this.index===2) {
+        } else if (this.index === 2) {
           this.title1 = '已完成'
           this.title2 = '已完成'
           this.title3 = '进行中'
           this.title4 = '待进行'
-        }else if(this.index===3) {
+        } else if (this.index === 3) {
           this.title1 = '已完成'
           this.title2 = '已完成'
           this.title3 = '已完成'
@@ -248,14 +283,6 @@
         }
       }
     },
-    mounted() {
-      this.$forceUpdate() //TODO
-      // this.$nextTick(()=>{
-      //   console.log(this.$refs.carousel)
-      //   this.$refs.carousel.setAutoplay();
-      //   // this.$forceUpdate()
-      // })
-    }
   }
 </script>
 

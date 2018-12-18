@@ -7,6 +7,7 @@ import Leader from 'group/leader'
 import AvaProject from 'pages/user/avaProject/avaProject'
 import ReqProject from 'pages/user/reqProject/reqProject'
 import MyProject from 'pages/user/myProject/myProject'
+import MyInfo from 'pages/user/myInfo/myInfo'
 import PrincipalMainPage from 'pages/principal/mainpage/mainpage'
 import ExpertMainPage from 'pages/expert/mainpage/mainpage'
 import LeaderMainPage from 'pages/leader/mainpage/mainpage'
@@ -35,7 +36,11 @@ const router = new Router({
         },
         {
           path: 'myProject',
-          component:MyProject
+          component: MyProject
+        },
+        {
+          path: 'myInfo',
+          component: MyInfo
         }
       ]
     },
@@ -85,5 +90,5 @@ const router = new Router({
       ]
     },
   ]
-})
+});
 export default router
