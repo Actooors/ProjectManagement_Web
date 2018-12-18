@@ -17,7 +17,25 @@
         <Step title="待进行" content="这里是该步骤的描述信息"></Step>
         <Step title="待进行" content="这里是该步骤的描述信息"></Step>
       </Steps>
-
+      <Carousel
+        ref="carousel"
+        v-model="index"
+        dots="none"
+        :height="300"
+        arrow="never">
+        <CarouselItem>
+          <div class="demo-carousel">这是第一页</div>
+        </CarouselItem>
+        <CarouselItem>
+          <div class="demo-carousel">这是第二页</div>
+        </CarouselItem>
+        <CarouselItem>
+          <div class="demo-carousel">这是第三页</div>
+        </CarouselItem>
+        <CarouselItem>
+          <div class="demo-carousel">这是第四页</div>
+        </CarouselItem>
+      </Carousel>
     </Modal>
   </div>
 </template>
@@ -29,6 +47,7 @@
       return {
         loading: false,
         model1: false,
+        index:1,
         columns: [
           {
             title: '项目名称',
@@ -115,6 +134,14 @@
         this.$Message.info('点击申报')
         this.model1=true
       }
+    },
+    mounted(){
+      this.$forceUpdate() //TODO
+      // this.$nextTick(()=>{
+      //   console.log(this.$refs.carousel)
+      //   this.$refs.carousel.setAutoplay();
+      //   // this.$forceUpdate()
+      // })
     }
   }
 </script>

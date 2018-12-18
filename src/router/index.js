@@ -13,7 +13,7 @@ import LeaderMainPage from 'pages/leader/mainpage/mainpage'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: "history",
   routes: [
     {
@@ -85,4 +85,5 @@ export default new Router({
       ]
     },
   ]
-});
+})
+export default router
