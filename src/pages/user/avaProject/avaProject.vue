@@ -110,7 +110,7 @@
               <Card v-for="(item,index) in items" :key="index" style="width: 70%;margin: 20px auto 0 auto">
                 <p slot="title">
                   <Icon type="ios-people"/>
-                  合作者{{index+1}}
+                  合作者{{index + 1}}
                 </p>
                 <div slot="extra">
                   <Button type="error" size="small" @click="delPartner(index)">删除</Button>
@@ -131,7 +131,9 @@
                 </Form>
               </Card>
               <div class="addPartner">
-                <Button type="dashed" @click="handleAdd" icon="md-add" style="margin-top: 20px;text-align: center;">添加合作者</Button>
+                <Button type="dashed" @click="handleAdd" icon="md-add" style="margin-top: 20px;text-align: center;">
+                  添加合作者
+                </Button>
                 <Button type="primary" @click.native="nextStep" style="margin-top: 20px;margin-left: 20px">
                   下一步
                   <Icon type="ios-arrow-forward"/>
@@ -143,20 +145,26 @@
         <CarouselItem>
           <div class="step3">
             <div class="content">
-              <Upload
-                class="upload"
-                multiple
-                type="drag"
-                action="//jsonplaceholder.typicode.com/posts/">
-                <div style="padding: 20px 0">
-                  <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                  <p>点击或将项目申报书拖拽到此处即可上传</p>
-                </div>
-              </Upload>
+              <div class="upload">
+                <Upload
+                  class="upload"
+                  multiple
+                  type="drag"
+                  @on-success="uploadSuccess"
+                  action="//jsonplaceholder.typicode.com/posts/">
+                  <div style="padding: 20px 0">
+                    <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                    <p>点击或将项目申报书拖拽到此处即可上传</p>
+                  </div>
+                </Upload>
+              </div>
+              <div class="allSuccess">
+                <Button type="primary" long :disabled="allSuccess" @click.native="finish"
+                        style="margin-top: 20px;margin-left: 20px">
+                  完成
+                </Button>
+              </div>
             </div>
-            <Button type="primary" :disabled="allSuccess" @click.native="nextStep" style="margin-top: 20px;margin-left: 20px">
-              完成
-            </Button>
           </div>
         </CarouselItem>
       </Carousel>
@@ -177,7 +185,7 @@
         stepIndex: 0,
         read: false,
         step1disable: true,
-        allSuccess:true,
+        allSuccess: true,
         title1: '进行中',
         title2: '待进行',
         title3: '待进行',
@@ -270,6 +278,10 @@
       };
     },
     methods: {
+      uploadSuccess() {
+        this.$Message.success("上传成功！");
+        this.allSuccess = false
+      },
       cancel() {
         this.model1 = false
       },
@@ -293,9 +305,13 @@
           telphone: ''
         })
       },
-      delPartner(index){
-        // console.log(index)
-        this.items.splice(index,1)
+      delPartner(index) {
+        this.items.splice(index, 1)
+      },
+      finish() {
+//        请求后端
+        this.model1 = false;
+        this.$Message.success("申报成功！请耐心等待审核！")
       },
       nextStep() {
         this.stepIndex = this.stepIndex + 1
@@ -303,11 +319,11 @@
           this.title1 = '进行中'
           this.title2 = '待进行'
           this.title3 = '待进行'
-        } else if (this.index === 1) {
+        } else if (this.stepIndex === 1) {
           this.title1 = '已完成'
           this.title2 = '进行中'
           this.title3 = '待进行'
-        } else if (this.index === 2) {
+        } else if (this.stepIndex === 2) {
           this.title1 = '已完成'
           this.title2 = '已完成'
           this.title3 = '进行中'

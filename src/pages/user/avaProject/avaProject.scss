@@ -49,8 +49,20 @@
   .content {
     height: 600px;
     max-height: 600px;
-
+    position: relative;
     .upload {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80%;
+      margin: -15% 0 0 -40%;
+    }
+    .allSuccess {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40%;
+      margin: -5% 0 0 -22%;
     }
   }
 }
