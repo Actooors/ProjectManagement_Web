@@ -85,7 +85,8 @@
               第二十七条 未完之商务
               协议到期时，由代理人提出终止但在协议期满后又执行协议，应按第十五款支付代理人佣金。代理人届时仍应承担履行协议义务之职责。
               第二十八条 赔偿　协议因一方违约而终止外，由于协议终止或未能重新签约，则不予赔偿。
-              第二十九条 适用法律　本协议适用于制造商总部____________所在国之现行法律。　第三十条 仲裁　因执行本协议而发生的任何争执应根据______的法律_________仲裁解决。投诉方和被投诉方应各指定一名仲裁员，双方应提名一位公证人。　如两名仲裁员在30天内未能就提名一位主席达成协议，仲裁应有权提名第三名仲裁员为主席。仲裁所作出的裁决是终局的，对双方均有约束力。
+              第二十九条 适用法律　本协议适用于制造商总部____________所在国之现行法律。　第三十条
+              仲裁　因执行本协议而发生的任何争执应根据______的法律_________仲裁解决。投诉方和被投诉方应各指定一名仲裁员，双方应提名一位公证人。　如两名仲裁员在30天内未能就提名一位主席达成协议，仲裁应有权提名第三名仲裁员为主席。仲裁所作出的裁决是终局的，对双方均有约束力。
               第三十一条 变更　本协议的变更或附加条款，应以书面形式为准。　第三十二条 禁止转让　本协议未经事先协商不得转让。
               第三十三条 留置权　代理人对制造商的财产无留置权。　第三十四条 无效条款　如协议中的一条或一条以上的条款无效，协议其余条款仍然有效。　本协议一式二份，双方各执一份。
               注：　生产单位或生产企业委托中间商在任何地区或市场销售其全部产品，称销售代理商。在销售代理协议中应明确规定委托方和代理销售商的权利和义务。委托方授予代理销售商全权经营权利，在执行协议的期间内，不得再委托另外代理商销售同类产品。代理销售商在推销其商品时在一定时期内有一定的售价决定权并且在规定的时间内必须完成一定的销售额或销售量。除此之外，代理销售商还负责刊登商品广告、举办陈列展销，促进销售业务，其中按比例收取佣金。对于生产单位规模较小，资金有限而产品又有竞争能力的产品但又无销售渠道的生产企业宜采用这种方式将产品打入国际市场。
@@ -105,24 +106,58 @@
         </CarouselItem>
         <CarouselItem>
           <div class="step2">
-            <Form v-for="(item,index) in forms.items" :key="index" :label-width="100" style="width: 100%">
-              <FormItem label="合作者姓名" prop="item.name">
-                <Input v-model="name" placeholder="输入合作者姓名"></Input>
-              </FormItem>
-              <FormItem label="合作者性别" prop="item.gender">
-                <RadioGroup v-model="gender">
-                  <Radio label="男"></Radio>
-                  <Radio label="女"></Radio>
-                </RadioGroup>
-              </FormItem>
-              <FormItem label="合作者手机" prop="item.telphone">
-                <Input v-model="telphone"></Input>
-              </FormItem>
-            </Form>
+            <div class="content">
+              <Card v-for="(item,index) in items" :key="index" style="width: 70%;margin: 20px auto 0 auto">
+                <p slot="title">
+                  <Icon type="ios-people"/>
+                  合作者{{index+1}}
+                </p>
+                <div slot="extra">
+                  <Button type="error" size="small" @click="delPartner(index)">删除</Button>
+                </div>
+                <Form :label-width="80" style="width: 100%">
+                  <FormItem label="合作者姓名" prop="item.name">
+                    <Input v-model="item.name" placeholder="输入合作者姓名"></Input>
+                  </FormItem>
+                  <FormItem label="合作者性别" prop="item.gender">
+                    <RadioGroup v-model="item.gender">
+                      <Radio label="男"></Radio>
+                      <Radio label="女"></Radio>
+                    </RadioGroup>
+                  </FormItem>
+                  <FormItem label="合作者手机" prop="item.telphone">
+                    <Input v-model="item.telphone"></Input>
+                  </FormItem>
+                </Form>
+              </Card>
+              <div class="addPartner">
+                <Button type="dashed" @click="handleAdd" icon="md-add" style="margin-top: 20px;text-align: center;">添加合作者</Button>
+                <Button type="primary" @click.native="nextStep" style="margin-top: 20px;margin-left: 20px">
+                  下一步
+                  <Icon type="ios-arrow-forward"/>
+                </Button>
+              </div>
+            </div>
           </div>
         </CarouselItem>
         <CarouselItem>
-          <div class="demo-carousel">这是第三页</div>
+          <div class="step3">
+            <div class="content">
+              <Upload
+                class="upload"
+                multiple
+                type="drag"
+                action="//jsonplaceholder.typicode.com/posts/">
+                <div style="padding: 20px 0">
+                  <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                  <p>点击或将项目申报书拖拽到此处即可上传</p>
+                </div>
+              </Upload>
+            </div>
+            <Button type="primary" :disabled="allSuccess" @click.native="nextStep" style="margin-top: 20px;margin-left: 20px">
+              完成
+            </Button>
+          </div>
         </CarouselItem>
       </Carousel>
       <!--对话框底部自定义插槽-->
@@ -142,27 +177,20 @@
         stepIndex: 0,
         read: false,
         step1disable: true,
+        allSuccess:true,
         title1: '进行中',
         title2: '待进行',
         title3: '待进行',
-        title4: '待进行',
         name: '',
         gender: '',
         telphone: '',
-        forms: {
-          items: [
-            {
-              name: '李瑞轩',
-              gender: '男',
-              telphone: '18101971575'
-            },
-            {
-              name: '',
-              gender: '',
-              telphone: ''
-            }
-          ],
-        },
+        items: [
+          {
+            name: '李瑞轩',
+            gender: '男',
+            telphone: '18101971575'
+          }
+        ],
         columns: [
           {
             title: '项目名称',
@@ -258,28 +286,31 @@
       agreed() {
         this.step1disable = false
       },
+      handleAdd() {
+        this.items.push({
+          name: '',
+          gender: '',
+          telphone: ''
+        })
+      },
+      delPartner(index){
+        // console.log(index)
+        this.items.splice(index,1)
+      },
       nextStep() {
         this.stepIndex = this.stepIndex + 1
         if (this.stepIndex === 0) {
           this.title1 = '进行中'
           this.title2 = '待进行'
           this.title3 = '待进行'
-          this.title4 = '待进行'
         } else if (this.index === 1) {
           this.title1 = '已完成'
           this.title2 = '进行中'
           this.title3 = '待进行'
-          this.title4 = '待进行'
         } else if (this.index === 2) {
           this.title1 = '已完成'
           this.title2 = '已完成'
           this.title3 = '进行中'
-          this.title4 = '待进行'
-        } else if (this.index === 3) {
-          this.title1 = '已完成'
-          this.title2 = '已完成'
-          this.title3 = '已完成'
-          this.title4 = '进行中'
         }
       }
     },

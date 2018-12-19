@@ -25,8 +25,32 @@
       text-align: center;
     }
     .step1button {
-      margin-top:10px;
+      margin-top: 10px;
       text-align: center;
+    }
+  }
+}
+
+.step2 {
+  .content {
+    height: 600px;
+    max-height: 600px;
+    overflow-y: scroll;
+    .addPartner {
+      width: 100%;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+.step3 {
+  .content {
+    height: 600px;
+    max-height: 600px;
+
+    .upload {
     }
   }
 }
