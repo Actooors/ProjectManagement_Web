@@ -51,15 +51,18 @@
           telphone: '',
           mail: '',
           position: '',
-          major: ''
+          major: '',
+          identitiy: '',
+          is_able_login: 1,
+          leader_id: ''
         },
-        userValidate:{
-          telphone:[
-            { required: true, message: '手机号不能为空', trigger: 'blur' }
+        userValidate: {
+          telphone: [
+            {required: true, message: '手机号不能为空', trigger: 'blur'}
           ],
-          mail:[
-            { required: true, message: '邮箱不能为空', trigger: 'blur' },
-            { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+          mail: [
+            {required: true, message: '邮箱不能为空', trigger: 'blur'},
+            {type: 'email', message: 'Incorrect email format', trigger: 'blur'}
           ]
         }
       }
@@ -73,7 +76,7 @@
           this.text = '保存'
         } else if (this.btnType === 'success') {
           // 保存并请求后端
-          this.$refs[name].validate((valid)=>{
+          this.$refs[name].validate((valid) => {
             if (valid) {
               this.$Message.success('Success!');
               this.disable = true

@@ -203,12 +203,14 @@
           {
             title: '项目名称',
             key: 'projectName',
-            align: 'center'
+            align: 'center',
+            width: 250,
           },
           {
             title: '截止日期',
             key: 'deadLine',
-            align: 'center'
+            align: 'center',
+            width: 200,
           },
           {
             title: '项目简介',
@@ -219,6 +221,7 @@
             title: '操作',
             key: 'operation',
             align: 'center',
+            width: 250,
             render: (h, params) => {
               return h('div', [
                 h('Button', {
