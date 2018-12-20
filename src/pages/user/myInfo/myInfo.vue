@@ -79,7 +79,6 @@
           method: 'get',
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            console.log(res.data.data)
             this.userInfo = res.data.data
           } else {
             this.$Message.error(res.data.message)
@@ -105,7 +104,6 @@
           }
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            console.log(res.data);
             this.$Message.success("成功啦！")
           } else {
             this.$Message.error(res.data.message)
@@ -141,9 +139,7 @@
   @import "myInfo";
 </style>
 <style lang="scss">
-  .ivu-form ivu-form-label-right {
-    .ivu-form-item-label {
-      font-size: 1.3em !important;
-    }
+  .ivu-form .ivu-form-item-label {
+    font-size:15px;
   }
 </style>

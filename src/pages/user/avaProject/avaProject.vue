@@ -176,6 +176,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     name: "avaProject",
     data() {
@@ -200,6 +202,12 @@
           }
         ],
         columns: [
+          {
+            title: '项目类别',
+            key: 'type',
+            align: 'center',
+            width: 250,
+          },
           {
             title: '项目名称',
             key: 'projectName',
@@ -268,6 +276,8 @@
             introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
           },
           {
+            type:'人文',
+            projectId: 2,
             projectName: '项目4',
             deadLine: '2019-01-01',
             introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
@@ -281,6 +291,18 @@
       };
     },
     methods: {
+      initData() {
+        axios({
+          url: apiRoot + '/user/AllAviProjectCategory',
+          method: 'get'
+        }).then((res) => {
+          console.log(res.data)
+          for (var i = 0; i < res.data.data.length; i++) {
+            this.data1[i].type = res.data.data[i].type;
+
+          }
+        })
+      },
       uploadSuccess() {
         this.$Message.success("上传成功！");
         this.allSuccess = false
@@ -333,6 +355,9 @@
         }
       }
     },
+    created() {
+      this.initData()
+    }
   }
 </script>
 

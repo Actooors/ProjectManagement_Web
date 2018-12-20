@@ -46,9 +46,7 @@
               password: this.Password
             }
           }).then((res) => {
-              console.log(res.data);
               if (res.data.code === 'SUCCESS') {
-                console.log(res.data.token);
                 this.$Message.success('登录成功！');
                 this.loading = false;
                 if (res.data.data.identity === 1) { //普通用户
