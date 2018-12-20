@@ -98,7 +98,7 @@
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
-        userName: '李瑞轩',
+        userName: localStorage.getItem('username'),
       };
     },
     mounted() {
@@ -112,6 +112,12 @@
       }
     },
     methods: {
+      Logout(){
+        this.$router.push('/login')
+        localStorage.removeItem('token')
+        localStorage.removeItem('userid')
+        localStorage.removeItem('username')
+      },
       handleOpen() {
         this.visible = true
       },

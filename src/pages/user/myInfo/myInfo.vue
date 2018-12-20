@@ -6,7 +6,7 @@
           <Input v-model="userInfo.username" readonly size="large"></Input>
         </FormItem>
         <FormItem label="学/工号">
-          <Input v-model="userInfo.userid" readonly size="large"></Input>
+          <Input v-model="userInfo.userId" readonly size="large"></Input>
         </FormItem>
         <FormItem label="性别">
           <RadioGroup v-model="userInfo.sex" size="large">
@@ -17,8 +17,8 @@
         <FormItem label="部门/学院">
           <Input v-model="userInfo.department" readonly size="large"></Input>
         </FormItem>
-        <FormItem label="手机" prop="telphone">
-          <Input v-model="userInfo.telphone" :disabled="disable" size="large"></Input>
+        <FormItem label="手机" prop="phone">
+          <Input v-model="userInfo.phone" :disabled="disable" size="large"></Input>
         </FormItem>
         <FormItem label="邮箱" prop="mail">
           <Input v-model="userInfo.mail" :disabled="disable" size="large" type="email"></Input>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     name: "myInfo",
     data() {
@@ -45,30 +47,57 @@
         text: '修改',
         userInfo: {
           username: '',
-          userid: '',
+          userId: '',
           sex: '',
           department: '',
-          telphone: '',
+          phone: '',
           mail: '',
           position: '',
           major: '',
           identitiy: '',
-          is_able_login: 1,
-          leader_id: ''
+          isAbleLogin: 1,
+          leaderId: ''
         },
         userValidate: {
-          telphone: [
+          phone: [
             {required: true, message: '手机号不能为空', trigger: 'blur'}
           ],
           mail: [
             {required: true, message: '邮箱不能为空', trigger: 'blur'},
-            {type: 'email', message: 'Incorrect email format', trigger: 'blur'}
+            {type: 'email', message: '邮箱格式有误', trigger: 'blur'}
           ]
         }
       }
     },
+    created() {
+      console.log("123")
+      this.initData()
+    },
     methods: {
+      initData() {
+        axios({
+          url: apiRoot + '/user/userInfo/1',
+          method: 'get',
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
+            this.userInfo = res.data.data
+          } else {
+            this.$Message.error(res.data.message)
+          }
+        })
+      },
+      modifyInfo() {
+        axios({
+          url: apiRoot + '/api/user/userInfo/2',
+          method: 'post',
+          data: {}
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
 
+          }
+        })
+      },
       handleButton(name) {
         if (this.btnType === 'primary') {
           this.disable = false
@@ -78,12 +107,13 @@
           // 保存并请求后端
           this.$refs[name].validate((valid) => {
             if (valid) {
-              this.$Message.success('Success!');
+              this.$Message.success('成功啦！');
+              this.modifyInfo()
               this.disable = true
               this.btnType = 'primary'
               this.text = '修改'
             } else {
-              this.$Message.error('Fail!');
+              this.$Message.error('请正确填写有关字段！');
             }
           })
         }

@@ -4,6 +4,7 @@ import Principal from 'group/principal'
 import User from 'group/user'
 import Expert from 'group/expert'
 import Leader from 'group/leader'
+import Login from 'pages/login/login'
 import AvaProject from 'pages/user/avaProject/avaProject'
 import ReqProject from 'pages/user/reqProject/reqProject'
 import MyProject from 'pages/user/myProject/myProject'
@@ -89,6 +90,11 @@ const router = new Router({
         }
       ]
     },
+    {
+      path: '/login',
+      component: Login,
+      name: 'login'
+    }
   ]
 });
 export default router
