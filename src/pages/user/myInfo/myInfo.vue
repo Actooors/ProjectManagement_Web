@@ -3,7 +3,7 @@
     <div class="content">
       <Form ref="userInfo" :model="userInfo" :label-width="80" :rules="userValidate">
         <FormItem label="姓名">
-          <Input v-model="userInfo.username" readonly size="large"></Input>
+          <Input v-model="userInfo.userName" readonly size="large"></Input>
         </FormItem>
         <FormItem label="学/工号">
           <Input v-model="userInfo.userId" readonly size="large"></Input>
@@ -46,7 +46,7 @@
         btnType: 'primary',
         text: '修改',
         userInfo: {
-          username: '',
+          userName: '',
           userId: '',
           sex: '',
           department: '',
@@ -70,7 +70,6 @@
       }
     },
     created() {
-      console.log("123")
       this.initData()
     },
     methods: {
@@ -80,7 +79,7 @@
           method: 'get',
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            console.log(res.data)
+            console.log(res.data.data)
             this.userInfo = res.data.data
           } else {
             this.$Message.error(res.data.message)
@@ -89,13 +88,30 @@
       },
       modifyInfo() {
         axios({
-          url: apiRoot + '/api/user/userInfo/2',
+          url: apiRoot + '/user/userInfo/2',
           method: 'post',
-          data: {}
+          data: {
+            userId: this.userInfo.userId,
+            userName: this.userInfo.userName,
+            sex: this.userInfo.sex,
+            department: this.userInfo.department,
+            phone: this.userInfo.phone,
+            mail: this.userInfo.mail,
+            position: this.userInfo.position,
+            major: this.userInfo.major,
+            identity: this.userInfo.identity,
+            isAbleLogin: this.userInfo.isAbleLogin,
+            leaderId: this.userInfo.leaderId,
+          }
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-
+            console.log(res.data);
+            this.$Message.success("成功啦！")
+          } else {
+            this.$Message.error(res.data.message)
           }
+        }).catch((err) => {
+          this.$Message.error("保存失败！")
         })
       },
       handleButton(name) {
@@ -107,7 +123,6 @@
           // 保存并请求后端
           this.$refs[name].validate((valid) => {
             if (valid) {
-              this.$Message.success('成功啦！');
               this.modifyInfo()
               this.disable = true
               this.btnType = 'primary'
