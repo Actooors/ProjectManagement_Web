@@ -5,7 +5,8 @@
         刷新
       </Button>
     </ButtonGroup>
-    <Table stripe border :columns="columns" :data="data1" class="table" height="750" size="large"></Table>
+    <!--<Table stripe border :columns="columns" :data="data1" class="table" height="750" size="large"></Table>-->
+    <Table stripe border :columns="columns" :data="data1" class="table" height="750"></Table>
   </div>
 </template>
 

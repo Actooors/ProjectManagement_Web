@@ -10,7 +10,8 @@ import ReqProject from 'pages/user/reqProject/reqProject'
 import MyProject from 'pages/user/myProject/myProject'
 import MyInfo from 'pages/user/myInfo/myInfo'
 import PrincipalMainPage from 'pages/principal/mainpage/mainpage'
-import ExpertMainPage from 'pages/expert/mainpage/mainpage'
+import ExpertReqProject from 'pages/expert/reqProject/reqProject'
+import ExpertEndProject from 'pages/expert/endProject/endProject'
 import LeaderMainPage from 'pages/leader/mainpage/mainpage'
 
 Vue.use(Router)
@@ -63,15 +64,19 @@ const router = new Router({
     {
       path: '/expert',
       component: Expert,
-      redirect: {name: 'mainpage'},
+      redirect: {name: 'reqProject'},
       children: [
         {
           path: '',
-          redirect: 'mainpage'
+          redirect: 'reqProject',
         },
         {
-          path: 'mainpage',
-          component: ExpertMainPage
+          path:'reqProject',
+          component: ExpertReqProject
+        },
+        {
+          path:'endProject',
+          component: ExpertEndProject
         }
       ]
     },

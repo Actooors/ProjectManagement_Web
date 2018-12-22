@@ -21,20 +21,18 @@
             :class="menuitemClasses"
             @on-select="handleSelectItem"
           >
-            <Submenu name="project">
-              <template slot="title">
-                <Icon type="ios-stopwatch-outline" />
-                待审核项目
-              </template>
-              <MenuItem
-                name="reqProject"
-              >项目申请
-              </MenuItem>
-              <MenuItem
-                name="endProject"
-              >项目结题
-              </MenuItem>
-            </Submenu>
+            <MenuItem
+              name="reqProject"
+            >
+              <Icon type="ios-browsers-outline" />
+              项目申请
+            </MenuItem>
+            <MenuItem
+              name="endProject"
+            >
+              <Icon type="ios-browsers" />
+              项目结题
+            </MenuItem>
           </CustomMenu>
         </div>
       </Sider>
