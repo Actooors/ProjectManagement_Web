@@ -92,6 +92,9 @@
         });
       }
     },
+    mounted() {
+      this.initMenuActive();
+    },
     methods: {
       handleOpen() {
         this.visible = true

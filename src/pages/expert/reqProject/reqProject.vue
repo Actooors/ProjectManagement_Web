@@ -16,7 +16,7 @@
       @on-cancel="cancel">
       <!--弹出层-->
       <Form :model="formItem" :label-width="80">
-        <div class = "form_head">
+        <div class="form_head">
           <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审分数</p>
 
           <InputNumber :max="100" :min="1" v-model="value1"></InputNumber>
@@ -24,20 +24,21 @@
 
         <div class="from_middle">
           <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
-          <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Entersomething..."></Input>
+          <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+                 placeholder="Entersomething..."></Input>
         </div>
 
-        <div class = "form_bottom">
+        <div class="form_bottom">
           <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">选择优先级</p>
-          <RadioGroup v-model="button1" type="button">
+          <RadioGroup v-model="priority" type="button">
             <Radio label="优先支持"></Radio>
             <Radio label="支持"></Radio>
             <Radio label="反对"></Radio>
           </RadioGroup>
         </div>
       </Form>
-      <div slot="footer" class="allSuccess">
-        <Button type="primary" long :disabled="allSuccess" @click.native="finish"
+      <div slot="footer">
+        <Button type="primary" @click.native="finish"
                 style="margin-top: 20px;margin-left: 20px;width:100px">
           完成
         </Button>
@@ -51,8 +52,9 @@
     name: "reqProject",
     data() {
       return {
-        model1:false,
+        model1: false,
         value1: 1,
+        priority: '',
         formItem: {
           textarea: 'input here...'
         },
@@ -61,38 +63,45 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 150,
           },
           {
             title: '项目简介',
             key: 'introduce',
             align: 'center',
-            width:300,
           },
           {
             title: '下载申请书',
             key: 'download',
             align: 'center',
-            width: 150,
-            render:(h,params) => {
-              return h('div',[
-                h('Button',{
-                  prop:{type:'info'},
-                  style:{marginRight:'5px'},
-                  on:{click:() => {this.download(params.index)}}
-                },'下载申请书')
+            width: 300,
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                  prop: {type: 'info'},
+                  style: {marginRight: '5px'},
+                  on: {
+                    click: () => {
+                      this.download(params.index)
+                    }
+                  }
+                }, '下载申请书')
               ])
             },
           },
           {
-            title:'评审内容',
-            key:'projectName',
-            align:'center',
-            render :(h,params) => {
-              return h('div',[h('Button',{
-                props:{type:'primary'},
-                on:{click :() => {this.declare(params.index)}},
-              },'评审内容详情页')]);
+            title: '评审内容',
+            key: 'projectName',
+            align: 'center',
+            width: 300,
+            render: (h, params) => {
+              return h('div', [h('Button', {
+                props: {type: 'primary'},
+                on: {
+                  click: () => {
+                    this.declare(params.index)
+                  }
+                },
+              }, '评审内容详情页')]);
             }
           }
         ],
@@ -130,7 +139,7 @@
         ]
       }
     },
-    methods :{
+    methods: {
       declare(index) {
         this.$Message.success("填写评审意见");
         this.model1 = true;
@@ -138,10 +147,12 @@
           this.$forceUpdate(this.$refs.modal);
         });
       },
-      finish()
-      {
+      finish() {
         this.model1 = false;
         this.$Message.success("评审意见填写成功！");
+      },
+      cancel() {
+        this.model1 = false
       }
     }
   }

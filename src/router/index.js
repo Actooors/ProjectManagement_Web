@@ -71,11 +71,11 @@ const router = new Router({
           redirect: 'reqProject',
         },
         {
-          path:'reqProject',
+          path: 'reqProject',
           component: ExpertReqProject
         },
         {
-          path:'endProject',
+          path: 'endProject',
           component: ExpertEndProject
         }
       ]

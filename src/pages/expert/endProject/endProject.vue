@@ -1,6 +1,6 @@
 <template>
-  <div class = "wrapper">
-    <Table stripe border :columns="columns1" :data="data1"></Table>
+  <div class="wrapper">
+    <Table stripe border class="table" :columns="columns1" :data="data1" size="large"></Table>
     <Modal
       v-model="model1"
       title="填写评审结果"
@@ -10,29 +10,30 @@
       ref="modal"
       @on-cancel="cancel">
       <!--弹出层-->
-        <Form :model="formItem" :label-width="80">
-          <div class = "form_head">
-            <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审分数</p>
+      <Form :model="formItem" :label-width="80">
+        <div class="form_head">
+          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审分数</p>
 
-            <InputNumber :max="100" :min="1" v-model="value1"></InputNumber>
-          </div>
+          <InputNumber :max="100" :min="1" v-model="value1"></InputNumber>
+        </div>
 
-          <div class="from_middle">
-            <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
-            <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Entersomething..."></Input>
-          </div>
+        <div class="from_middle">
+          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
+          <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+                 placeholder="Entersomething..."></Input>
+        </div>
 
-          <div class = "form_bottom">
-            <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">选择优先级</p>
-            <RadioGroup v-model="button1" type="button">
-              <Radio label="优先支持"></Radio>
-              <Radio label="支持"></Radio>
-              <Radio label="反对"></Radio>
-            </RadioGroup>
-          </div>
-        </Form>
-      <div slot="footer" class="allSuccess">
-        <Button type="primary" long :disabled="allSuccess" @click.native="finish"
+        <div class="form_bottom">
+          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">选择优先级</p>
+          <RadioGroup v-model="priority" type="button">
+            <Radio label="优先支持"></Radio>
+            <Radio label="支持"></Radio>
+            <Radio label="反对"></Radio>
+          </RadioGroup>
+        </div>
+      </Form>
+      <div slot="footer">
+        <Button type="primary" @click.native="finish"
                 style="margin-top: 20px;margin-left: 20px;width:100px">
           完成
         </Button>
@@ -43,50 +44,63 @@
 
 <script>
 
-  export default{
-    data (){
-      return{
-        model1:false,
+  export default {
+    name: 'endProject',
+    data() {
+      return {
+        model1: false,
         value1: 1,
+        priority:'',
         formItem: {
           textarea: 'input here...'
         },
         allSuccess: false,
-        columns1 :[
+        columns1: [
           {
-            title:'项目名称',
-            key:'projectName',
-            align:'center',
-            width: 150
+            title: '项目名称',
+            key: 'projectName',
+            align: 'center',
           },
           {
-            title:'下载报告',
-            key:'projectName',
-            align:'center',
-            render:(h,params) =>{
-              return h('div',[h('Button',{
-                props:{type:'info'},
-                on:{click:() => {this.download(params.index)}},
-              },'中期报告'),h('Button',{
-                props:{type:'info'},
-                style:{marginLeft:'8px'},
-                on:{click:() => {this.download(params.index)}},
-              },'结题报告')]);
+            title: '下载报告',
+            key: 'projectName',
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [h('Button', {
+                props: {type: 'info'},
+                on: {
+                  click: () => {
+                    this.download(params.index)
+                  }
+                },
+              }, '中期报告'), h('Button', {
+                props: {type: 'info'},
+                style: {marginLeft: '8px'},
+                on: {
+                  click: () => {
+                    this.download(params.index)
+                  }
+                },
+              }, '结题报告')]);
             }
           },
           {
-            title:'评审内容',
-            key:'projectName',
-            align:'center',
-            render :(h,params) => {
-            return h('div',[h('Button',{
-              props:{type:'primary'},
-              on:{click :() => {this.declare(params.index)}},
-            },'评审内容详情页')]);
+            title: '评审内容',
+            key: 'projectName',
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [h('Button', {
+                props: {type: 'primary'},
+                on: {
+                  click: () => {
+                    this.declare(params.index)
+                  }
+                },
+              }, '评审内容详情页')]);
             }
           }
         ],
-        data1 :[
+        data1: [
           {
             projectName: '项目1',
             deadLine: '2019-01-01',
@@ -100,7 +114,7 @@
         ],
       }
     },
-    methods :{
+    methods: {
       declare(index) {
         this.$Message.success("填写评审意见");
         this.model1 = true;
@@ -112,10 +126,13 @@
         this.model1 = false;
         this.$Message.success("评审意见填写成功！");
       },
+      cancel() {
+        this.model1 = false
+      }
     }
   }
 </script>
 
-<style scoped lang = "scss">
+<style scoped lang="scss">
   @import 'endProject';
 </style>
