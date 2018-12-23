@@ -1,5 +1,12 @@
 <template>
   <div class="wrapper">
+    <div class="operation">
+      <ButtonGroup>
+        <Button type="success" :loading="loading" icon="md-refresh" @click="loading=!loading" size="large" ghost>
+          刷新
+        </Button>
+      </ButtonGroup>
+    </div>
     <Table stripe border :columns="columns1" :data="data1" class="table" size="large"></Table>
     <Modal
       v-model="model1"
@@ -45,6 +52,7 @@
     name: 'endProject',
     data () {
       return {
+        loading: false,
         model1: false,
         accept: false,
         refuse: false,

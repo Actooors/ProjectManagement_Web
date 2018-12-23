@@ -1,5 +1,12 @@
 <template>
   <div class="wrapper">
+    <div class="operation">
+      <ButtonGroup>
+        <Button type="success" :loading="loading" icon="md-refresh" @click="loading=!loading" size="large" ghost>
+          刷新
+        </Button>
+      </ButtonGroup>
+    </div>
     <div class="inwrapper">
       <div id="piechart"></div>
       <div id="barchart"></div>
@@ -13,7 +20,7 @@
     name: 'statistic',
     data() {
       return {
-        //theme2: 'dark',
+        loading: false
       };
     },
     mounted() {

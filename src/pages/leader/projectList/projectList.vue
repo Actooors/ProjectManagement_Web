@@ -1,5 +1,12 @@
 <template>
   <div class="wrapper">
+    <div class="operation">
+      <ButtonGroup>
+        <Button type="success" :loading="loading" icon="md-refresh" @click="loading=!loading" size="large" ghost>
+          刷新
+        </Button>
+      </ButtonGroup>
+    </div>
     <Table stripe border :columns="columns" :data="data1" class="table" height="750" size="large"></Table>
     <Modal
       v-model="model1"
@@ -31,6 +38,7 @@
     name: 'projectList',
     data() {
           return {
+            loading: false,
             model1: false,
             formItem: {
               textarea: '在此填写会评意见',

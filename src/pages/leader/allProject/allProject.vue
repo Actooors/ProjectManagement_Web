@@ -8,6 +8,13 @@
 </template>-->
 <template>
   <div class="wrapper">
+    <div class="operation">
+      <ButtonGroup>
+        <Button type="success" :loading="loading" icon="md-refresh" @click="loading=!loading" size="large" ghost>
+          刷新
+        </Button>
+      </ButtonGroup>
+    </div>
     <Table stripe border :columns="columns1" :data="data1" size="large" class="table"></Table>
   </div>
 </template>
@@ -17,6 +24,7 @@
     name: "allProject",
     data() {
       return {
+        loading: false,
         columns1: [
           {
             title: '项目名称',
