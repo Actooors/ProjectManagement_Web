@@ -23,8 +23,10 @@
     .ivu-menu-item:hover {
       color: #ebf3ff;
     }
-    .ivu-menu-item-active {
+    .ivu-menu-item-selected{
       background: #494746;
+    }
+    .ivu-menu-item-active {
       color: #bec6d2;
     }
   }

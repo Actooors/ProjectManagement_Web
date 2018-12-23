@@ -261,32 +261,11 @@
         ],
         data1: [
           {
-            projectName: '项目1',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-          },
-          {
-            projectName: '项目2',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-          },
-          {
-            projectName: '项目3',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-          },
-          {
-            type:'人文',
-            projectId: 2,
-            projectName: '项目4',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-          },
-          {
-            projectName: '项目5',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-          },
+            deadLine:"2019-12-31",
+            introduce:"有关生物化学方面的研究课题",
+            projectName:"生物化学类",
+            type:"生物化学类"
+          }
         ]
       };
     },
@@ -299,7 +278,9 @@
           console.log(res.data)
           for (var i = 0; i < res.data.data.length; i++) {
             this.data1[i].type = res.data.data[i].type;
-
+            this.data1[i].introduce = res.data.data[i].introduce;
+            this.data1[i].projectName = res.data.data[i].projectName;
+            this.data1[i].deadLine = res.data.data[i].deadLine;
           }
         })
       },
