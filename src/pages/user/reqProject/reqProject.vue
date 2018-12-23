@@ -6,7 +6,7 @@
       </Button>
     </ButtonGroup>
     <!--<Table stripe border :columns="columns" :data="data1" class="table" height="750" size="large"></Table>-->
-    <Table stripe border :columns="columns" :data="data1" class="table" height="750"></Table>
+    <Table stripe border :columns="columns" :data="data1" class="table" size="large"  height="750"></Table>
   </div>
 </template>
 
@@ -15,6 +15,7 @@
     name: "reqProject",
     data() {
       return {
+        loading:false,
         columns: [
           {
             title: '项目名称',

@@ -14,6 +14,7 @@
     name: "myProject",
     data(){
       return {
+        loading:false,
         columns:[
           {
             title: '项目名称',

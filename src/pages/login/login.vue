@@ -130,10 +130,12 @@
   @import "login";
 </style>
 
-<style>
-  .ivu-input {
-    background-color: transparent;
-    color: #f8f8f9ab;
+<style lang="scss">
+  .login-box {
+    .ivu-input {
+      background-color: transparent;
+      color: #f8f8f9ab;
+    }
   }
 
   .ivu-select-selection {
