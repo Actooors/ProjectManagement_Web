@@ -13,6 +13,10 @@ import PrincipalMainPage from 'pages/principal/mainpage/mainpage'
 import ExpertReqProject from 'pages/expert/reqProject/reqProject'
 import ExpertEndProject from 'pages/expert/endProject/endProject'
 import LeaderMainPage from 'pages/leader/mainpage/mainpage'
+import LeaderReqProject from 'pages/leader/reqProject/reqProject'
+import LeaderEndProject from 'pages/leader/endProject/endProject'
+import LeaderProjectList from 'pages/leader/projectList/projectList'
+import LeaderStatistic from 'pages/leader/statistic/statistic'
 
 Vue.use(Router)
 
@@ -92,7 +96,24 @@ const router = new Router({
         {
           path: 'mainpage',
           component: LeaderMainPage
+        },
+        {
+          path: 'reqProject',
+          component: LeaderReqProject
+        },
+        {
+          path: 'endProject',
+          component: LeaderEndProject
+        },
+        {
+          path: 'projectList',
+          component: LeaderProjectList
+        },
+        {
+          path: 'statistic',
+          component: LeaderStatistic
         }
+
       ]
     },
     {

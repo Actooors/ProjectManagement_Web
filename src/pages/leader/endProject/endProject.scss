@@ -1,0 +1,25 @@
+.wrapper {
+  width: 100%;
+  .table {
+    margin: 25px 32.5px;
+  }
+}
+.accept {
+  width: 600px;
+  height: 60px;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 22px;
+  font-weight: bold;
+  color: limegreen;
+}
+.refuse {
+  margin-top: 8px;
+}
+.button {
+  font-size: 15px;
+  //font-weight: bold;
+  color: rgb(70, 76, 91);
+  margin-top:30px;
+  text-align:center;
+}

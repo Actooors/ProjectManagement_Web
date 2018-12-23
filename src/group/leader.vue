@@ -22,7 +22,7 @@
             @on-select="handleSelectItem"
           >
             <MenuItem
-              name="project">
+              name="mainpage">
               <Icon type="md-menu" />
               &nbsp;所有项目
             </MenuItem>
@@ -95,7 +95,6 @@
 
 <script>
   import CustomMenu from 'components/customMenu/customMenu'
-
   export default {
     name: "leader",
     components: {CustomMenu},
@@ -147,21 +146,18 @@
 </script>
 
 <style scoped lang="scss">
-@import "group";
+  @import "group";
 </style>
 <style lang="scss">
   .ivu-layout-content {
     min-height: auto !important;
   }
-
   .menu-icon {
     transition: all 0.3s;
   }
-
   .rotate-icon {
     transform: rotate(-90deg);
   }
-
   .menu-item span {
     display: inline-block;
     overflow: hidden;
@@ -171,26 +167,22 @@
     vertical-align: bottom;
     transition: width 0.2s ease 0.2s;
   }
-
   .menu-item i {
     transform: translateX(0px);
     transition: font-size 0.2s ease, transform 0.2s ease;
     vertical-align: middle;
     font-size: 16px;
   }
-
   .collapsed-menu span {
     width: 0px;
     transition: width 0.2s ease;
   }
-
   .collapsed-menu i {
     transform: translateX(5px);
     transition: font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s;
     vertical-align: middle;
     font-size: 22px;
   }
-
   .menu-list {
     overflow-y: auto;
     height: calc(100% - 60px + 3px); //layout-logo-height+margin=70px
@@ -198,47 +190,37 @@
       display: none;
     }
   }
-
   .ivu-menu-submenu-title:hover {
     color: #ebf3ff !important;
   }
-
   .ivu-layout-sider-zero-width-trigger {
     opacity: 0.5 !important;
   }
-
   .ivu-layout-sider-trigger {
     background: none !important;
   }
-
   .ivu-layout-sider {
     z-index: 1000;
   }
-
   .ivu-dropdown-rel :first-child {
     color: #515a6e !important;
   }
-
   @media screen and (min-width: 1200px) {
     .ivu-layout-sider-trigger {
       display: none !important;
     }
   }
-
   // 布局
   .ivu-layout-sider {
     //  width:200px
   }
-
   .ivu-layout-header, .ivu-layout-content {
     width: calc(100 vw-200px);
   }
-
   .ivu-layout-header {
     height: 64px;
     z-index: 999;
   }
-
   .ivu-layout-content {
     height: calc(100 vh-64px);
     overflow: scroll;

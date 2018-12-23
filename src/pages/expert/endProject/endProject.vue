@@ -9,20 +9,17 @@
       :mask-closable="false"
       ref="modal"
       @on-cancel="cancel">
-      <!--弹出层-->
       <Form :model="formItem" :label-width="80">
         <div class="form_head">
           <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审分数</p>
 
           <InputNumber :max="100" :min="1" v-model="value1"></InputNumber>
         </div>
-
         <div class="from_middle">
           <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
           <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
-                 placeholder="Entersomething..."></Input>
+                 placeholder="填写评审内容"></Input>
         </div>
-
         <div class="form_bottom">
           <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">选择优先级</p>
           <RadioGroup v-model="priority" type="button">
@@ -43,7 +40,6 @@
 </template>
 
 <script>
-
   export default {
     name: 'endProject',
     data() {
@@ -52,7 +48,7 @@
         value1: 1,
         priority:'',
         formItem: {
-          textarea: 'input here...'
+          textarea: '填写评审内容'
         },
         allSuccess: false,
         columns1: [
@@ -63,14 +59,14 @@
           },
           {
             title: '下载报告',
-            key: 'projectName',
+            key: 'downloadReport',
             align: 'center',
             render: (h, params) => {
               return h('div', [h('Button', {
                 props: {type: 'info'},
                 on: {
                   click: () => {
-                    this.download(params.index)
+                    this.downloadMidReport(params.index)
                   }
                 },
               }, '中期报告'), h('Button', {
@@ -78,7 +74,7 @@
                 style: {marginLeft: '8px'},
                 on: {
                   click: () => {
-                    this.download(params.index)
+                    this.downloadEndReport(params.index)
                   }
                 },
               }, '结题报告')]);
@@ -86,7 +82,7 @@
           },
           {
             title: '评审内容',
-            key: 'projectName',
+            key: 'content',
             align: 'center',
             render: (h, params) => {
               return h('div', [h('Button', {
@@ -128,7 +124,13 @@
       },
       cancel() {
         this.model1 = false
-      }
+      },
+      downloadMidReport() {
+        this.$Message.info('点击下载中期报告')
+      },
+      downloadEndReport() {
+        this.$Message.info('点击下载结题报告')
+      },
     }
   }
 </script>

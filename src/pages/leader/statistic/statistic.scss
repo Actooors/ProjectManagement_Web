@@ -1,0 +1,24 @@
+.wrapper {
+  width: 100%;
+  .inwrapper {
+    margin: 25px 32.5px;
+    display: flex;
+    flex-direction: row;
+  }
+}
+#piechart{
+  margin:60px 20px auto auto;
+  width:300px;
+  height:300px;
+  border:solid 1px #C23531;
+  border-radius: 8px;
+}
+#barchart{
+  margin-top:30px;
+  width:600px;
+  height:400px;
+  border:solid 1px #C23531;
+  border-radius: 8px;
+}
+
+

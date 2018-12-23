@@ -2,6 +2,7 @@ dependencies:
   axios: 0.18.0
   babel: 6.23.0
   babel-runtime: 6.26.0
+  echarts: 4.2.0-rc.2
   helpers: 0.0.6
   iview: 3.0.0
   normalize.css: 8.0.0
@@ -2247,6 +2248,12 @@ packages:
     optional: true
     resolution:
       integrity: sha1-OoOpBOVDUyh4dMVkt1SThoSamMk=
+  /echarts/4.2.0-rc.2:
+    dependencies:
+      zrender: 4.0.5
+    dev: false
+    resolution:
+      integrity: sha512-5Y4Kyi4eNsRM9Cnl7Q8C6PFVjznBJv1VIiMm/VSQ9zyqeo+ce1695GqUd9v4zfVx+Ow1gnwMJX67h0FNvarScw==
   /ee-first/1.1.1:
     dev: true
     resolution:
@@ -7433,6 +7440,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-YpmpBVsc78lp/355wdkY3Osiw2A=
+  /zrender/4.0.5:
+    dev: false
+    resolution:
+      integrity: sha512-SintgipGEJPT9Sz2ABRoE4ZD7Yzy7oR7j7KP6H+C9FlbHWnLUfGVK7E8UV27pGwlxAMB0EsnrqhXx5XjAfv/KA==
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
@@ -7453,6 +7464,7 @@ specifiers:
   chalk: ^2.0.1
   copy-webpack-plugin: ^4.0.1
   css-loader: ^0.28.0
+  echarts: ^4.2.0-rc.2
   extract-text-webpack-plugin: ^3.0.0
   file-loader: ^1.1.4
   friendly-errors-webpack-plugin: ^1.6.1
