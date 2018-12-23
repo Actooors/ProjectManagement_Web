@@ -22,7 +22,7 @@
             @on-select="handleSelectItem"
           >
             <MenuItem
-              name="mainpage">
+              name="allProject">
               <Icon type="md-menu" />
               &nbsp;所有项目
             </MenuItem>
@@ -112,6 +112,9 @@
           this.initMenuActive();
         });
       }
+    },
+    mounted() {
+      this.initMenuActive();
     },
     methods: {
       handleOpen() {

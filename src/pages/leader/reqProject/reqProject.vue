@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <Table stripe border :columns="columns" :data="data1" class="table" height="750" size="large"></Table>
+    <Table stripe border :columns="columns" :data="data1" class="table" size="large"></Table>
     <Modal
       v-model="model1"
       title="填写会评意见"

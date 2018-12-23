@@ -14,7 +14,7 @@
 
 <script>
   export default {
-    name: "mainpage",
+    name: "allProject",
     data() {
       return {
         columns1: [
@@ -88,5 +88,5 @@
 </script>
 
 <style scoped lang="scss">
-  @import 'mainpage';
+  @import 'allProject';
 </style>

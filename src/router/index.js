@@ -12,7 +12,7 @@ import MyInfo from 'pages/user/myInfo/myInfo'
 import PrincipalMainPage from 'pages/principal/mainpage/mainpage'
 import ExpertReqProject from 'pages/expert/reqProject/reqProject'
 import ExpertEndProject from 'pages/expert/endProject/endProject'
-import LeaderMainPage from 'pages/leader/mainpage/mainpage'
+import AllProject from 'pages/leader/allProject/allProject'
 import LeaderReqProject from 'pages/leader/reqProject/reqProject'
 import LeaderEndProject from 'pages/leader/endProject/endProject'
 import LeaderProjectList from 'pages/leader/projectList/projectList'
@@ -87,15 +87,15 @@ const router = new Router({
     {
       path: '/leader',
       component: Leader,
-      redirect: {name: 'mainpage'},
+      redirect: {name: 'allProject'},
       children: [
         {
           path: '',
-          redirect: 'mainpage'
+          redirect: 'allProject'
         },
         {
-          path: 'mainpage',
-          component: LeaderMainPage
+          path: 'allProject',
+          component: AllProject
         },
         {
           path: 'reqProject',

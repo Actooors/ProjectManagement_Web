@@ -11,7 +11,8 @@ import '@/interceptors'
 
 Vue.use(iView)
 Vue.config.productionTip = false
-Vue.prototype.$echarts = echarts
+Vue.use(echarts)
+// Vue.prototype.$echarts = echarts
 
 /* eslint-disable no-new */
 new Vue({
