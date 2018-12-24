@@ -17,6 +17,7 @@ import LeaderReqProject from 'pages/leader/reqProject/reqProject'
 import LeaderEndProject from 'pages/leader/endProject/endProject'
 import LeaderProjectList from 'pages/leader/projectList/projectList'
 import LeaderStatistic from 'pages/leader/statistic/statistic'
+import Error from 'pages/error404/error404'
 
 Vue.use(Router)
 
@@ -120,6 +121,11 @@ const router = new Router({
       path: '/login',
       component: Login,
       name: 'login'
+    },
+    {
+      path: '*',
+      component: Error,
+      name: 'error404'
     }
   ]
 });

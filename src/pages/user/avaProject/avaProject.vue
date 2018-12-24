@@ -1,11 +1,12 @@
 <template>
   <div class="wrapper">
     <ButtonGroup class="operation">
-      <Button type="success" :loading="loading" icon="md-refresh" @click="loading=!loading" size="large" ghost>
+      <Button type="success" icon="md-refresh" @click="Refresh" size="large" ghost>
         刷新
       </Button>
     </ButtonGroup>
-    <Table stripe border :columns="columns" :data="data1" class="table" height="750" size="large"></Table>
+    <Table stripe border :loading="loading" :columns="columns" :data="data1" class="table" height="750"
+           size="large"></Table>
     <Modal
       v-model="model1"
       title="申报项目"
@@ -259,30 +260,27 @@
             }
           }
         ],
-        data1: [
-          {
-            deadLine:"2019-12-31",
-            introduce:"有关生物化学方面的研究课题",
-            projectName:"生物化学类",
-            type:"生物化学类"
-          }
-        ]
+        data1: []
       };
     },
+    created() {
+      this.initData()
+    },
     methods: {
+      Refresh() {
+        this.initData();
+        this.$Message.success('刷新成功!')
+      },
       initData() {
+        this.loading = true
         axios({
           url: apiRoot + '/user/AllAviProjectCategory',
           method: 'get'
         }).then((res) => {
           console.log(res.data)
-          for (var i = 0; i < res.data.data.length; i++) {
-            this.data1[i].type = res.data.data[i].type;
-            this.data1[i].introduce = res.data.data[i].introduce;
-            this.data1[i].projectName = res.data.data[i].projectName;
-            this.data1[i].deadLine = res.data.data[i].deadLine;
-          }
+          this.data1 = res.data.data
         })
+        this.loading = false;
       },
       uploadSuccess() {
         this.$Message.success("上传成功！");
@@ -295,11 +293,10 @@
         this.$Message.info('点击下载文件')
       },
       declare(index) {
+        console.log(index)
         this.$Message.info('点击申报')
         this.model1 = true
-        this.$nextTick(() => {
-          this.$forceUpdate(this.$refs.modal);
-        })
+
       },
       agreed() {
         this.step1disable = false

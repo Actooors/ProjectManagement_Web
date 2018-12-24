@@ -49,14 +49,14 @@
               return h('div', [
                 h('Button', {
                   props: {
-                    type: 'info'
+                    type: 'error'
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击查看详情')
+                      this.$Message.info('点击取消')
                     }
                   }
-                }, '详情')
+                }, '取消')
               ])
             }
           }
