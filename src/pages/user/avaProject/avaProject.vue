@@ -324,18 +324,6 @@
       download(index) {
         this.$Message.info('点击下载文件')
         window.open(this.data1[index].downLoadAddress,"_blank")
-//        axios({
-//          url: this.data1[index].downLoadAddress,
-//          method: 'get'
-//        }).then((res) => {
-//          if (res.data.code === "SUCCESS") {
-//            this.$Message.success("文件已下载,请查收!");
-//          } else {
-//            this.$Message.error("文件下载失败!");
-//          }
-//        }).catch(() => {
-//          this.$Message.error("下载失败,请检查网络连接!")
-//        })
       },
       declare(index) {
         console.log(index)
