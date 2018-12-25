@@ -25,6 +25,15 @@ const router = new Router({
   mode: "history",
   routes: [
     {
+      path:'',
+      redirect:{name:'login'}
+    },
+    {
+      path: '/login',
+      component: Login,
+      name: 'login'
+    },
+    {
       path: '/user',
       component: User,
       redirect: {name: 'avaProject'},
@@ -117,11 +126,7 @@ const router = new Router({
 
       ]
     },
-    {
-      path: '/login',
-      component: Login,
-      name: 'login'
-    },
+
     {
       path: '*',
       component: Error,

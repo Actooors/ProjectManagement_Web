@@ -109,7 +109,7 @@
           <div class="step2">
             <div class="content">
               <div class="isMeeting">
-                 <span>是否参加上会&nbsp;&nbsp;&nbsp;</span>
+                <span>是否参加上会&nbsp;&nbsp;&nbsp;</span>
                 <RadioGroup v-model="isMeeting">
                   <Radio label="true">是</Radio>
                   <Radio label="false">否</Radio>
@@ -134,7 +134,7 @@
                     <Input v-model="item.department" placeholder="输入合作者单位"></Input>
                   </FormItem>
                   <FormItem label="合作者手机" prop="item.phone">
-                    <Input v-model="item.phone"  placeholder="输入合作者手机"></Input>
+                    <Input v-model="item.phone" placeholder="输入合作者手机"></Input>
                   </FormItem>
                   <FormItem label="合作者邮箱" prop="item.mail">
                     <Input v-model="item.mail" placeholder="输入合作者邮箱" type="email"></Input>
@@ -156,13 +156,17 @@
         <CarouselItem>
           <div class="step3">
             <div class="content">
+              <div class="description">
+                对该项目进行简单描述(200字以内):
+                <Input v-model="description" type="textarea" :rows="4" placeholder="对该项目进行简单描述(200字以内)"
+                       :maxlength="200"/>
+              </div>
               <div class="upload">
+                上传项目申报书:
                 <Upload
-                  class="upload"
                   multiple
                   type="drag"
                   :on-success="uploadSuccess"
-                  :show-upload-list=false
                   action="http://129.204.71.113:8888/api/file/upload">
                   <div style="padding: 20px 0">
                     <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
@@ -205,27 +209,19 @@
         title2: '待进行',
         title3: '待进行',
 
-        name: '',
-        gender: '',
-        telphone: '',
-
-        projectName:'',
-        description:'',
-        userName:'',
-        sex:'',
-        department:'',
-        phone:'',
-        mail:'',
-        uploadAddress:'',
-        isMeeting:'false',
+        projectId: '',       //项目id
+        projectName: '',     //项目名称
+        description: '',    //项目简介
+        uploadAddress: '',  //申报书上传之后的地址
+        isMeeting: 'false', //是否上会
 
         items: [
           {
-            userId:'16121670',
+            userId: '16121670',
             userName: '李瑞轩',
-            department:'计算机工程与科学学院',
+            department: '计算机工程与科学学院',
             phone: '18101971575',
-            mail:'obsidian_lrx@aliyun.com'
+            mail: 'obsidian_lrx@aliyun.com'
           }
         ],
         columns: [
@@ -311,14 +307,14 @@
             this.$Message.error('初始化失败！')
             this.loading = false;
           }
-        }).catch(()=>{
+        }).catch(() => {
           this.$Message.error('初始化失败,请检查网络！')
           this.loading = false;
         })
       },
       uploadSuccess(response) {
         console.log(response)
-        this.uploadAddress=response.data.data
+        this.uploadAddress = response.data.data
         this.$Message.success("上传成功！");
         this.allSuccess = false
       },
@@ -327,23 +323,38 @@
       },
       download(index) {
         this.$Message.info('点击下载文件')
+        window.open(this.data1[index].downLoadAddress,"_blank")
+//        axios({
+//          url: this.data1[index].downLoadAddress,
+//          method: 'get'
+//        }).then((res) => {
+//          if (res.data.code === "SUCCESS") {
+//            this.$Message.success("文件已下载,请查收!");
+//          } else {
+//            this.$Message.error("文件下载失败!");
+//          }
+//        }).catch(() => {
+//          this.$Message.error("下载失败,请检查网络连接!")
+//        })
       },
       declare(index) {
         console.log(index)
         this.$Message.info('点击申报')
+        this.projectId = this.data1[index].projectId
+        this.projectName = this.data1[index].projectName
+        this.isMeeting = this.data1[index].isMeeting
         this.model1 = true
-        this.projectName=this.data1[index].projectName
-        this.description=this.data1[index].introduce
-        this.isMeeting=this.data1[index].isMeeting
       },
       agreed() {
         this.step1disable = false
       },
       handleAdd() {
         this.items.push({
-          name: '',
-          gender: '',
-          telphone: ''
+          userId: '',
+          userName: '',
+          department: '',
+          phone: '',
+          mail: ''
         })
       },
       delPartner(index) {
@@ -353,24 +364,23 @@
 //        请求后端
         axios({
           url: apiRoot + '/user/applyProject',
-          method:'post',
-          data:{
-            projectName:this.projectName,
-            members:this.items,
-            description:this.description,
-            userId:'',
-            userName:'',
-            sex:'',
-            department:'',
-            phone:'',
-            mail:'',
-            uploadAddress:this.uploadAddress,
-            isMeeting:this.isMeeting
+          method: 'post',
+          data: {
+            projectCategoryId: this.projectId,
+            projectName: this.projectName,
+            members: this.items,
+            description: this.description,
+            uploadAddress: this.uploadAddress,
+            isMeeting: this.isMeeting,
           }
-        }).then((res)=>{
+        }).then((res) => {
           if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
             this.model1 = false;
             this.$Message.success("申报成功！请耐心等待审核！");
+            setTimeout(() => {
+              location.reload()         //刷新该页面
+            }, 1500)
           } else {
             this.$Message.error("申报失败！");
           }
