@@ -108,6 +108,13 @@
         <CarouselItem>
           <div class="step2">
             <div class="content">
+              <div class="isMeeting">
+                 <span>是否参加上会&nbsp;&nbsp;&nbsp;</span>
+                <RadioGroup v-model="isMeeting">
+                  <Radio label="true">是</Radio>
+                  <Radio label="false">否</Radio>
+                </RadioGroup>
+              </div>
               <Card v-for="(item,index) in items" :key="index" style="width: 70%;margin: 20px auto 0 auto">
                 <p slot="title">
                   <Icon type="ios-people"/>
@@ -116,18 +123,21 @@
                 <div slot="extra">
                   <Button type="error" size="small" @click="delPartner(index)">删除</Button>
                 </div>
-                <Form :label-width="80" style="width: 100%">
-                  <FormItem label="合作者姓名" prop="item.name">
-                    <Input v-model="item.name" placeholder="输入合作者姓名"></Input>
+                <Form :label-width="120" style="width: 100%">
+                  <FormItem label="合作者学/工号" prop="item.userId">
+                    <Input v-model="item.userId" placeholder="输入合作者学/工号"></Input>
                   </FormItem>
-                  <FormItem label="合作者性别" prop="item.gender">
-                    <RadioGroup v-model="item.gender">
-                      <Radio label="男"></Radio>
-                      <Radio label="女"></Radio>
-                    </RadioGroup>
+                  <FormItem label="合作者姓名" prop="item.userName">
+                    <Input v-model="item.userName" placeholder="输入合作者姓名"></Input>
                   </FormItem>
-                  <FormItem label="合作者手机" prop="item.telphone">
-                    <Input v-model="item.telphone"></Input>
+                  <FormItem label="合作者单位" prop="item.department">
+                    <Input v-model="item.department" placeholder="输入合作者单位"></Input>
+                  </FormItem>
+                  <FormItem label="合作者手机" prop="item.phone">
+                    <Input v-model="item.phone"  placeholder="输入合作者手机"></Input>
+                  </FormItem>
+                  <FormItem label="合作者邮箱" prop="item.mail">
+                    <Input v-model="item.mail" placeholder="输入合作者邮箱" type="email"></Input>
                   </FormItem>
                 </Form>
               </Card>
@@ -151,11 +161,12 @@
                   class="upload"
                   multiple
                   type="drag"
-                  @on-success="uploadSuccess"
-                  action="//jsonplaceholder.typicode.com/posts/">
+                  :on-success="uploadSuccess"
+                  :show-upload-list=false
+                  action="http://129.204.71.113:8888/api/file/upload">
                   <div style="padding: 20px 0">
                     <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                    <p>点击或将项目申报书拖拽到此处即可上传</p>
+                    <p>点击或将项目申报书拖拽到此处即可上传(注意只能是单文件)</p>
                   </div>
                 </Upload>
               </div>
@@ -183,6 +194,7 @@
     name: "avaProject",
     data() {
       return {
+
         loading: false,
         model1: false,
         stepIndex: 0,
@@ -192,14 +204,28 @@
         title1: '进行中',
         title2: '待进行',
         title3: '待进行',
+
         name: '',
         gender: '',
         telphone: '',
+
+        projectName:'',
+        description:'',
+        userName:'',
+        sex:'',
+        department:'',
+        phone:'',
+        mail:'',
+        uploadAddress:'',
+        isMeeting:'false',
+
         items: [
           {
-            name: '李瑞轩',
-            gender: '男',
-            telphone: '18101971575'
+            userId:'16121670',
+            userName: '李瑞轩',
+            department:'计算机工程与科学学院',
+            phone: '18101971575',
+            mail:'obsidian_lrx@aliyun.com'
           }
         ],
         columns: [
@@ -277,12 +303,22 @@
           url: apiRoot + '/user/AllAviProjectCategory',
           method: 'get'
         }).then((res) => {
-          console.log(res.data)
-          this.data1 = res.data.data
+          if (res.data.code === 'SUCCESS') {
+            console.log(res.data);
+            this.data1 = res.data.data;
+            this.loading = false;
+          } else {
+            this.$Message.error('初始化失败！')
+            this.loading = false;
+          }
+        }).catch(()=>{
+          this.$Message.error('初始化失败,请检查网络！')
+          this.loading = false;
         })
-        this.loading = false;
       },
-      uploadSuccess() {
+      uploadSuccess(response) {
+        console.log(response)
+        this.uploadAddress=response.data.data
         this.$Message.success("上传成功！");
         this.allSuccess = false
       },
@@ -296,7 +332,9 @@
         console.log(index)
         this.$Message.info('点击申报')
         this.model1 = true
-
+        this.projectName=this.data1[index].projectName
+        this.description=this.data1[index].introduce
+        this.isMeeting=this.data1[index].isMeeting
       },
       agreed() {
         this.step1disable = false
@@ -313,8 +351,30 @@
       },
       finish() {
 //        请求后端
-        this.model1 = false;
-        this.$Message.success("申报成功！请耐心等待审核！")
+        axios({
+          url: apiRoot + '/user/applyProject',
+          method:'post',
+          data:{
+            projectName:this.projectName,
+            members:this.items,
+            description:this.description,
+            userId:'',
+            userName:'',
+            sex:'',
+            department:'',
+            phone:'',
+            mail:'',
+            uploadAddress:this.uploadAddress,
+            isMeeting:this.isMeeting
+          }
+        }).then((res)=>{
+          if (res.data.code === 'SUCCESS') {
+            this.model1 = false;
+            this.$Message.success("申报成功！请耐心等待审核！");
+          } else {
+            this.$Message.error("申报失败！");
+          }
+        })
       },
       nextStep() {
         this.stepIndex = this.stepIndex + 1

@@ -36,6 +36,10 @@
     height: 600px;
     max-height: 600px;
     overflow-y: scroll;
+    .isMeeting{
+      margin-top: 20px;
+      text-align: center;
+    }
     .addPartner {
       width: 100%;
       align-items: center;
