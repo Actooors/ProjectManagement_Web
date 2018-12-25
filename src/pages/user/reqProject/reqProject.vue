@@ -28,7 +28,7 @@
           },
           {
             title: '项目申报日期',
-            key: 'applicationTime',
+            key: 'time',
             align: 'center',
             width: 200,
           },

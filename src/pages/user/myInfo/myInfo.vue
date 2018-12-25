@@ -73,16 +73,18 @@
       this.initData()
     },
     methods: {
-      initData() {
+      initData(){
         axios({
           url: apiRoot + '/user/userInfo/1',
           method: 'get',
-        }).then((res) => {
-          if (res.data.code === 'SUCCESS') {
-            this.userInfo = res.data.data
-          } else {
-            this.$Message.error(res.data.message)
+        }).then((res)=>{
+          if(res.data.code==='SUCCESS') {
+            this.userInfo=res.data.data
+          }else {
+            this.$Message.error("初始化错误!")
           }
+        }).catch(()=>{
+          this.$Message.error('请检查网络连接!')
         })
       },
       modifyInfo() {

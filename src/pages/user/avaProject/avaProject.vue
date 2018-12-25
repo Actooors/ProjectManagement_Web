@@ -14,7 +14,7 @@
       maxHeight="800"
       :mask-closable="false"
       ref="modal"
-      @on-cancel="cancel"
+      @on-cancel="projectCancel"
     >
       <!--对话框中内容-->
       <Steps :current="stepIndex" size="small" style="padding-left: 80px">
@@ -115,6 +115,29 @@
                   <Radio label="false">否</Radio>
                 </RadioGroup>
               </div>
+              <Card style="width: 70%;margin: 20px auto 0 auto">
+                <p slot="title">
+                  <Icon type="ios-people"/>
+                  项目负责人
+                </p>
+                <Form :label-width="120" style="width: 100%">
+                  <FormItem label="负责人学/工号">
+                    <Input readonly :value="official.userId" placeholder="暂无合作者学/工号"></Input>
+                  </FormItem>
+                  <FormItem label="负责人姓名">
+                    <Input readonly :value="official.userName" placeholder="暂无合作者姓名"></Input>
+                  </FormItem>
+                  <FormItem label="负责人单位">
+                    <Input readonly :value="official.department" placeholder="暂无合作者单位"></Input>
+                  </FormItem>
+                  <FormItem label="负责人手机">
+                    <Input readonly :value="official.phone" placeholder="暂无合作者手机"></Input>
+                  </FormItem>
+                  <FormItem label="负责人邮箱">
+                    <Input readonly :value="official.mail" placeholder="暂无合作者邮箱"></Input>
+                  </FormItem>
+                </Form>
+              </Card>
               <Card v-for="(item,index) in items" :key="index" style="width: 70%;margin: 20px auto 0 auto">
                 <p slot="title">
                   <Icon type="ios-people"/>
@@ -198,7 +221,6 @@
     name: "avaProject",
     data() {
       return {
-
         loading: false,
         model1: false,
         stepIndex: 0,
@@ -209,21 +231,20 @@
         title2: '待进行',
         title3: '待进行',
 
+        official: {
+          userId: '',           //负责人学工号
+          userName: '',         //负责人姓名
+          department: '',   //负责人单位
+          phone: '',        //负责人手机
+          mail: '',         //负责人邮箱
+        },
+
         projectId: '',       //项目id
         projectName: '',     //项目名称
         description: '',    //项目简介
         uploadAddress: '',  //申报书上传之后的地址
         isMeeting: 'false', //是否上会
-
-        items: [
-          {
-            userId: '16121670',
-            userName: '李瑞轩',
-            department: '计算机工程与科学学院',
-            phone: '18101971575',
-            mail: 'obsidian_lrx@aliyun.com'
-          }
-        ],
+        items: [],
         columns: [
           {
             title: '项目类别',
@@ -285,10 +306,29 @@
         data1: []
       };
     },
-    created() {
+    mounted() {
       this.initData()
+      this.initInfo()
     },
     methods: {
+      initInfo() {
+        axios({
+          url: apiRoot + '/user/userInfo/1',
+          method: 'get',
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.official.department = res.data.data.department;
+            this.official.phone = res.data.data.phone;
+            this.official.mail = res.data.data.mail;
+          }
+        }).catch(() => {
+          this.$Message.error("请检查网络!")
+        })
+        console.log('localStorage', localStorage)
+        this.official.userId = localStorage.getItem('userid');
+        this.official.userName = localStorage.getItem('username');
+        console.log('official:', this.official)
+      },
       Refresh() {
         this.initData();
         this.$Message.success('刷新成功!')
@@ -300,7 +340,6 @@
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            console.log(res.data);
             this.data1 = res.data.data;
             this.loading = false;
           } else {
@@ -313,17 +352,22 @@
         })
       },
       uploadSuccess(response) {
-        console.log(response)
-        this.uploadAddress = response.data.data
+        console.log("success", response)
+        this.uploadAddress = response.data
         this.$Message.success("上传成功！");
+        console.log('uploadAddress:', this.uploadAddress)
         this.allSuccess = false
       },
-      cancel() {
+      projectCancel() {
+        this.stepIndex = 0
+        this.description = ''
+        this.read = false
+        this.items.splice(0,this.items.length)
         this.model1 = false
       },
       download(index) {
         this.$Message.info('点击下载文件')
-        window.open(this.data1[index].downLoadAddress,"_blank")
+        window.open(this.data1[index].downLoadAddress, "_blank")
       },
       declare(index) {
         console.log(index)
@@ -349,7 +393,10 @@
         this.items.splice(index, 1)
       },
       finish() {
-//        请求后端
+        //TODO 修改:如何从数组头部插入元素
+        //TODO 解决在申报过程中返回上一步的问题
+//        this.items = this.items.push(this.official)
+        console.log("members:", this.items)
         axios({
           url: apiRoot + '/user/applyProject',
           method: 'post',

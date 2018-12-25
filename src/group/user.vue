@@ -114,9 +114,7 @@
     methods: {
       Logout(){
         this.$router.push('/login')
-        localStorage.removeItem('token')
-        localStorage.removeItem('userid')
-        localStorage.removeItem('username')
+        localStorage.clear()
       },
       handleOpen() {
         this.visible = true
