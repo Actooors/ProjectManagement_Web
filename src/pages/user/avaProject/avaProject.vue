@@ -191,8 +191,8 @@
               <div class="upload">
                 上传项目申报书:
                 <Upload
-                  multiple
                   type="drag"
+                  :headers="uploadHeaders"
                   :on-success="uploadSuccess"
                   action="http://129.204.71.113:8888/api/file/upload">
                   <div style="padding: 20px 0">
@@ -238,7 +238,9 @@
         title1: '进行中',
         title2: '待进行',
         title3: '待进行',
-
+        uploadHeaders: {
+          Authorization: localStorage.getItem('token')
+        },
         official: {
           userId: '',           //负责人学工号
           userName: '',         //负责人姓名
@@ -370,7 +372,7 @@
         this.stepIndex = 0
         this.description = ''
         this.read = false
-        this.items.splice(0,this.items.length)
+        this.items.splice(0, this.items.length)
         this.model1 = false
       },
       download(index) {
@@ -402,7 +404,7 @@
       },
       finish() {
         //TODO 解决在申报过程中返回上一步的问题
-       this.items.unshift(this.official)
+        this.items.unshift(this.official)
         console.log("members:", this.items)
         axios({
           url: apiRoot + '/user/applyProject',
@@ -441,7 +443,7 @@
           this.title3 = '进行中'
         }
       },
-      previousStep(){
+      previousStep() {
         this.stepIndex = this.stepIndex - 1
       }
     },
