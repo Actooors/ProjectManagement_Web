@@ -165,6 +165,10 @@
                 </Form>
               </Card>
               <div class="addPartner">
+                <Button type="primary" @click.native="previousStep" style="margin-top: 20px;margin-right: 20px">
+                  <Icon type="ios-arrow-back"/>
+                  上一步
+                </Button>
                 <Button type="dashed" @click="handleAdd" icon="md-add" style="margin-top: 20px;text-align: center;">
                   添加合作者
                 </Button>
@@ -198,6 +202,10 @@
                 </Upload>
               </div>
               <div class="allSuccess">
+                <Button type="primary" @click.native="previousStep" style="margin-top: 20px;margin-right: 20px">
+                  <Icon type="ios-arrow-back"/>
+                  上一步
+                </Button>
                 <Button type="primary" long :disabled="allSuccess" @click.native="finish"
                         style="margin-top: 20px;margin-left: 20px">
                   完成
@@ -393,9 +401,8 @@
         this.items.splice(index, 1)
       },
       finish() {
-        //TODO 修改:如何从数组头部插入元素
         //TODO 解决在申报过程中返回上一步的问题
-//        this.items = this.items.push(this.official)
+       this.items.unshift(this.official)
         console.log("members:", this.items)
         axios({
           url: apiRoot + '/user/applyProject',
@@ -412,12 +419,9 @@
           if (res.data.code === 'SUCCESS') {
             console.log(res.data)
             this.model1 = false;
-            this.$Message.success("申报成功！请耐心等待审核！");
-            setTimeout(() => {
-              location.reload()         //刷新该页面
-            }, 1500)
+            this.$Message.success("申报成功！请耐心等待审核！")
           } else {
-            this.$Message.error("申报失败！");
+            this.$Message.error(res.data.message);
           }
         })
       },
@@ -436,6 +440,9 @@
           this.title2 = '已完成'
           this.title3 = '进行中'
         }
+      },
+      previousStep(){
+        this.stepIndex = this.stepIndex - 1
       }
     },
     created() {
