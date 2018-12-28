@@ -48,6 +48,7 @@
           }).then((res) => {
               if (res.data.code === 'SUCCESS') {
                 this.$Message.success('登录成功！');
+                console.log("res:" , res.data)
                 this.loading = false;
                 if (res.data.data.identity === 1) { //普通用户
                   this.$router.push({
@@ -79,7 +80,7 @@
               }
             }
           ).catch((err) => {
-            this.$Message.error("登录失败！");
+            this.$Message.error("登录失败，请检查网络连接！");
             this.loading = false
           })
         }
