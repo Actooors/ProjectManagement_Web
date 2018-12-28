@@ -8,10 +8,11 @@ import Login from 'pages/login/login'
 import AvaProject from 'pages/user/avaProject/avaProject'
 import ReqProject from 'pages/user/reqProject/reqProject'
 import MyProject from 'pages/user/myProject/myProject'
-import MyInfo from 'pages/user/myInfo/myInfo'
+import UserInfo from 'pages/user/myInfo/myInfo'
 import PrincipalMainPage from 'pages/principal/mainpage/mainpage'
 import ExpertReqProject from 'pages/expert/reqProject/reqProject'
 import ExpertEndProject from 'pages/expert/endProject/endProject'
+import ExpertInfo from 'pages/expert/myInfo/myInfo'
 import AllProject from 'pages/leader/allProject/allProject'
 import LeaderReqProject from 'pages/leader/reqProject/reqProject'
 import LeaderEndProject from 'pages/leader/endProject/endProject'
@@ -58,7 +59,7 @@ const router = new Router({
         },
         {
           path: 'myInfo',
-          component: MyInfo
+          component: UserInfo
         }
       ]
     },
@@ -97,6 +98,10 @@ const router = new Router({
         {
           path: 'endProject',
           component: ExpertEndProject
+        },
+        {
+          path:'myInfo',
+          component:ExpertInfo
         }
       ]
     },

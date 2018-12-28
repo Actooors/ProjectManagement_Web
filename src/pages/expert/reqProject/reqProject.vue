@@ -2,12 +2,13 @@
   <div class="wrapper">
     <div class="operation">
       <ButtonGroup>
-        <Button type="success" :loading="loading" icon="md-refresh" @click="loading=!loading" size="large" ghost>
+        <Button type="success" icon="md-refresh" @click="Refresh" size="large" ghost>
           刷新
         </Button>
       </ButtonGroup>
     </div>
-    <Table stripe border :columns="columns" :data="data1" class="table" height="750" size="large"></Table>
+    <Table stripe border :loading="loading" :columns="columns" :data="data1" class="table" height="750"
+           size="large"></Table>
     <Modal
       v-model="model1"
       title="填写评审结果"
@@ -48,6 +49,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     name: "reqProject",
     data() {
@@ -61,20 +64,39 @@
         },
         columns: [
           {
+            title: '项目类型',
+            key: 'projectCategoryName',
+            align: 'center'
+          },
+          {
             title: '项目名称',
             key: 'projectName',
             align: 'center'
           },
           {
             title: '项目简介',
-            key: 'introduce',
+            key: 'description',
+            align: 'center'
+          },
+          {
+            title: '负责人学/工号',
+            key: 'userId',
+            align: 'center'
+          },
+          {
+            title: '负责人姓名',
+            key: 'userName',
+            align: 'center'
+          },
+          {
+            title: '负责人单位',
+            key: 'department',
             align: 'center'
           },
           {
             title: '下载申请书',
             key: 'download',
             align: 'center',
-            width: 300,
             render: (h, params) => {
               return h('div', [
                 h('Button', {
@@ -97,7 +119,6 @@
             title: '评审内容',
             key: 'content',
             align: 'center',
-            width: 300,
             render: (h, params) => {
               return h('div', [
                 h('Button', {
@@ -110,44 +131,38 @@
                     }
                   },
                 }, '评审内容详情页')]);
-              }
+            }
           }
         ],
-        data1: [
-          {
-            projectName: '项目1',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。',
-            status: '审核中'
-          },
-          {
-            projectName: '项目2',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。',
-            status: '审核中'
-          },
-          {
-            projectName: '项目3',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。',
-            status: '审核失败'
-          },
-          {
-            projectName: '项目4',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。',
-            status: '审核中'
-          },
-          {
-            projectName: '项目5',
-            deadLine: '2019-01-01',
-            introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。',
-            status: '审核中'
-          },
-        ]
+        data1: []
       }
     },
+    mounted() {
+      this.initData();
+    },
     methods: {
+      Refresh() {
+        this.initData();
+        this.$Message.success("刷新成功！")
+      },
+      initData() {
+        this.loading = true
+        axios({
+          url: apiRoot + '/expert/unJudgeProject',
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.data1 = res.data.data
+            this.loading = false
+          } else {
+            this.$Message.error(res.data.message)
+            this.loading = false
+          }
+        }).catch(() => {
+          this.$Message.error("请检查网络连接！")
+          this.loading = false
+        })
+      },
       declare(index) {
         this.$Message.success("填写评审意见")
         this.model1 = true

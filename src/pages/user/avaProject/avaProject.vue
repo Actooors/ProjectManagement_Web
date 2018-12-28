@@ -403,7 +403,6 @@
         this.items.splice(index, 1)
       },
       finish() {
-        //TODO 解决在申报过程中返回上一步的问题
         this.items.unshift(this.official)
         console.log("members:", this.items)
         axios({
