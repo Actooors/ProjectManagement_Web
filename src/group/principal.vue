@@ -101,10 +101,10 @@
         UserName: '业务员'
       }
     },
-    // 让页头出现标题，这里每个页面还没做出来
-    // mounted() {
-    //   this.initMenuActive();
-    // },
+     //让页头出现标题，这里每个页面还没做出来
+    mounted() {
+      this.initMenuActive();
+    },
     watch: {
       $route() {
         this.$nextTick(() => {
@@ -112,6 +112,7 @@
         });
       }
     },
+
     methods: {
       handleOpen() {
         this.visible = true

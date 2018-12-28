@@ -18,6 +18,8 @@ import LeaderEndProject from 'pages/leader/endProject/endProject'
 import LeaderProjectList from 'pages/leader/projectList/projectList'
 import LeaderStatistic from 'pages/leader/statistic/statistic'
 import Error from 'pages/error404/error404'
+import fourEx from 'pages/principal/fourEx/fourEx'
+
 
 Vue.use(Router)
 
@@ -67,11 +69,15 @@ const router = new Router({
       children: [
         {
           path: '',
-          redirect: 'mainpage'
+          redirect:'mainpage'
         },
         {
           path: 'mainpage',
           component: PrincipalMainPage
+        },
+        {
+          path:'fourEx',
+          component:fourEx
         }
       ]
     },
