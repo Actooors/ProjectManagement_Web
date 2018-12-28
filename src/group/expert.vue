@@ -33,6 +33,12 @@
               <Icon type="ios-browsers" />
               项目结题
             </MenuItem>
+            <MenuItem
+              name="myInfo"
+            >
+              <Icon type="ios-person-outline" />
+              个人信息
+            </MenuItem>
           </CustomMenu>
         </div>
       </Sider>
@@ -54,8 +60,12 @@
                 <Icon type="ios-arrow-down"></Icon>
               </a>
               <DropdownMenu slot="list">
-                <DropdownItem @click.native="Logout">
-                  <i class="iconfont icon icon-dengchu"></i>
+                <DropdownItem  @click.native="$router.push('myInfo')">
+                  <Icon type="ios-person" style="margin-bottom: 3px" size="17" />
+                  我的信息
+                </DropdownItem>
+                <DropdownItem @click.native="Logout" divided>
+                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17" />
                   登出
                 </DropdownItem>
               </DropdownMenu>
@@ -82,7 +92,7 @@
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
-        UserName: '审核专家'
+        UserName: localStorage.getItem('username')
       }
     },
     watch: {
@@ -96,6 +106,10 @@
       this.initMenuActive();
     },
     methods: {
+      Logout(){
+        this.$router.push('/login')
+        localStorage.clear()
+      },
       handleOpen() {
         this.visible = true
       },
