@@ -58,7 +58,7 @@
   import axios from 'axios'
 
   export default {
-    name: "threeEx",
+    name: "twoEx",
 
     data() {
       return {
