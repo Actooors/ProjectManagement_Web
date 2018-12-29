@@ -23,7 +23,7 @@
       </Form>
       <div slot="footer">
         <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
-                type="primary">
+                 type="primary">
           完成
         </Button>
       </div>
@@ -56,7 +56,7 @@
   import axios from 'axios'
 
   export default {
-    name: "fourEx",
+    name: "threeEx",
 
     data() {
       return {
@@ -92,23 +92,23 @@
                     this.downloadEndReport(params.index)
                   }
                 },
-              }, '结题报告')]);
+              }, '申请书')]);
             }
           },
           {
             title: '审核结果',
             key: 'content',
             align: 'center',
-            width: 450,
+            width: 415,
             render: (h, params) => {
               return h('div', [h('Button',{
                 props: {type: 'primary'},
                 on: {
                   click: () => {
-                    this.confirm()
+                    this.chooseExpert(params.index)
                   }
                 },
-              }, '同意并提交给领导审核'), h('Button', {
+              }, '通过并选择专家审核'), h('Button', {
                 props: {type: 'primary'},
                 style: {marginLeft: '28px'},
                 on: {
@@ -188,7 +188,7 @@
       confirm() {
         this.$Modal.confirm({
           title: '请再次确认',
-          content: '<p>请确认是否发送结题报告与专家评审结果</p>',
+          content: '<p>请确认是否发送</p>',
           onOk: () => {
             this.$Message.info('已经成功发送');
           },
@@ -224,5 +224,5 @@
 </script>
 
 <style scoped lang="scss">
-  @import "fourEx";
+  @import "oneEx";
 </style>

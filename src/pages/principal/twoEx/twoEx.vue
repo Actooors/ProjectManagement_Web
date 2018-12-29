@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <ButtonGroup class="operation">
-      <Button @click="Refresh" ghost icon="md-refresh" size="large" type="success">
+      <Button type="success" icon="md-refresh" @click="Refresh" size="large" ghost>
         刷新
       </Button>
     </ButtonGroup>
@@ -23,31 +23,33 @@
       </Form>
       <div slot="footer">
         <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
-                type="primary">
+                 type="primary">
           完成
         </Button>
       </div>
     </Modal>
 
     <Modal
-      @on-cancel="cancel"
-      maxHeight="700"
-      ref="modal"
-      title="选择专家"
-      v-model="modal2"
-      width="650"
-    >
-      <CheckboxGroup v-model="experts" >
-        <Checkbox label="专家1"></Checkbox>
-        <Checkbox label="专家2"></Checkbox>
-        <Checkbox label="专家3"></Checkbox>
-      </CheckboxGroup>
-      <div slot="footer">
-        <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px" type="primary">
-          发送报告
-        </Button>
-      </div>
-    </Modal>
+    @on-cancel="cancel"
+    maxHeight="700"
+    ref="modal"
+    title="选择专家"
+    v-model="modal2"
+    width="650"
+  >
+    <CheckboxGroup v-model="experts" >
+      <Checkbox label="专家1"></Checkbox>
+      <Checkbox label="专家2"></Checkbox>
+      <Checkbox label="专家3"></Checkbox>
+    </CheckboxGroup>
+    <div slot="footer">
+      <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px" type="primary">
+        发送报告
+      </Button>
+    </div>
+  </Modal>
+
+
   </div>
 </template>
 
@@ -56,7 +58,7 @@
   import axios from 'axios'
 
   export default {
-    name: "fourEx",
+    name: "threeEx",
 
     data() {
       return {
@@ -64,6 +66,7 @@
         loading: false,
         modal1: false,
         modal2: false,
+        modal3: false,
         value1: 1,
         priority: '',
         formItem: {
@@ -78,7 +81,7 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 290
+            width: 390
           },
           {
             title: '下载申请书',
@@ -92,14 +95,29 @@
                     this.downloadEndReport(params.index)
                   }
                 },
-              }, '结题报告')]);
+              }, '中期报告')]);
             }
           },
           {
-            title: '审核结果',
+            title: '专家审核进度',
             key: 'content',
             align: 'center',
-            width: 450,
+            width: 170,
+
+            render: (h, params) => {
+              return h('div', [h('Progress', {
+                props: {
+                  percent: "60",
+                  successPercent:"30",
+                },
+              }, '60%')])
+            }
+          },
+          {
+            title: '跳过专家审核',
+            key: 'content',
+            align: 'center',
+            width: 200,
             render: (h, params) => {
               return h('div', [h('Button',{
                 props: {type: 'primary'},
@@ -108,15 +126,7 @@
                     this.confirm()
                   }
                 },
-              }, '同意并提交给领导审核'), h('Button', {
-                props: {type: 'primary'},
-                style: {marginLeft: '28px'},
-                on: {
-                  click: () => {
-                    this.declare(params.index)
-                  }
-                },
-              }, '驳回申请')]);
+              }, '跳过')])
             }
           }
         ],
@@ -137,7 +147,7 @@
     },
     /*mounted() {
        this.initData()
-        this.initInfo()
+        //this.initInfo()
       },*/
     methods: {
       /*initInfo() {
@@ -188,20 +198,19 @@
       confirm() {
         this.$Modal.confirm({
           title: '请再次确认',
-          content: '<p>请确认是否发送结题报告与专家评审结果</p>',
+          content: '<p>请确认是否将该项目跳过专家审核</p>',
           onOk: () => {
-            this.$Message.info('已经成功发送');
+            this.$Message.info('已经成功跳过');
           },
           onCancel: () => {
-            this.$Message.info('已经取消发送');
+            this.$Message.info('已经取消操作');
           }
         });
       },
-
       initData() {
         this.loading = true
         axios({
-          url: apiRoot + '/principal/AllAviProjectCategory',
+          url: apiRoot + '/principal/AllProjectCategory',
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
@@ -216,7 +225,7 @@
           this.loading = false;
         })
       },
-    }
+    },
     /*created() {
       this.initData()
     }*/
@@ -224,5 +233,5 @@
 </script>
 
 <style scoped lang="scss">
-  @import "fourEx";
+  @import "twoEx";
 </style>

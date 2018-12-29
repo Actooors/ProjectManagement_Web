@@ -22,29 +22,83 @@
         </div>
       </Form>
       <div slot="footer">
-        <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
+        <Button @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
                 type="primary">
           完成
         </Button>
       </div>
     </Modal>
-
+    <Modal
+      :mask-closable="false"
+      @on-cancel="cancel"
+      maxHeight="800"
+      ref="model"
+      title="进行会评"
+      v-model="modal2"
+      width="700">
+      <Form :label-width="180" :model="formItem" style="margin-right: 25px">
+        <div class="from_middle">
+          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
+          <Input :autosize="{minRows: 4,maxRows: 10}" placeholder="请填写会评（申请者可以重新修改）" type="textarea"
+                 v-model="formItem.textarea"></Input>
+        </div>
+      </Form>
+      <div slot="footer">
+        <Button @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
+                type="primary">
+          完成
+        </Button>
+      </div>
+    </Modal>
     <Modal
       @on-cancel="cancel"
-      maxHeight="700"
+      maxHeight="1700"
       ref="modal"
-      title="选择专家"
-      v-model="modal2"
-      width="650"
-    >
-      <CheckboxGroup v-model="experts" >
-        <Checkbox label="专家1"></Checkbox>
-        <Checkbox label="专家2"></Checkbox>
-        <Checkbox label="专家3"></Checkbox>
-      </CheckboxGroup>
+      title="查看专家评审结果"
+      v-model="modal3"
+      width="650">
+    <Collapse accordion v-model="value3">
+      <Panel name="1">
+        专家1
+        <div slot="content">
+          很有创意
+          <Collapse accordion v-model="value4">
+            <Panel name="1-1">
+              评审分数
+              <p slot="content">99</p>
+            </Panel>
+            <Panel name="1-2">
+              优先级
+              <p slot="content">支持</p>
+            </Panel>
+          </Collapse>
+        </div>
+      </Panel>
+      <Panel name="2">
+        专家2
+        <p slot="content">未进行评审</p>
+      </Panel>
+      <Panel name="3">
+        专家3
+        <div slot="content">很糟糕
+
+          <Collapse accordion v-model="value4">
+            <Panel name="1-1">
+              评审分数
+              <p slot="content">10</p>
+            </Panel>
+            <Panel name="1-2">
+              优先级
+              <p slot="content">反对</p>
+            </Panel>
+          </Collapse>
+         </div>
+      </Panel>
+      </Collapse>
       <div slot="footer">
-        <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px" type="primary">
-          发送报告
+        <Button @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
+                type="primary">
+          返回
         </Button>
       </div>
     </Modal>
@@ -56,7 +110,7 @@
   import axios from 'axios'
 
   export default {
-    name: "fourEx",
+    name: "threeEx",
 
     data() {
       return {
@@ -64,7 +118,10 @@
         loading: false,
         modal1: false,
         modal2: false,
+        modal3: false,
         value1: 1,
+        value3: '1',
+        value4: '1-1',
         priority: '',
         formItem: {
           textarea: '填写评审内容'
@@ -92,28 +149,54 @@
                     this.downloadEndReport(params.index)
                   }
                 },
-              }, '结题报告')]);
+              }, '中期报告')]);
+            }
+          },
+          {
+            title: '专家审核',
+            key: 'chooseExpert',
+            align: 'center',
+            width: 170,
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                    props: {
+                      type: 'success',//还需加判断函数
+                      //type:'error',
+                      size: 'large'
+                    },
+                    style: {
+                      marginRight: '5px'
+                    },
+                    on: {
+                      click: () => {
+                        this.result()
+                      }
+                    },
+                  },
+                  '查看专家评审结果'
+                )])
             }
           },
           {
             title: '审核结果',
             key: 'content',
             align: 'center',
-            width: 450,
+            width: 315,
             render: (h, params) => {
-              return h('div', [h('Button',{
+              return h('div', [h('Button', {
                 props: {type: 'primary'},
                 on: {
                   click: () => {
-                    this.confirm()
+                    this.declare(params.index)
                   }
                 },
-              }, '同意并提交给领导审核'), h('Button', {
+              }, '同意并进行会评'), h('Button', {
                 props: {type: 'primary'},
                 style: {marginLeft: '28px'},
                 on: {
                   click: () => {
-                    this.declare(params.index)
+                    this.declare1(params.index)
                   }
                 },
               }, '驳回申请')]);
@@ -158,8 +241,8 @@
         this.official.userName = localStorage.getItem('username');
         console.log('official:', this.official)
       },*/
-      chooseExpert(index) {
-        this.modal2 = true;
+      result(index) {
+        this.modal3 = true;
         this.$nextTick(() => {
           this.$forceUpdate(this.$refs.modal);
         })
@@ -170,6 +253,12 @@
       },
 
       declare(index) {
+        this.modal2 = true;
+        this.$nextTick(() => {
+          this.$forceUpdate(this.$refs.modal);
+        })
+      },
+      declare1(index) {
         this.modal1 = true;
         this.$nextTick(() => {
           this.$forceUpdate(this.$refs.modal);
@@ -188,7 +277,7 @@
       confirm() {
         this.$Modal.confirm({
           title: '请再次确认',
-          content: '<p>请确认是否发送结题报告与专家评审结果</p>',
+          content: '<p>请确认是否发送</p>',
           onOk: () => {
             this.$Message.info('已经成功发送');
           },
@@ -224,5 +313,5 @@
 </script>
 
 <style scoped lang="scss">
-  @import "fourEx";
+  @import "threeEx";
 </style>

@@ -20,6 +20,9 @@ import LeaderProjectList from 'pages/leader/projectList/projectList'
 import LeaderStatistic from 'pages/leader/statistic/statistic'
 import Error from 'pages/error404/error404'
 import fourEx from 'pages/principal/fourEx/fourEx'
+import threeEx from 'pages/principal/threeEx/threeEx'
+import twoEx from 'pages/principal/twoEx/twoEx'
+import oneEx from 'pages/principal/oneEx/oneEx'
 
 
 Vue.use(Router)
@@ -79,7 +82,19 @@ const router = new Router({
         {
           path:'fourEx',
           component:fourEx
-        }
+        },
+        {
+          path:'threeEx',
+          component:threeEx
+        },
+        {
+          path:'twoEx',
+          component:twoEx
+        },
+        {
+          path:'oneEx',
+          component:oneEx
+        },
       ]
     },
     {
