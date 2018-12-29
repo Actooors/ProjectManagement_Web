@@ -18,29 +18,25 @@
       ref="modal"
       @on-cancel="cancel">
       <!--弹出层-->
-      <Form :model="formItem" :label-width="80">
-        <div class="form_head">
-          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审分数</p>
-          <InputNumber :max="100" :min="1" v-model="value1"></InputNumber>
-        </div>
-
-        <div class="from_middle">
-          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
-          <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+      <Form ref="formItem" :model="formItem" :rules="formItemRules" :label-width="100">
+        <FormItem label="评审分数" prop="score">
+          <InputNumber :max="100" :min="0" v-model="formItem.score"></InputNumber>
+        </FormItem>
+        <FormItem label="评审内容填写" prop="reviewOpinion">
+          <Input v-model="formItem.reviewOpinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                  placeholder="在此填写评审内容"></Input>
-        </div>
-
-        <div class="form_bottom">
-          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">选择优先级</p>
-          <RadioGroup v-model="priority" type="button">
-            <Radio label="优先支持"></Radio>
-            <Radio label="支持"></Radio>
-            <Radio label="反对"></Radio>
+        </FormItem>
+        <FormItem label="选择优先级" prop="priority">
+          <RadioGroup v-model="formItem.priority" type="button">
+            <Radio label="1">优先支持</Radio>
+            <Radio label="2">支持</Radio>
+            <Radio label="3">反对</Radio>
           </RadioGroup>
-        </div>
+        </FormItem>
       </Form>
       <div slot="footer">
-        <Button type="primary" @click.native="finish" style="margin-top: 20px;margin-left: 20px;width:100px">
+        <Button type="primary" @click.native="finish('formItem')"
+                style="margin-top: 20px;margin-left: 20px;width:100px">
           完成
         </Button>
       </div>
@@ -50,6 +46,7 @@
 
 <script>
   import axios from 'axios'
+  import download from '../../../assets/js/download'
 
   export default {
     name: "reqProject",
@@ -57,10 +54,22 @@
       return {
         loading: false,
         model1: false,
-        value1: 1,
-        priority: '',
+        projectIndex: 0,
         formItem: {
-          textarea: '在此填写评审内容'
+          score: 0,                         //评审打分
+          reviewOpinion: '',                //评审内容
+          priority: 0                   //评审优先级
+        },
+        formItemRules: {
+          score: [
+            {required: true, type: 'number', message: '评审分数不能为空', trigger: 'blur'}
+          ],
+          reviewOpinion: [
+            {required: true, message: '评审内容不能为空', trigger: 'blur'}
+          ],
+          priority: [
+            {required: true, message: '请选择优先级', trigger: 'blur'}
+          ]
         },
         columns: [
           {
@@ -127,7 +136,8 @@
                   },
                   on: {
                     click: () => {
-                      this.declare(params.index)
+                      this.projectIndex = params.index
+                      this.model1 = true
                     }
                   },
                 }, '评审内容详情页')]);
@@ -152,6 +162,7 @@
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
             this.data1 = res.data.data
             this.loading = false
           } else {
@@ -163,22 +174,63 @@
           this.loading = false
         })
       },
-      declare(index) {
-        this.$Message.success("填写评审意见")
-        this.model1 = true
-        this.$nextTick(() => {
-          this.$forceUpdate(this.$refs.modal)
+
+      finish(name) {
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            axios({
+              url: apiRoot + '/expert/judgeProject',
+              method: 'post',
+              data: {
+                applicationId: this.data1[this.projectIndex].projectApplicationId,
+                score: this.formItem.score,
+                reviewOpinion: this.formItem.reviewOpinion,
+                finalOPinion: this.formItem.priority
+              }
+            }).then((res) => {
+              if (res.data.code === 'SUCCESS') {
+                this.model1 = false
+                this.$Message.success("评审意见填写成功！")
+                //删除一个项目
+                this.data1.splice(this.projectIndex, 1)
+                //对对话框中的内容进行重置
+                this.formItem.score = 0
+                this.formItem.reviewOpinion = ''
+                this.formItem.priority = 0
+              }
+            })
+          } else {
+            this.$Message.error('请将字段填写完整！');
+          }
         })
-      },
-      finish() {
-        this.model1 = false
-        this.$Message.success("评审意见填写成功！")
       },
       cancel() {
         this.model1 = false
+        //对对话框中的内容进行重置
+        this.formItem.score = 0
+        this.formItem.reviewOpinion = ''
+        this.formItem.priority = 0
       },
-      download() {
-        this.$Message.info('点击下载申请书')
+      download(index) {
+        console.log('downLoadAddress:', this.data1[index])
+        const that = this
+        var filename = this.data1[index].uploadAddress.split('---')[1]  //---后为文件名
+        axios({
+          url: apiRoot + '/file/download?fileAddress=' + that.data1[index].uploadAddress,
+          method: 'get',
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
+            console.log("！", res)
+            download(res.data, filename, "text/plain")
+            this.$Message.success("下载成功！")
+          } else {
+            this.$Message.error("下载失败！")
+          }
+        }).catch(() => {
+          this.$Message.error("下载失败，请检查网络连接！")
+        })
       }
     }
   }

@@ -224,6 +224,7 @@
 
 <script>
   import axios from 'axios'
+  import download from '../../../assets/js/download'
 
   export default {
     name: "avaProject",
@@ -350,6 +351,7 @@
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
             this.data1 = res.data.data;
             this.loading = false;
           } else {
@@ -376,8 +378,37 @@
         this.model1 = false
       },
       download(index) {
-        this.$Message.info('点击下载文件')
-        window.open(this.data1[index].downLoadAddress, "_blank")
+        console.log('downLoadAddress:', this.data1[index])
+        const that = this
+        var filename = this.data1[index].downLoadAddress.split('---')[1]  //---后为文件名
+        axios({
+          url: that.data1[index].downLoadAddress,
+          method: 'get',
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
+            console.log("！", res)
+            download(res.data, filename, "text/plain")
+            this.$Message.success("下载成功！")
+          } else {
+            this.$Message.error("下载失败！")
+          }
+        }).catch(() => {
+          this.$Message.error("下载失败，请检查网络连接！")
+        })
+//        var url = this.data1[index].downLoadAddress;
+//        var xhr = new XMLHttpRequest();
+//        xhr.open('get', url, true);
+//        xhr.responseType = "blob";
+//        xhr.setRequestHeader("Authorization", localStorage.getItem('token'));
+//        xhr.onload = function () {
+//          console.log(this.response, "!")
+//          var FileSaver = require('file-saver')
+//          var file = new File([this.response], '1.txt', {type: this.response.type})
+//          FileSaver.saveAs(file)
+//        }
+//        xhr.send();
       },
       declare(index) {
         console.log(index)

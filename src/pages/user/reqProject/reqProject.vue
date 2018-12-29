@@ -5,7 +5,6 @@
         刷新
       </Button>
     </ButtonGroup>
-    <!--<Table stripe border :columns="columns" :data="data1" class="table" height="750" size="large"></Table>-->
     <Table stripe border :columns="columns" :loading="loading" :data="data1" class="table" size="large"
            height="750"></Table>
   </div>
@@ -56,7 +55,7 @@
                   },
                   on: {
                     click: () => {
-                      this.projectCancel(params.index);
+                      this.cancelConfirm(params.index);
                     }
                   }
                 }, '取消')
@@ -87,6 +86,18 @@
             this.loading = false
           }
         })
+      },
+      cancelConfirm(index){
+        this.$Modal.confirm({
+          title: '确认取消该项目吗？',
+          content: '<p>若撤销该项目后，则需要重新申报。</p>',
+          okText:'确认',
+          cancelText:'点错了',
+          onOk: () => {
+            this.projectCancel(index)
+          },
+          onCancel: () => {}
+        });
       },
       projectCancel(index) {
         axios({
