@@ -18,7 +18,7 @@
       ref="modal"
       @on-cancel="cancel">
       <!--弹出层-->
-      <Form ref="formItem" :model="formItem" :rules="formItemRules" :label-width="100">
+      <Form ref="formItem" :model="formItem" :rules="formItemRules" :label-width="120">
         <FormItem label="评审分数" prop="score">
           <InputNumber :max="100" :min="0" v-model="formItem.score"></InputNumber>
         </FormItem>
@@ -194,9 +194,7 @@
                 //删除一个项目
                 this.data1.splice(this.projectIndex, 1)
                 //对对话框中的内容进行重置
-                this.formItem.score = 0
-                this.formItem.reviewOpinion = ''
-                this.formItem.priority = 0
+                this.$refs['formItem'].resetFields();
               }
             })
           } else {
@@ -207,9 +205,7 @@
       cancel() {
         this.model1 = false
         //对对话框中的内容进行重置
-        this.formItem.score = 0
-        this.formItem.reviewOpinion = ''
-        this.formItem.priority = 0
+        this.$refs['formItem'].resetFields();
       },
       download(index) {
         console.log('downLoadAddress:', this.data1[index])

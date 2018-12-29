@@ -157,7 +157,6 @@
                   },
                   on: {
                     click: () => {
-                      // this.$Message.info('点击上传中期报告')
                       this.modal1 = true;
                       this.data2index = params.index;
                     }
