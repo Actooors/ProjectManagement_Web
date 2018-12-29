@@ -22,8 +22,8 @@
         </div>
       </Form>
       <div slot="footer">
-        <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
-                 type="primary">
+        <Button @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
+                type="primary">
           完成
         </Button>
       </div>
@@ -37,13 +37,13 @@
       v-model="modal2"
       width="650"
     >
-      <CheckboxGroup v-model="experts" >
+      <CheckboxGroup v-model="experts">
         <Checkbox label="专家1"></Checkbox>
         <Checkbox label="专家2"></Checkbox>
         <Checkbox label="专家3"></Checkbox>
       </CheckboxGroup>
       <div slot="footer">
-        <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px" type="primary">
+        <Button @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px" type="primary">
           发送报告
         </Button>
       </div>
@@ -101,15 +101,15 @@
             align: 'center',
             width: 415,
             render: (h, params) => {
-              return h('div', [h('Button',{
-                props: {type: 'primary'},
+              return h('div', [h('Button', {
+                props: {type: 'success'},
                 on: {
                   click: () => {
                     this.chooseExpert(params.index)
                   }
                 },
               }, '通过并选择专家审核'), h('Button', {
-                props: {type: 'primary'},
+                props: {type: 'error'},
                 style: {marginLeft: '28px'},
                 on: {
                   click: () => {

@@ -78,7 +78,7 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 290
+            width: 500
           },
           {
             title: '下载申请书',
@@ -99,7 +99,6 @@
             title: '审核结果',
             key: 'content',
             align: 'center',
-            width: 450,
             render: (h, params) => {
               return h('div', [h('Button',{
                 props: {type: 'primary'},

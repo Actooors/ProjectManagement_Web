@@ -6,50 +6,6 @@
       </Button>
     </ButtonGroup>
     <Table :columns="columns1" :data="data1" border class="table" size="large" stripe></Table>
-    <Modal
-      :mask-closable="false"
-      @on-cancel="cancel"
-      maxHeight="800"
-      ref="model"
-      title="驳回理由"
-      v-model="modal1"
-      width="700">
-      <Form :label-width="180" :model="formItem" style="margin-right: 25px">
-        <div class="from_middle">
-          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
-          <Input :autosize="{minRows: 4,maxRows: 10}" placeholder="请填写驳回理由（申请者可以重新修改）" type="textarea"
-                 v-model="formItem.textarea"></Input>
-        </div>
-      </Form>
-      <div slot="footer">
-        <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
-                 type="primary">
-          完成
-        </Button>
-      </div>
-    </Modal>
-
-    <Modal
-    @on-cancel="cancel"
-    maxHeight="700"
-    ref="modal"
-    title="选择专家"
-    v-model="modal2"
-    width="650"
-  >
-    <CheckboxGroup v-model="experts" >
-      <Checkbox label="专家1"></Checkbox>
-      <Checkbox label="专家2"></Checkbox>
-      <Checkbox label="专家3"></Checkbox>
-    </CheckboxGroup>
-    <div slot="footer">
-      <Button  @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px" type="primary">
-        发送报告
-      </Button>
-    </div>
-  </Modal>
-
-
   </div>
 </template>
 
@@ -107,8 +63,8 @@
             render: (h, params) => {
               return h('div', [h('Progress', {
                 props: {
-                  percent: "60",
-                  successPercent:"30",
+                  percent: 60,
+                  successPercent:30,
                 },
               }, '60%')])
             }
@@ -120,7 +76,7 @@
             width: 200,
             render: (h, params) => {
               return h('div', [h('Button',{
-                props: {type: 'primary'},
+                props: {type: 'warning'},
                 on: {
                   click: () => {
                     this.confirm()
@@ -177,13 +133,6 @@
       setListCheck: function (idx) {
         var check = this.list[idx].check;
         this.list[idx].check = check === true ? false : true;
-      },
-
-      declare(index) {
-        this.modal1 = true;
-        this.$nextTick(() => {
-          this.$forceUpdate(this.$refs.modal);
-        })
       },
       cancel() {
         this.modal1 = false

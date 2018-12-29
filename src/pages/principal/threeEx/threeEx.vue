@@ -57,43 +57,43 @@
       title="查看专家评审结果"
       v-model="modal3"
       width="650">
-    <Collapse accordion v-model="value3">
-      <Panel name="1">
-        专家1
-        <div slot="content">
-          很有创意
-          <Collapse accordion v-model="value4">
-            <Panel name="1-1">
-              评审分数
-              <p slot="content">99</p>
-            </Panel>
-            <Panel name="1-2">
-              优先级
-              <p slot="content">支持</p>
-            </Panel>
-          </Collapse>
-        </div>
-      </Panel>
-      <Panel name="2">
-        专家2
-        <p slot="content">未进行评审</p>
-      </Panel>
-      <Panel name="3">
-        专家3
-        <div slot="content">很糟糕
+      <Collapse accordion v-model="value3">
+        <Panel name="1">
+          专家1
+          <div slot="content">
+            很有创意
+            <Collapse accordion v-model="value4">
+              <Panel name="1-1">
+                评审分数
+                <p slot="content">99</p>
+              </Panel>
+              <Panel name="1-2">
+                优先级
+                <p slot="content">支持</p>
+              </Panel>
+            </Collapse>
+          </div>
+        </Panel>
+        <Panel name="2">
+          专家2
+          <p slot="content">未进行评审</p>
+        </Panel>
+        <Panel name="3">
+          专家3
+          <div slot="content">很糟糕
 
-          <Collapse accordion v-model="value4">
-            <Panel name="1-1">
-              评审分数
-              <p slot="content">10</p>
-            </Panel>
-            <Panel name="1-2">
-              优先级
-              <p slot="content">反对</p>
-            </Panel>
-          </Collapse>
-         </div>
-      </Panel>
+            <Collapse accordion v-model="value4">
+              <Panel name="1-1">
+                评审分数
+                <p slot="content">10</p>
+              </Panel>
+              <Panel name="1-2">
+                优先级
+                <p slot="content">反对</p>
+              </Panel>
+            </Collapse>
+          </div>
+        </Panel>
       </Collapse>
       <div slot="footer">
         <Button @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
@@ -135,12 +135,13 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 290
+            width: 500
           },
           {
             title: '下载申请书',
             key: 'downloadReport',
             align: 'center',
+            width: 200,
             render: (h, params) => {
               return h('div', [h('Button', {
                 props: {type: 'info'},
@@ -156,7 +157,6 @@
             title: '专家审核',
             key: 'chooseExpert',
             align: 'center',
-            width: 170,
             render: (h, params) => {
               return h('div', [
                 h('Button', {
@@ -182,7 +182,6 @@
             title: '审核结果',
             key: 'content',
             align: 'center',
-            width: 315,
             render: (h, params) => {
               return h('div', [h('Button', {
                 props: {type: 'primary'},

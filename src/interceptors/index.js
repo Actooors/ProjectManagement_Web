@@ -16,9 +16,10 @@ axios.interceptors.response.use((res) => {
   return res;
 }, (error) => {
   console.log('response interceptor: ', error)
-  if (error.response.status) {
+  if (error.response) {
     switch (error.response.status) {
       case 401:
+        localStorage.clear()
         Router.replace('/login');
     }
   }
