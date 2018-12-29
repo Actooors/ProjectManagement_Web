@@ -9,7 +9,6 @@ import AvaProject from 'pages/user/avaProject/avaProject'
 import ReqProject from 'pages/user/reqProject/reqProject'
 import MyProject from 'pages/user/myProject/myProject'
 import UserInfo from 'pages/user/myInfo/myInfo'
-import PrincipalMainPage from 'pages/principal/mainpage/mainpage'
 import ExpertReqProject from 'pages/expert/reqProject/reqProject'
 import ExpertEndProject from 'pages/expert/endProject/endProject'
 import ExpertInfo from 'pages/expert/myInfo/myInfo'
@@ -19,6 +18,7 @@ import LeaderEndProject from 'pages/leader/endProject/endProject'
 import LeaderProjectList from 'pages/leader/projectList/projectList'
 import LeaderStatistic from 'pages/leader/statistic/statistic'
 import Error from 'pages/error404/error404'
+import NewCategory from 'pages/principal/newCategory/newCategory'
 import fourEx from 'pages/principal/fourEx/fourEx'
 import threeEx from 'pages/principal/threeEx/threeEx'
 import twoEx from 'pages/principal/twoEx/twoEx'
@@ -69,15 +69,15 @@ const router = new Router({
     {
       path: '/principal',
       component: Principal,
-      redirect: {name: 'mainpage'},
+      redirect: {name: 'newCategory'},
       children: [
         {
           path: '',
-          redirect:'mainpage'
+          redirect:'newCategory'
         },
         {
-          path: 'mainpage',
-          component: PrincipalMainPage
+          path: 'newCategory',
+          component: NewCategory
         },
         {
           path:'fourEx',
