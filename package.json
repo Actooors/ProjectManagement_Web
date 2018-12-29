@@ -16,6 +16,7 @@
     "echarts": "^4.2.0-rc.2",
     "file-saver": "^2.0.0",
     "helpers": "^0.0.6",
+    "heyui": "^1.13.0",
     "iview": "^3.0.0",
     "normalize.css": "^8.0.0",
     "pug": "^2.0.3",

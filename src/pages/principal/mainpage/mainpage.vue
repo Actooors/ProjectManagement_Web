@@ -1,5 +1,5 @@
 <template>
-  <div>这是业务员</div>
+  <div>业务员</div>
 </template>
 
 <script>
