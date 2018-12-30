@@ -70,8 +70,12 @@
                 <Icon type="ios-arrow-down"></Icon>
               </a>
               <DropdownMenu slot="list">
-                <DropdownItem @click.native="Logout">
-                  <i class="iconfont icon icon-dengchu"></i>
+                <DropdownItem @click.native="$router.push('myInfo')">
+                  <Icon type="ios-person" style="margin-bottom: 3px" size="17"/>
+                  我的信息
+                </DropdownItem>
+                <DropdownItem divided @click.native="Logout">
+                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17" />
                   登出
                 </DropdownItem>
               </DropdownMenu>
@@ -98,7 +102,7 @@
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
-        UserName: '业务员'
+        UserName: localStorage.getItem('username')
       }
     },
      //让页头出现标题，这里每个页面还没做出来
@@ -136,6 +140,10 @@
           ).innerHTML;
         });
       },
+      Logout(){
+        localStorage.clear()
+        this.$router.push("/login")
+      }
     },
     computed: {
       menuitemClasses() {

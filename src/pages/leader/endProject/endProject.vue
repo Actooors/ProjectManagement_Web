@@ -28,7 +28,7 @@
         </div>
 
         <div v-if="accept" class="accept">
-            该项目已通过最终审核！
+          该项目已通过审核！
         </div>
         <div v-if="refuse" class="refuse">
           <p data-v-2526d47e="" style="font-size: 15px; font-weight: bold; color: rgb(70, 76, 91);">
@@ -48,15 +48,14 @@
 </template>
 
 <script>
-  export default{
+  export default {
     name: 'endProject',
-    data () {
+    data() {
       return {
         loading: false,
         model1: false,
         accept: false,
         refuse: false,
-        textarea: '填写驳回理由',
         columns1: [
           {
             title: '项目名称',
@@ -77,14 +76,14 @@
             title: '项目结题报告',
             key: 'ProjectFinalReport',
             align: 'center',
-            render: (h,params) => {
+            render: (h, params) => {
               return h('div', [
                 h('Button', {
                   props: {
                     type: 'info'
                   },
                   on: {
-                    click: () =>{
+                    click: () => {
                       this.download(params.index)
                     }
                   }
@@ -149,9 +148,6 @@
         this.$Message.success('填写成功！')
         this.model1 = false
       },
-      cancel() {
-        this.model1 = false
-      },
       showAccept() {
         this.accept = !this.accept
         this.refuse = false
@@ -159,7 +155,7 @@
       showRefuse() {
         this.refuse = !this.refuse
         this.accept = false
-      }
+      },
     }
   }
 </script>

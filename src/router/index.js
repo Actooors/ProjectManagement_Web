@@ -17,6 +17,7 @@ import LeaderReqProject from 'pages/leader/reqProject/reqProject'
 import LeaderEndProject from 'pages/leader/endProject/endProject'
 import LeaderProjectList from 'pages/leader/projectList/projectList'
 import LeaderStatistic from 'pages/leader/statistic/statistic'
+import LeaderInfo from 'pages/leader/myInfo/myInfo'
 import Error from 'pages/error404/error404'
 import NewCategory from 'pages/principal/newCategory/newCategory'
 import fourEx from 'pages/principal/fourEx/fourEx'
@@ -31,8 +32,8 @@ const router = new Router({
   mode: "history",
   routes: [
     {
-      path:'',
-      redirect:{name:'login'}
+      path: '',
+      redirect: {name: 'login'}
     },
     {
       path: '/login',
@@ -73,27 +74,27 @@ const router = new Router({
       children: [
         {
           path: '',
-          redirect:'newCategory'
+          redirect: 'newCategory'
         },
         {
           path: 'newCategory',
           component: NewCategory
         },
         {
-          path:'fourEx',
-          component:fourEx
+          path: 'fourEx',
+          component: fourEx
         },
         {
-          path:'threeEx',
-          component:threeEx
+          path: 'threeEx',
+          component: threeEx
         },
         {
-          path:'twoEx',
-          component:twoEx
+          path: 'twoEx',
+          component: twoEx
         },
         {
-          path:'oneEx',
-          component:oneEx
+          path: 'oneEx',
+          component: oneEx
         },
       ]
     },
@@ -115,8 +116,8 @@ const router = new Router({
           component: ExpertEndProject
         },
         {
-          path:'myInfo',
-          component:ExpertInfo
+          path: 'myInfo',
+          component: ExpertInfo
         }
       ]
     },
@@ -148,8 +149,11 @@ const router = new Router({
         {
           path: 'statistic',
           component: LeaderStatistic
+        },
+        {
+          path: 'myInfo',
+          component: LeaderInfo
         }
-
       ]
     },
 

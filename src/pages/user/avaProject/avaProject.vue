@@ -378,7 +378,6 @@
         this.model1 = false
       },
       download(index) {
-        console.log('downLoadAddress:', this.data1[index])
         const that = this
         var filename = this.data1[index].downLoadAddress.split('---')[1]  //---后为文件名
         axios({
@@ -388,7 +387,6 @@
           responseType: 'blob'
         }).then((res) => {
           if (res.status === 200) {
-            console.log("！", res)
             download(res.data, filename, "text/plain")
             this.$Message.success("下载成功！")
           } else {
@@ -397,18 +395,6 @@
         }).catch(() => {
           this.$Message.error("下载失败，请检查网络连接！")
         })
-//        var url = this.data1[index].downLoadAddress;
-//        var xhr = new XMLHttpRequest();
-//        xhr.open('get', url, true);
-//        xhr.responseType = "blob";
-//        xhr.setRequestHeader("Authorization", localStorage.getItem('token'));
-//        xhr.onload = function () {
-//          console.log(this.response, "!")
-//          var FileSaver = require('file-saver')
-//          var file = new File([this.response], '1.txt', {type: this.response.type})
-//          FileSaver.saveAs(file)
-//        }
-//        xhr.send();
       },
       declare(index) {
         console.log(index)
