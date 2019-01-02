@@ -1,55 +1,67 @@
 <template>
   <div class="wrapper">
     <div class="content">
-      <Form ref="projectMes" :model="projectMes" :label-width="110" >
-        <FormItem label="项目名称">
-          <Input v-model="projectMes.projectName" />
+      <Form ref="projectMes" :rules="ruleProjectMes" :model="projectMes" :label-width="130">
+        <FormItem label="项目名称" prop="projectName">
+          <Input v-model="projectMes.projectName" size="large" placeholder="填写项目名称"/>
         </FormItem>
-        <FormItem label="项目类型">
-          <i-select  readonly size="large" >
-            <i-option  v-model="projectMes.projectType" v-for="(item,index) in projectMes.projectTypeList" :key="index" >{{ item.label }}</i-option>
-          </i-select>
+        <FormItem label="项目类型" prop="projectType">
+          <Select v-model="projectMes.projectType" size="large" placeholder="选择项目类型">
+            <Option v-for="(item,index) in projectTypeList"
+                    :key="index" :value="item.index">{{ item.label }}
+            </Option>
+          </Select>
         </FormItem>
-        <FormItem label="申请人类型">
+        <FormItem label="是否参加上会" prop="isMeeting">
+          <Switch v-model="projectMes.isMeeting">
+            <span slot="open">是</span>
+            <span slot="close">否</span>
+          </Switch>
+        </FormItem>
+        <FormItem label="申请人类型" prop="userType">
           <CheckboxGroup v-model="projectMes.userType">
-            <Checkbox label="undergraduate">
+            <Checkbox label="1">
               <span style="font-size: 15px">本科生</span>
             </Checkbox>
-            <Checkbox label="graduateStudent">
+            <Checkbox label="2">
               <span style="font-size: 15px">研究生</span>
             </Checkbox>
-            <Checkbox label="masterStudent">
+            <Checkbox label="3">
               <span style="font-size: 15px">博士生</span>
             </Checkbox>
-            <Checkbox label="cesStudent">
+            <Checkbox label="4">
               <span style="font-size: 15px">计算机学生</span>
             </Checkbox>
           </CheckboxGroup>
         </FormItem>
-        <FormItem label="负责专家">
-          <i-select  readonly size="large" >
-            <i-option  v-model="projectMes.expertName"  v-for="(item,index) in projectMes.expertList" :key="index" >{{ item.label }}</i-option>
-          </i-select>
+        <FormItem label="负责专家" prop="expertName">
+          <Select v-model="projectMes.expertName" multiple size="large">
+            <Option v-for="(item,index) in expertList" :key="index" :value="item.userId">
+              {{ item.label }}
+            </Option>
+          </Select>
         </FormItem>
-        <FormItem label="项目描述">
+        <FormItem label="项目描述" prop="description">
           <i-input type="textarea" v-model="projectMes.description" :rows="4" placeholder="请输入项目描述..."></i-input>
         </FormItem>
-        <FormItem label="申报时间">
-          <i-col span="12">
-            <Date-picker :value="value1" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="选择日期" style="width: 200px"></Date-picker>
-          </i-col>
+        <FormItem label="申报时间" prop="applicationTime">
+          <Date-picker :value="projectMes.applicationTime" format="yyyy年MM月dd日" type="daterange"
+                       placement="bottom-end" placeholder="选择申报时间段" long
+                       style="width: 300px"></Date-picker>
         </FormItem>
-        <FormItem label="截止时间">
-            <DatePicker type="date" :value="value2" style="width: 200px"></DatePicker>
+        <FormItem label="截止时间" prop="projectEndTime">
+          <DatePicker type="date" :value="projectMes.projectEndTime" format="yyyy年MM月dd日" style="width: 300px"
+                      placeholder="选择项目截止时间"></DatePicker>
         </FormItem>
-        <FormItem label="经费额度">
-          <Input-number :max="100000" :min="100" :value="500"></Input-number>
+        <FormItem label="经费额度" prop="maxMoney">
+          <Input-number :max="100000" :min="100" :value="projectMes.maxMoney"></Input-number>
         </FormItem>
-        <FormItem label="上传模板">
+        <FormItem label="上传模板" prop="uploadAddress">
           <Upload
-            multiple
             type="drag"
-            action="//jsonplaceholder.typicode.com/posts/">
+            :headers="uploadHeaders"
+            :on-success="uploadSuccess"
+            action="http://129.204.71.113:8888/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或将文件拖拽到这里上传</p>
@@ -57,92 +69,159 @@
           </Upload>
         </FormItem>
       </Form>
-      <Button class="button" :type="btnType" size="large" @click.native="handleButton">{{this.text}}</Button>
+      <Button class="button" type="primary" size="large" @click.native="handleButton">提交</Button>
     </div>
   </div>
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     name: "newCategory",
     data() {
       return {
-        disable: true,
-        btnType: 'primary',
-        text: 'submit',
+        ruleProjectMes: {
+          projectName: [
+            {required: true, message: '项目名称不能为空', trigger: 'blur'}
+          ],
+          projectType: [
+            {required: true, type: 'number', message: '项目类型不能为空', trigger: 'blur'}
+          ],
+          isMeeting: [
+            {required: true, type: 'boolean', message: '请选择是否上会', trigger: 'blur'}
+          ],
+          userType: [
+            {required: true, type: 'array', message: '请选择申请人类型', trigger: 'blur'}
+          ],
+          expertName: [
+            {required: true, type: 'array', message: '请选择审核专家', trigger: 'blur'}
+          ],
+          description: [
+            {required: true, message: '请填写项目描述', trigger: 'blur'}
+          ],
+          applicationTime: [
+            {required: true, type: 'array', message: '请选择申报时间', trigger: 'blur'}
+          ],
+          projectEndTime: [
+            {required: true, type: 'array', message: '请选择截止时间', trigger: 'blur'}
+          ],
+          maxMoney: [
+            {required: true, type: 'number', message: '请填写经费额度', trigger: 'blur'}
+          ],
+          uploadAddress: [
+            {required: true, message: '请上传模板', trigger: 'blur'}
+          ]
+        },
+        uploadHeaders: {
+          Authorization: localStorage.getItem('token')
+        },
         value2: '2019-12-31',
-        value1: [ '2019-01-01', '2019-12-31' ],
+        value1: ['2019-01-01', '2019-12-31'],
         projectMes: {
           projectName: '',
-          projectType: '',
-          userType: [''],
-          expertName: '',
-          expertList: [
-            {
-              index: 1,
-              label: '李老师'
-            },
-            {
-              index: 2,
-              label: '六老师'
-            },
-            {
-              index: 3,
-              label: '张老师'
-            },
-            {
-              index: 4,
-              label: '王老师'
-            },
-            {
-              index: 5,
-              label: '陈教授'
-            }
-          ],
+          projectType: null,
+          isMeeting: false,
+          userType: [],
+          expertName: [],
           description: '',
-          projectTypeList: [
-            {
-              index: 1,
-              label: '理工'
-            },
-            {
-              index: 2,
-              label: '人文'
-            },
-            {
-              index: 3,
-              label: '经管'
-            },
-            {
-              index: 4,
-              label: '通信'
-            },
-            {
-              index: 5,
-              label: '机自'
-            },
-            {
-              index: 6,
-              label: '计算机'
-            }
-          ]
-        }
+          applicationTime: [],
+          projectEndTime: null,
+          maxMoney: 0,
+          uploadAddress: '',
+        },
+        projectTypeList: [
+          {
+            index: 1,
+            label: '经济管理类'
+          },
+          {
+            index: 2,
+            label: '人文哲学类'
+          },
+          {
+            index: 3,
+            label: '计算科学类'
+          },
+          {
+            index: 4,
+            label: '生物化学类'
+          }
+        ],
+        expertList: [
+          {
+            userId: 16121666,
+            label: '李老师'
+          },
+          {
+            userId: 16121727,
+            label: '六老师'
+          },
+          {
+            userId: 16121111,
+            label: '张老师'
+          },
+          {
+            userId: 10001221,
+            label: '王老师'
+          },
+          {
+            userId: 10021211,
+            label: '陈教授'
+          }
+        ],
       }
     },
     methods: {
       handleButton() {
-        if (this.btnType === 'primary') {
-          this.disable = false
-          this.btnType = 'success'
-          this.text = '保存'
-          this.$Message.success('点击保存确认提交结果！');
-        }
-        else if (this.btnType === 'success'){
-          this.$Message.success('保存成功');
-        }
-        else {
-          this.$Message.error('请正确填写有关字段！');
-        }
+        this.$refs['projectMes'].validate((valid) => {
+          if (valid) {
+            this.$Modal.confirm({
+              title: '确认提交吗？',
+              content: '<p>请在提交前再次检查表单内容的正确性</p>',
+              okText: '确认提交',
+              cancelText: '再看看',
+              onOk: () => {
+                this.newCategory()
+              },
+              onCancel: () => {
+              }
+            });
+          } else {
+            this.$Message.error('请将有关字段补充完整！');
+          }
+        })
+      },
+      uploadSuccess(response) {
+        console.log("success", response)
+        this.projectMes.uploadAddress = response.data
+        this.$Message.success("上传成功！");
+        console.log('uploadAddress:', this.projectMes.uploadAddress)
+      },
+      newCategory() {
+        axios({
+          url: apiRoot + '/admin/createProjectCategory',
+          method: 'post',
+          data: {
+            projectName: this.projectMes.projectName,
+            projectDescription: this.projectMes.description,
+            projectType: this.projectMes.projectType,
+            principalPhone: '',
+            applicantType: this.projectMes.userType,
+            maxMoney: this.projectMes.maxMoney,
+            projectApplicationDownloadAddress: this.projectMes.uploadAddress,
+            isExistMeetingReview: this.projectMes.isMeeting,
+            applicationStartTime: this.projectMes.applicationTime[0],
+            applicationEndTime: this.projectMes.applicationTime[1],
+            projectStartTime: this.projectMes.applicationTime[1],
+            projectEndTime: this.projectMes.projectEndTime,
+            expertList: this.projectMes.expertName
+          }
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.$Message.success('新增项目类别成功！')
+          }
+        })
       }
     }
   }
@@ -153,6 +232,6 @@
 </style>
 <style lang="scss">
   .ivu-form .ivu-form-item-label {
-    font-size:15px;
+    font-size: 15px;
   }
 </style>

@@ -9,7 +9,7 @@
                  placeholder="密码"/>
           <ButtonGroup size="large">
             <div style="display: flex;">
-              <Button size="large" type="primary" :loading="loading" @click="login">
+              <Button size="large"  type="primary" :loading="loading" @click="login">
                 登录
               </Button>
             </div>
@@ -141,9 +141,5 @@
 
   .ivu-select-selection {
     background-color: #fff0 !important;
-  }
-
-  .ivu-select-large.ivu-select-single .ivu-select-selection .ivu-select-placeholder, .ivu-select-large.ivu-select-single .ivu-select-selection .ivu-select-selected-value {
-    color: #f8f8f9ab;
   }
 </style>

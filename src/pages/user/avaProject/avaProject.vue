@@ -109,10 +109,10 @@
           <div class="step2">
             <div class="content">
               <div class="isMeeting">
-                <span>是否参加上会&nbsp;&nbsp;&nbsp;</span>
+                <span>该项目是否参加上会&nbsp;&nbsp;&nbsp;</span>
                 <RadioGroup v-model="isMeeting">
-                  <Radio label="true">是</Radio>
-                  <Radio label="false">否</Radio>
+                  <Radio label="true" disabled>是</Radio>
+                  <Radio label="false" disabled>否</Radio>
                 </RadioGroup>
               </div>
               <Card style="width: 70%;margin: 20px auto 0 auto">
