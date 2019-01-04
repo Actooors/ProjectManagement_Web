@@ -34,7 +34,7 @@
               <MenuItem
                 name="categoryList"
               >
-                &nbsp;类别列表
+                &nbsp;已开通类别
               </MenuItem>
             </Submenu>
             <Submenu name="exProject">
@@ -59,6 +59,12 @@
               >待终审
               </MenuItem>
             </Submenu>
+            <MenuItem
+              name="myInfo"
+            >
+              <Icon type="ios-person-outline"/>
+              &nbsp;个人信息
+            </MenuItem>
           </CustomMenu>
         </div>
       </Sider>

@@ -318,11 +318,11 @@
       };
     },
     mounted() {
-      this.initData()
+      this.initData("初始化成功！")
       this.initInfo()
     },
     methods: {
-      initInfo() {
+      initInfo(msg) {
         axios({
           url: apiRoot + '/user/userInfo/1',
           method: 'get',
@@ -341,10 +341,9 @@
         console.log('official:', this.official)
       },
       Refresh() {
-        this.initData();
-        this.$Message.success('刷新成功!')
+        this.initData('刷新成功!');
       },
-      initData() {
+      initData(msg) {
         this.loading = true
         axios({
           url: apiRoot + '/user/AllAviProjectCategory',
@@ -352,10 +351,11 @@
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             console.log(res.data)
+            this.$Message.success(msg)
             this.data1 = res.data.data;
             this.loading = false;
           } else {
-            this.$Message.error('初始化失败！')
+            this.$Message.error(res.data.message)
             this.loading = false;
           }
         }).catch(() => {
@@ -462,9 +462,6 @@
       previousStep() {
         this.stepIndex = this.stepIndex - 1
       }
-    },
-    created() {
-      this.initData()
     }
   }
 </script>

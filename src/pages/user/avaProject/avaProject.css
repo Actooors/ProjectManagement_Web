@@ -1,0 +1,54 @@
+.wrapper {
+  width: 100%; }
+  .wrapper .operation {
+    margin: 25px 0 0 32.5px; }
+  .wrapper .table {
+    margin: 25px 32.5px; }
+
+.step1 {
+  margin-top: 20px; }
+  .step1 .title {
+    text-align: center;
+    font-size: 1.5em; }
+  .step1 .content {
+    padding-bottom: 60px;
+    width: 95%;
+    max-height: 600px;
+    margin: 0 auto;
+    border-color: #494746;
+    overflow-y: scroll; }
+    .step1 .content .radio {
+      text-align: center; }
+    .step1 .content .step1button {
+      margin-top: 10px;
+      text-align: center; }
+
+.step2 .content {
+  height: 600px;
+  max-height: 600px;
+  overflow-y: scroll; }
+  .step2 .content .isMeeting {
+    margin-top: 20px;
+    text-align: center; }
+  .step2 .content .addPartner {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center; }
+
+.step3 .content {
+  height: 600px;
+  max-height: 600px;
+  position: relative; }
+  .step3 .content .description {
+    margin: 40px auto;
+    width: 60%; }
+  .step3 .content .upload {
+    margin: 40px auto;
+    width: 60%; }
+  .step3 .content .allSuccess {
+    display: flex;
+    margin: 40px auto;
+    width: 30%; }
+
+/*# sourceMappingURL=avaProject.css.map */

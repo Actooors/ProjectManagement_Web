@@ -25,6 +25,7 @@ import fourEx from 'pages/principal/fourEx/fourEx'
 import threeEx from 'pages/principal/threeEx/threeEx'
 import twoEx from 'pages/principal/twoEx/twoEx'
 import oneEx from 'pages/principal/oneEx/oneEx'
+import PrincipalInfo from 'pages/principal/myInfo/myInfo'
 
 
 Vue.use(Router)
@@ -101,6 +102,10 @@ const router = new Router({
           path: 'oneEx',
           component: oneEx
         },
+        {
+          path: 'myInfo',
+          component: PrincipalInfo
+        }
       ]
     },
     {

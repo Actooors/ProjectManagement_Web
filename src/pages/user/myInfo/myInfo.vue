@@ -69,17 +69,18 @@
         }
       }
     },
-    created() {
-      this.initData()
+    mounted() {
+      this.initData('更新个人信息成功！')
     },
     methods: {
-      initData(){
+      initData(msg){
         axios({
           url: apiRoot + '/user/userInfo/1',
           method: 'get',
         }).then((res)=>{
           if(res.data.code==='SUCCESS') {
             this.userInfo=res.data.data
+            this.$Message.success(msg)
           }else {
             this.$Message.error("初始化错误!")
           }

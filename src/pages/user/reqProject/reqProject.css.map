@@ -1,7 +1,7 @@
 {
 "version": 3,
 "mappings": "AAAA,QAAS;EACP,KAAK,EAAE,IAAI;EACX,mBAAW;IACT,MAAM,EAAE,eAAe;EAEzB,eAAO;IACL,MAAM,EAAE,WAAW",
-"sources": ["categoryList.scss"],
+"sources": ["reqProject.scss"],
 "names": [],
-"file": "categoryList.css"
+"file": "reqProject.css"
 }

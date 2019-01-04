@@ -279,14 +279,13 @@
       }
     },
     mounted() {
-      this.initData()
+      this.initData('初始化成功！')
     },
     methods: {
       Refresh() {
-        this.initData();
-        this.$Message.success('刷新成功!')
+        this.initData('刷新成功!');
       },
-      initData() {
+      initData(msg) {
         this.loading = true
         axios({
           url: apiRoot + '/user/progressProject',
@@ -297,6 +296,7 @@
             this.data2 = res.data.data.middleProject;
             this.data3 = res.data.data.finalProject;
             this.data4 = res.data.data.finishProject
+            this.$Message.success(msg)
             this.loading = false;
           } else {
             this.$Message.error(res.data.message);

@@ -66,15 +66,14 @@
         data1: []
       }
     },
-    created() {
-      this.initData();
+    mounted() {
+      this.initData('初始化成功！');
     },
     methods: {
       Refresh() {
-        this.initData();
-        this.$Message.success('刷新成功!')
+        this.initData('刷新成功!');
       },
-      initData() {
+      initData(msg) {
         this.loading = true
         axios({
           url: apiRoot + '/user/inTheApplicationList',
@@ -83,8 +82,15 @@
           if (res.data.code === 'SUCCESS') {
             console.log(res.data)
             this.data1 = res.data.data;
+            this.$Message.success(msg)
+            this.loading = false
+          }else {
+            this.$Message.error(res.data.message)
             this.loading = false
           }
+        }).catch(()=>{
+          this.$Message.error('请检查网络连接！')
+          this.loading = false
         })
       },
       cancelConfirm(index){
