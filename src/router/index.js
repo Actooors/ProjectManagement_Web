@@ -20,6 +20,7 @@ import LeaderStatistic from 'pages/leader/statistic/statistic'
 import LeaderInfo from 'pages/leader/myInfo/myInfo'
 import Error from 'pages/error404/error404'
 import NewCategory from 'pages/principal/newCategory/newCategory'
+import CategoryList from 'pages/principal/categoryList/categoryList'
 import fourEx from 'pages/principal/fourEx/fourEx'
 import threeEx from 'pages/principal/threeEx/threeEx'
 import twoEx from 'pages/principal/twoEx/twoEx'
@@ -79,6 +80,10 @@ const router = new Router({
         {
           path: 'newCategory',
           component: NewCategory
+        },
+        {
+          path: 'categoryList',
+          component: CategoryList
         },
         {
           path: 'fourEx',

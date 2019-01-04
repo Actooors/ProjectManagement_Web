@@ -21,12 +21,22 @@
             :class="menuitemClasses"
             @on-select="handleSelectItem"
           >
-            <MenuItem
-              name="newCategory"
-            >
-              <Icon type="ios-paper-outline"/>
-              &nbsp;开通一个新的类别
-            </MenuItem>
+            <Submenu name="category">
+              <template slot="title">
+                <Icon type="ios-paper-outline" />
+                项目类别管理
+              </template>
+              <MenuItem
+                name="newCategory"
+              >
+                &nbsp;开通新类别
+              </MenuItem>
+              <MenuItem
+                name="categoryList"
+              >
+                &nbsp;类别列表
+              </MenuItem>
+            </Submenu>
             <Submenu name="exProject">
               <template slot="title">
                 <Icon type="ios-stopwatch-outline" />

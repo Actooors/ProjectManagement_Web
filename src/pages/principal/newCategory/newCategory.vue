@@ -13,13 +13,13 @@
           </Select>
         </FormItem>
         <FormItem label="是否参加上会" prop="isMeeting">
-          <Switch v-model="projectMes.isMeeting">
+          <Switch v-model="projectMes.isMeeting" :value="projectMes.isMeeting">
             <span slot="open">是</span>
             <span slot="close">否</span>
           </Switch>
         </FormItem>
         <FormItem label="申请人类型" prop="userType">
-          <CheckboxGroup v-model="projectMes.userType">
+          <CheckboxGroup v-model="projectMes.userType" :value="projectMes.userType">
             <Checkbox label="1">
               <span style="font-size: 15px">本科生</span>
             </Checkbox>
@@ -46,21 +46,25 @@
         </FormItem>
         <FormItem label="申报时间" prop="applicationTime">
           <Date-picker :value="projectMes.applicationTime" format="yyyy年MM月dd日" type="daterange"
-                       placement="bottom-end" placeholder="选择申报时间段" long
+                       v-model="projectMes.applicationTime"
+                       placement="bottom-end" placeholder="选择申报时间段"
                        style="width: 300px"></Date-picker>
         </FormItem>
         <FormItem label="截止时间" prop="projectEndTime">
-          <DatePicker type="date" :value="projectMes.projectEndTime" format="yyyy年MM月dd日" style="width: 300px"
+          <DatePicker type="date" :value="projectMes.projectEndTime" v-model="projectMes.projectEndTime"
+                      format="yyyy年MM月dd日" style="width: 300px"
                       placeholder="选择项目截止时间"></DatePicker>
         </FormItem>
         <FormItem label="经费额度" prop="maxMoney">
-          <Input-number :max="100000" :min="100" :value="projectMes.maxMoney"></Input-number>
+          <Input-number :max="100000" :min="100" v-model="projectMes.maxMoney"
+                        :value="projectMes.maxMoney"></Input-number>
         </FormItem>
         <FormItem label="上传模板" prop="uploadAddress">
           <Upload
             type="drag"
             :headers="uploadHeaders"
             :on-success="uploadSuccess"
+            ref="upload"
             action="http://129.204.71.113:8888/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
@@ -101,10 +105,24 @@
             {required: true, message: '请填写项目描述', trigger: 'blur'}
           ],
           applicationTime: [
-            {required: true, type: 'array', message: '请选择申报时间', trigger: 'blur'}
+            {
+              required: true,
+              type: 'array',
+              message: '请选择申报时间',
+              trigger: 'blur',
+              validator(rule, value, callback, source, options) {
+                if (!Array.isArray(value)) {                      //自定义验证：首先验证applicationTime是否是一个数组，如果不是输入则返回错误
+                  callback(new Error('请选择申报时间'));
+                }
+                if (value.length !== 2 || !value.every((x) => x instanceof Date)) { //经历上面判断是否为数组后，接下来判断数组的长度是否为2，或者它其中每个元素的是否为Date的一个实例，这里用instanceof来判断
+                  callback(new Error('请选择申报时间'));
+                }
+                callback();
+              }
+            }
           ],
           projectEndTime: [
-            {required: true, type: 'array', message: '请选择截止时间', trigger: 'blur'}
+            {required: true, type: 'date', message: '请选择截止时间', trigger: 'blur'}
           ],
           maxMoney: [
             {required: true, type: 'number', message: '请填写经费额度', trigger: 'blur'}
@@ -125,9 +143,9 @@
           userType: [],
           expertName: [],
           description: '',
-          applicationTime: [],
+          applicationTime: null,
           projectEndTime: null,
-          maxMoney: 0,
+          maxMoney: null,
           uploadAddress: '',
         },
         projectTypeList: [
@@ -150,23 +168,23 @@
         ],
         expertList: [
           {
-            userId: 16121666,
+            userId: '16121666',
             label: '李老师'
           },
           {
-            userId: 16121727,
+            userId: '16121727',
             label: '六老师'
           },
           {
-            userId: 16121111,
+            userId: '16121111',
             label: '张老师'
           },
           {
-            userId: 10001221,
+            userId: '10001221',
             label: '王老师'
           },
           {
-            userId: 10021211,
+            userId: '10021211',
             label: '陈教授'
           }
         ],
@@ -178,7 +196,7 @@
           if (valid) {
             this.$Modal.confirm({
               title: '确认提交吗？',
-              content: '<p>请在提交前再次检查表单内容的正确性</p>',
+              content: '请在提交前再次检查表单内容的正确性',
               okText: '确认提交',
               cancelText: '再看看',
               onOk: () => {
@@ -209,7 +227,7 @@
             principalPhone: '',
             applicantType: this.projectMes.userType,
             maxMoney: this.projectMes.maxMoney,
-            projectApplicationDownloadAddress: this.projectMes.uploadAddress,
+            projectApplicationDownloadAddress: apiRoot + '/file/download?fileAddress=' + this.projectMes.uploadAddress,
             isExistMeetingReview: this.projectMes.isMeeting,
             applicationStartTime: this.projectMes.applicationTime[0],
             applicationEndTime: this.projectMes.applicationTime[1],
@@ -219,8 +237,17 @@
           }
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            this.$Message.success('新增项目类别成功！')
+            this.$Modal.success({
+              title: '成功',
+              content: '新增项目类别成功！'
+            });
+            this.$refs['projectMes'].resetFields();
+            this.$refs.upload.clearFiles();
+          } else {
+            this.$Message.error(res.data.message)
           }
+        }).catch(() => {
+          this.$Message.error('请检查网络连接！')
         })
       }
     }

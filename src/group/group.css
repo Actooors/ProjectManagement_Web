@@ -1,0 +1,102 @@
+.layout {
+  height: 100%; }
+
+.ivu-menu-item {
+  display: flex; }
+  .ivu-menu-item i {
+    display: flex;
+    align-items: center; }
+
+.ivu-layout-sider {
+  user-select: none;
+  background: #211F1E !important; }
+  .ivu-layout-sider .ivu-menu-custom {
+    background: #211F1E;
+    color: #d7dfeb; }
+    .ivu-layout-sider .ivu-menu-custom .ivu-menu-item {
+      color: #C6D7F2; }
+    .ivu-layout-sider .ivu-menu-custom .ivu-menu-item:hover {
+      color: #ebf3ff; }
+    .ivu-layout-sider .ivu-menu-custom .ivu-menu-item-selected {
+      background: #494746; }
+    .ivu-layout-sider .ivu-menu-custom .ivu-menu-item-active {
+      color: #bec6d2; }
+
+.layout {
+  border: 1px solid #d7dde4;
+  background: #f5f7f9;
+  position: relative;
+  overflow: hidden;
+  height: calc(100% + 1px);
+  width: calc(100% + 1px);
+  left: -1px;
+  top: -1px; }
+  .layout .layout-logo-left {
+    height: 60px;
+    margin-bottom: 10px;
+    background: #211F1E;
+    font-size: 22px;
+    text-align: center;
+    font-family: monospace;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden; }
+    .layout .layout-logo-left span {
+      line-height: 60px;
+      padding: 0 .1em; }
+      .layout .layout-logo-left span:nth-child(1) {
+        color: white; }
+  .layout .menu-list {
+    overflow-y: auto;
+    height: calc(100% - 60px + 3px); }
+    .layout .menu-list::-webkit-scrollbar {
+      display: none; }
+
+.layout-header-bar {
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  display: flex; }
+  .layout-header-bar:nth-child(1) {
+    font-size: 1.2em; }
+  .layout-header-bar .layout-header-title {
+    width: calc(100% - 64px - 200px);
+    text-align: center;
+    font-size: 24px; }
+
+.menu-icon {
+  transition: all .3s; }
+
+.rotate-icon {
+  transform: rotate(-90deg); }
+
+.menu-item span {
+  display: inline-block;
+  overflow: hidden;
+  width: 68px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+  transition: width .2s ease .2s; }
+
+.menu-item i {
+  transform: translateX(0px);
+  transition: font-size .2s ease, transform .2s ease;
+  vertical-align: middle;
+  font-size: 16px; }
+
+.collapsed-menu span {
+  width: 0;
+  transition: width .2s ease; }
+
+.collapsed-menu i {
+  transform: translateX(5px);
+  transition: font-size .2s ease .2s, transform .2s ease .2s;
+  vertical-align: middle;
+  font-size: 22px; }
+
+.select {
+  position: absolute;
+  right: 0;
+  margin-right: 60px; }
+
+/*# sourceMappingURL=group.css.map */
