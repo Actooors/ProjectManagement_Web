@@ -37,7 +37,7 @@
         <FormItem label="负责专家" prop="expertName">
           <Select v-model="projectMes.expertName" multiple size="large">
             <Option v-for="(item,index) in expertList" :key="index" :value="item.userId">
-              {{ item.label }}
+              {{ item.userName }}—{{ item.department }}
             </Option>
           </Select>
         </FormItem>
@@ -45,14 +45,17 @@
           <i-input type="textarea" v-model="projectMes.description" :rows="4" placeholder="请输入项目描述..."></i-input>
         </FormItem>
         <FormItem label="申报时间" prop="applicationTime">
-          <Date-picker :value="projectMes.applicationTime" format="yyyy年MM月dd日" type="daterange"
+          <!--TODO 时间格式问题-->
+          <Date-picker :value="projectMes.applicationTime" format="yyyy年MM月dd日 HH:mm" type="datetimerange"
                        v-model="projectMes.applicationTime"
+                       @on-change="onChange"
                        placement="bottom-end" placeholder="选择申报时间段"
                        style="width: 300px"></Date-picker>
         </FormItem>
         <FormItem label="截止时间" prop="projectEndTime">
-          <DatePicker type="date" :value="projectMes.projectEndTime" v-model="projectMes.projectEndTime"
-                      format="yyyy年MM月dd日" style="width: 300px"
+          <DatePicker type="datetime" :value="projectMes.projectEndTime" v-model="projectMes.projectEndTime"
+<!--TODO 时间格式问题-->
+                      format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                       placeholder="选择项目截止时间"></DatePicker>
         </FormItem>
         <FormItem label="经费额度" prop="maxMoney">
@@ -134,8 +137,6 @@
         uploadHeaders: {
           Authorization: localStorage.getItem('token')
         },
-        value2: '2019-12-31',
-        value1: ['2019-01-01', '2019-12-31'],
         projectMes: {
           projectName: '',
           projectType: null,
@@ -166,31 +167,28 @@
             label: '生物化学类'
           }
         ],
-        expertList: [
-          {
-            userId: '16121666',
-            label: '李老师'
-          },
-          {
-            userId: '16121727',
-            label: '六老师'
-          },
-          {
-            userId: '16121111',
-            label: '张老师'
-          },
-          {
-            userId: '10001221',
-            label: '王老师'
-          },
-          {
-            userId: '10021211',
-            label: '陈教授'
-          }
-        ],
+        expertList: [],
       }
     },
+    mounted() {
+      this.initExperts()
+    },
     methods: {
+      onChange(){
+        console.log(this.projectMes.applicationTime[0],this.projectMes.applicationTime[1])
+      },
+      initExperts() {
+        axios({
+          url: apiRoot + '/admin/expertList',
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.expertList = res.data.data
+          } else {
+            this.$Message.error("获取审核专家列表有误！")
+          }
+        })
+      },
       handleButton() {
         this.$refs['projectMes'].validate((valid) => {
           if (valid) {
@@ -233,14 +231,21 @@
             applicationEndTime: this.projectMes.applicationTime[1],
             projectStartTime: this.projectMes.applicationTime[1],
             projectEndTime: this.projectMes.projectEndTime,
-            expertList: this.projectMes.expertName
+            expertList: this.projectMes.expertName,
           }
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            this.$Modal.success({
-              title: '成功',
-              content: '新增项目类别成功！'
+            console.log("1")
+            this.$Notice.success({
+              title: '新增成功',
+              desc: '您已成功新增一个项目类别，现在您可以在“项目类别管理-已开通类别”中查看已有项目，并且可对其进行修改和删除。',
+              duration: 7
             });
+//            this.$Modal.success({
+//              title: '新增成功',
+//              content: '您已成功新增一个项目类别，现在您可以在“项目类别管理-已开通类别”中查看已有项目，并且可对其进行修改和删除。'
+//            });
+            console.log("2")
             this.$refs['projectMes'].resetFields();
             this.$refs.upload.clearFiles();
           } else {

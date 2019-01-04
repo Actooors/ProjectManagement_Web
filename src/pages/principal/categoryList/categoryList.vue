@@ -62,6 +62,9 @@
             render: (h, params) => {
               return h('div', [
                 h('Button', {
+                  props: {
+                    type: 'info'
+                  },
                   style: {
                     marginRight: '10px'
                   },
@@ -73,14 +76,14 @@
                 }, '详情'),
                 h('Button', {
                   props: {
-                    type: 'info'
+                    type: 'error'
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击修改')
+                      this.$Message.info('点击删除')
                     }
                   }
-                }, '修改')
+                }, '删除')
               ])
             }
           }
@@ -102,6 +105,7 @@
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             this.data1 = res.data.data
+            console.log(typeof this.data1[0].applicationStartTime)
             this.$Message.success(msg)
             this.loading=false
           }else {
