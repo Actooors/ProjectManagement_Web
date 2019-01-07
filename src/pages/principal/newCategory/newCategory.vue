@@ -53,8 +53,8 @@
                        style="width: 300px"></Date-picker>
         </FormItem>
         <FormItem label="截止时间" prop="projectEndTime">
+          <!--TODO 时间格式问题-->
           <DatePicker type="datetime" :value="projectMes.projectEndTime" v-model="projectMes.projectEndTime"
-<!--TODO 时间格式问题-->
                       format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                       placeholder="选择项目截止时间"></DatePicker>
         </FormItem>
