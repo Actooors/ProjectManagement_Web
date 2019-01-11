@@ -70,7 +70,14 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击详情')
+                      this.$Modal.info({
+                        width:'600px',
+                        title:this.data1[params.index].projectName+'项目详情',
+                        content:`<p>项目描述：${this.data1[params.index].projectDescription}</p><br><p>业务员手机：${this.data1[params.index].principalPhone}</p><br>
+                                 <p>项目大类：${this.data1[params.index].projectType}</p><br><p>经费额度：${this.data1[params.index].maxMoney}元</p><br>
+                                 <p>申报人类型：${this.data1[params.index].applicantType}</p><br><p>专家名单：<p v-for="this.data1[params.index].expertList">{{item.userName}}</p></p><br>`
+                        //TODO
+                      })
                     }
                   }
                 }, '详情'),
@@ -81,6 +88,7 @@
                   on: {
                     click: () => {
                       this.$Message.info('点击删除')
+
                     }
                   }
                 }, '删除')
