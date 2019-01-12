@@ -5,7 +5,7 @@
         刷新
       </Button>
     </ButtonGroup>
-    <Table :columns="columns1" :data="data1" border class="table" size="large" stripe></Table>
+    <Table :columns="columns1" :data="data1" border :loading="loading" class="table" size="large" stripe></Table>
     <Modal
       :mask-closable="false"
       @on-cancel="cancel"
@@ -14,11 +14,12 @@
       title="驳回理由"
       v-model="modal1"
       width="700">
-      <Form :label-width="180" :model="formItem" style="margin-right: 25px">
+      <Form :label-width="180" style="margin-right: 25px">
         <div class="from_middle">
-          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
-          <Input :autosize="{minRows: 4,maxRows: 10}" placeholder="请填写驳回理由（申请者可以重新修改）" type="textarea"
-                 v-model="formItem.textarea"></Input>
+          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">
+            驳回理由填写（申请者可以重新修改）</p>
+          <Input :autosize="{minRows: 4,maxRows: 10}" placeholder="请填写驳回理由" type="textarea"
+                 v-model="reason"></Input>
         </div>
       </Form>
       <div slot="footer">
@@ -28,25 +29,33 @@
         </Button>
       </div>
     </Modal>
-
-    <Modal
-      @on-cancel="cancel"
-      maxHeight="700"
-      ref="modal"
-      title="选择专家"
-      v-model="modal2"
-      width="650"
-    >
-      <CheckboxGroup v-model="experts">
-        <Checkbox label="专家1"></Checkbox>
-        <Checkbox label="专家2"></Checkbox>
-        <Checkbox label="专家3"></Checkbox>
-      </CheckboxGroup>
-      <div slot="footer">
-        <Button @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px" type="primary">
-          发送报告
-        </Button>
-      </div>
+    <Modal v-if="modal2_delay" v-model="modal2" :title="infoTitle" width="600px">
+      <p>项目描述：{{data2.projectDescription}}</p>
+      <br>
+      <p>业务员手机：{{data2.principalPhone}}</p>
+      <br>
+      <p>项目大类：{{data2.projectType}}</p>
+      <br>
+      <p>经费额度：{{data2.maxMoney}}元</p>
+      <br>
+      申报人类型：<p style="display: inline-flex;" v-for="item in data2.applicantType">{{item}}&nbsp;</p>
+      <br>
+      <br>
+      专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
+      <br>
+      <br>
+      <p>是否提交中期报告：{{(data2.interimReport.isReportActivated===true)?'是':'否'}}</p>
+      <br>
+      <p>中期报告开始时间：{{data2.interimReport.startTime}}</p>
+      <br>
+      <p>中期报告截止时间：{{data2.interimReport.deadline}}</p>
+      <br>
+      <p>是否提交结题报告：{{(data2.concludingReport.isReportActivated===true)?'是':'否'}}</p>
+      <br>
+      <p>结题报告开始时间：{{data2.concludingReport.startTime}}</p>
+      <br>
+      <p>结题报告截止时间：{{data2.concludingReport.deadline}}</p>
+      <br>
     </Modal>
   </div>
 </template>
@@ -54,31 +63,46 @@
 
 <script>
   import axios from 'axios'
+  import download from '../../../assets/js/download'
 
   export default {
     name: "oneEx",
-
+    watch: {
+      modal2(val) {
+        if (val) {
+          this.modal2_delay = true
+        }
+      }
+    },
     data() {
       return {
-        experts: [''],
         loading: false,
         modal1: false,
         modal2: false,
-        value1: 1,
-        priority: '',
-        formItem: {
-          textarea: '填写评审内容'
-        },
-        allSuccess: false,
-        value: ['1'],
-        show: false,
-
+        modal2_delay: false,
+        infoTitle: null,
+        index: 0,
+        reason: '',
         columns1: [
+          {
+            title: '项目类别',
+            key: 'projectCategoryName',
+            align: 'center'
+          },
+          {
+            title: '申请截止日期',
+            key: 'applicationDeadLine',
+            align: 'center'
+          },
           {
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 290
+          },
+          {
+            title: '项目描述',
+            key: 'description',
+            align: 'center',
           },
           {
             title: '下载申请书',
@@ -89,137 +113,174 @@
                 props: {type: 'info'},
                 on: {
                   click: () => {
-                    this.downloadEndReport(params.index)
+                    this.download(params.index)
                   }
                 },
-              }, '申请书')]);
+              }, '项目申请书')]);
             }
           },
           {
-            title: '审核结果',
+            title: '操作',
             key: 'content',
             align: 'center',
-            width: 415,
             render: (h, params) => {
-              return h('div', [h('Button', {
-                props: {type: 'success'},
-                on: {
-                  click: () => {
-                    this.chooseExpert(params.index)
-                  }
-                },
-              }, '通过并选择专家审核'), h('Button', {
-                props: {type: 'error'},
-                style: {marginLeft: '28px'},
-                on: {
-                  click: () => {
-                    this.declare(params.index)
-                  }
-                },
-              }, '驳回申请')]);
+              return h('div', [
+                h('Button', {
+                  props: {type: 'info'},
+                  on: {
+                    click: () => {
+                      this.details(params.index);
+                    }
+                  },
+                }, '详情'),
+                h('Button', {
+                  props: {type: 'success'},
+                  style: {marginLeft: '10px'},
+                  on: {
+                    click: () => {
+                      this.pass(params.index)
+                    }
+                  },
+                }, '通过'),
+                h('Button', {
+                  props: {type: 'error'},
+                  style: {marginLeft: '10px'},
+                  on: {
+                    click: () => {
+                      this.reject(params.index)
+                    }
+                  },
+                }, '驳回')]);
             }
           }
         ],
-        data1:
-          [
-            {
-              projectName: '项目1',
-              deadLine: '2019-01-01',
-              introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-            },
-            {
-              projectName: '项目2',
-              deadLine: '2019-01-01',
-              introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-            }
-          ],
+        data1: [],
+        data2: [],
       }
     },
-    /*mounted() {
-       this.initData()
-        this.initInfo()
-      },*/
+    mounted() {
+      this.initData('初始化成功！')
+    },
     methods: {
-      /*initInfo() {
-        axios({
-          url: apiRoot + '/user/userInfo/1',
-          method: 'get',
-        }).then((res) => {
-          if (res.data.code === 'SUCCESS') {
-            this.official.department = res.data.data.department;
-            this.official.phone = res.data.data.phone;
-            this.official.mail = res.data.data.mail;
-          }
-        }).catch(() => {
-          this.$Message.error("请检查网络!")
-        })
-        console.log('localStorage', localStorage)
-        this.official.userId = localStorage.getItem('userid');
-        this.official.userName = localStorage.getItem('username');
-        console.log('official:', this.official)
-      },*/
-      chooseExpert(index) {
-        this.modal2 = true;
-        this.$nextTick(() => {
-          this.$forceUpdate(this.$refs.modal);
-        })
-      },
       setListCheck: function (idx) {
         var check = this.list[idx].check;
         this.list[idx].check = check === true ? false : true;
       },
-
-      declare(index) {
-        this.modal1 = true;
-        this.$nextTick(() => {
-          this.$forceUpdate(this.$refs.modal);
+      details(index) {
+        axios({
+          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.infoTitle = res.data.data.projectName
+            this.data2 = res.data.data
+            this.modal2 = true
+          }
+        })
+      },
+      pass(index) {
+        this.$Modal.confirm({
+          title: '请再次确认',
+          content: '您确定通过项目 ' + this.data1[index].projectName + ' 吗？',
+          okText: '确定',
+          cancelText: '再想想',
+          onOk: () => {
+            axios({
+              url: apiRoot + '/admin/firstTrial',
+              method: 'post',
+              data: {
+                applicationId: this.data1[index].projectId,
+                judge: true,
+              }
+            }).then((res) => {
+              if (res.data.code === 'SUCCESS') {
+                this.data1.splice(index, 1)
+                this.$Message.success('该项目已通过初审！');
+              } else {
+                this.$Message.error(res.data.message);
+              }
+            })
+          }
+        })
+      },
+      reject(index) {
+        this.$Modal.confirm({
+          title: '请再次确认',
+          content: '您确定驳回项目 ' + this.data1[index].projectName + ' 吗？',
+          okText: '确定',
+          cancelText: '再想想',
+          onOk: () => {
+            this.modal1 = true
+            this.index = index
+          }
         })
       },
       cancel() {
         this.modal1 = false
       },
-      downloadEndReport() {
-        this.$Message.info('点击下载结题报告')
+      download(index) {
+        const that = this
+        var filename = this.data1[index].projectApplicationDownloadAddress.split('---')[1]
+        axios({
+          url: apiRoot + '/file/download?fileAddress=' + that.data1[index].projectApplicationDownloadAddress,
+          method: 'get',
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
+            download(res.data, filename, 'text/plain')
+            this.$Message.success("下载成功！")
+          } else {
+            this.$Message.error("下载失败！")
+          }
+        }).catch(() => {
+          this.$Message.error("下载失败，请检查网络连接！")
+        })
       },
       Refresh() {
         this.initData();
         this.$Message.success('刷新成功!')
       },
       confirm() {
-        this.$Modal.confirm({
-          title: '请再次确认',
-          content: '<p>请确认是否发送</p>',
-          onOk: () => {
-            this.$Message.info('已经成功发送');
-          },
-          onCancel: () => {
-            this.$Message.info('已经取消发送');
+        axios({
+          url: apiRoot + '/admin/firstTrial',
+          method: 'post',
+          data: {
+            applicationId: this.data1[this.index].projectId,
+            judge: false,
+            msg: '项目处于何时被驳回：初审阶段\n操作人：' + localStorage.getItem('username') + '\n驳回理由：' + this.reason,
           }
-        });
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.data1.splice(this.index, 1)
+            this.$Message.success('成功将该项目驳回！');
+          } else {
+            this.$Message.error(res.data.message);
+          }
+          this.modal1 = false
+        })
       },
-
-      initData() {
+      initData(msg) {
         this.loading = true
         axios({
-          url: apiRoot + '/principal/AllAviProjectCategory',
+          url: apiRoot + '/admin/reviewPhase/1',
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             this.data1 = res.data.data;
+            this.$Message.success(msg)
             this.loading = false;
           } else {
             this.$Message.error('初始化失败！')
             this.loading = false;
           }
-        }).catch(() => {
+        }).catch((err) => {
+          console.error(err)
           this.$Message.error('初始化失败,请检查网络！')
           this.loading = false;
         })
       },
     }
-    /*created() {
-      this.initData()
-    }*/
   }
 </script>
 

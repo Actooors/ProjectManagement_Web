@@ -23,7 +23,7 @@
           >
             <Submenu name="category">
               <template slot="title">
-                <Icon type="ios-paper-outline" />
+                <Icon type="ios-paper-outline"/>
                 项目类别管理
               </template>
               <MenuItem
@@ -39,7 +39,7 @@
             </Submenu>
             <Submenu name="exProject">
               <template slot="title">
-                <Icon type="ios-stopwatch-outline" />
+                <Icon type="ios-stopwatch-outline"/>
                 待审核项目
               </template>
               <MenuItem
@@ -53,10 +53,6 @@
               <MenuItem
                 name="threeEx"
               >待会评
-              </MenuItem>
-              <MenuItem
-                name="fourEx"
-              >待终审
               </MenuItem>
             </Submenu>
             <MenuItem
@@ -91,7 +87,7 @@
                   我的信息
                 </DropdownItem>
                 <DropdownItem divided @click.native="Logout">
-                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17" />
+                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17"/>
                   登出
                 </DropdownItem>
               </DropdownMenu>
@@ -121,7 +117,7 @@
         UserName: localStorage.getItem('username')
       }
     },
-     //让页头出现标题，这里每个页面还没做出来
+    //让页头出现标题，这里每个页面还没做出来
     mounted() {
       this.initMenuActive();
     },
@@ -156,7 +152,7 @@
           ).innerHTML;
         });
       },
-      Logout(){
+      Logout() {
         localStorage.clear()
         this.$router.push("/login")
       }

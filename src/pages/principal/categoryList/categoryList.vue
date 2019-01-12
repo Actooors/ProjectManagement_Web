@@ -4,35 +4,38 @@
       <Button type="success" icon="md-refresh" @click="Refresh" size="large" ghost>
         刷新
       </Button>
+
     </ButtonGroup>
     <Table stripe border :columns="columns" :loading="loading" :data="data1" class="table" size="large"
            height="750"></Table>
-    <Modal v-model="modal1" :title="infoTitle" :props="index" width="600px">
-      <p>项目描述：{{this.data1[index].projectDescription}}</p>
+    <Modal v-if="modal1_delay" v-model="modal1" :title="infoTitle" width="600px">
+      <p>项目描述：{{data1[index].projectDescription}}</p>
       <br>
-      <p>业务员手机：{{this.data1[index].principalPhone}}</p>
+      <p>业务员手机：{{data1[index].principalPhone}}</p>
       <br>
-      <p>项目大类：{{this.data1[index].projectType}}</p>
+      <p>项目大类：{{data1[index].projectType}}</p>
       <br>
-      <p>经费额度：{{this.data1[index].maxMoney}}元</p>
+      <p>经费额度：{{data1[index].maxMoney}}元</p>
       <br>
-      申报人类型：<p style="display: inline-flex;" v-for="item in this.data1[index].applicantType">{{item}}&nbsp;</p>
-      <br>
-      <br>
-      专家名单：<p style="display: inline-flex;" v-for="item in this.data1[index].expertList">{{item.userName}}&nbsp;</p>
+      申报人类型：<p style="display: inline-flex;" v-for="item in data1[index].applicantType">{{item}}&nbsp;</p>
       <br>
       <br>
-      <p>是否提交中期报告：{{(this.data1[index].interimReport.isReportActivated===true)?'是':'否'}}</p>
+      专家名单：<p style="display: inline-flex;" v-for="item in data1[index].expertList">{{item.userName}}&nbsp;</p>
       <br>
-      <p>中期报告开始时间：{{this.data1[index].interimReport.startTime}}</p>
       <br>
-      <p>中期报告截止时间：{{this.data1[index].interimReport.deadline}}</p>
+      <p>是否上会：{{(data1[index].isExistMeetingReview===1?'是':'否')}}</p>
       <br>
-      <p>是否提交结题报告：{{(this.data1[index].concludingReport.isReportActivated===true)?'是':'否'}}</p>
+      <p>是否提交中期报告：{{(data1[index].interimReport.isReportActivated===true)?'是':'否'}}</p>
       <br>
-      <p>结题报告开始时间：{{this.data1[index].concludingReport.startTime}}</p>
+      <p>中期报告开始时间：{{data1[index].interimReport.startTime}}</p>
       <br>
-      <p>结题报告截止时间：{{this.data1[index].concludingReport.deadline}}</p>
+      <p>中期报告截止时间：{{data1[index].interimReport.deadline}}</p>
+      <br>
+      <p>是否提交结题报告：{{(data1[index].concludingReport.isReportActivated===true)?'是':'否'}}</p>
+      <br>
+      <p>结题报告开始时间：{{data1[index].concludingReport.startTime}}</p>
+      <br>
+      <p>结题报告截止时间：{{data1[index].concludingReport.deadline}}</p>
       <br>
     </Modal>
   </div>
@@ -43,8 +46,16 @@
 
   export default {
     name: "categoryList",
+    watch: {
+      modal1(val) {
+        if (val) {
+          this.modal1_delay = true;
+        }
+      }
+    },
     data() {
       return {
+        modal1_delay: false,
         loading: false,
         modal1: false,
         infoTitle: null,
@@ -117,6 +128,7 @@
                     click: () => {
                       this.infoTitle = this.data1[params.index].projectName + ' 详情'
                       this.index = params.index
+                      console.log(this.index)
                       this.modal1 = true
                     }
                   }
@@ -159,7 +171,7 @@
       }
     },
     mounted() {
-      this.initData('初始化成功！')
+      this.initData('初始化成功！');
     },
     methods: {
       Refresh() {
