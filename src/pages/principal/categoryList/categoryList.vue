@@ -7,6 +7,34 @@
     </ButtonGroup>
     <Table stripe border :columns="columns" :loading="loading" :data="data1" class="table" size="large"
            height="750"></Table>
+    <Modal v-model="modal1" :title="infoTitle" :props="index" width="600px">
+      <p>项目描述：{{this.data1[index].projectDescription}}</p>
+      <br>
+      <p>业务员手机：{{this.data1[index].principalPhone}}</p>
+      <br>
+      <p>项目大类：{{this.data1[index].projectType}}</p>
+      <br>
+      <p>经费额度：{{this.data1[index].maxMoney}}元</p>
+      <br>
+      申报人类型：<p style="display: inline-flex;" v-for="item in this.data1[index].applicantType">{{item}}&nbsp;</p>
+      <br>
+      <br>
+      专家名单：<p style="display: inline-flex;" v-for="item in this.data1[index].expertList">{{item.userName}}&nbsp;</p>
+      <br>
+      <br>
+      <p>是否提交中期报告：{{(this.data1[index].interimReport.isReportActivated===true)?'是':'否'}}</p>
+      <br>
+      <p>中期报告开始时间：{{this.data1[index].interimReport.startTime}}</p>
+      <br>
+      <p>中期报告截止时间：{{this.data1[index].interimReport.deadline}}</p>
+      <br>
+      <p>是否提交结题报告：{{(this.data1[index].concludingReport.isReportActivated===true)?'是':'否'}}</p>
+      <br>
+      <p>结题报告开始时间：{{this.data1[index].concludingReport.startTime}}</p>
+      <br>
+      <p>结题报告截止时间：{{this.data1[index].concludingReport.deadline}}</p>
+      <br>
+    </Modal>
   </div>
 </template>
 
@@ -18,6 +46,9 @@
     data() {
       return {
         loading: false,
+        modal1: false,
+        infoTitle: null,
+        index: 0,
         data1: [],
         columns: [
           {
@@ -58,26 +89,35 @@
           {
             title: '操作',
             key: 'operation',
+            width: 300,
             align: 'center',
             render: (h, params) => {
               return h('div', [
                 h('Button', {
                   props: {
-                    type: 'info'
+                    type: 'success'
                   },
                   style: {
-                    marginRight: '10px'
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
-                      this.$Modal.info({
-                        width:'600px',
-                        title:this.data1[params.index].projectName+'项目详情',
-                        content:`<p>项目描述：${this.data1[params.index].projectDescription}</p><br><p>业务员手机：${this.data1[params.index].principalPhone}</p><br>
-                                 <p>项目大类：${this.data1[params.index].projectType}</p><br><p>经费额度：${this.data1[params.index].maxMoney}元</p><br>
-                                 <p>申报人类型：${this.data1[params.index].applicantType}</p><br><p>专家名单：<p v-for="this.data1[params.index].expertList">{{item.userName}}</p></p><br>`
-                        //TODO
-                      })
+                      this.$Message.info("点击修改")
+                    }
+                  }
+                }, '修改'),
+                h('Button', {
+                  props: {
+                    type: 'info'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.infoTitle = this.data1[params.index].projectName + ' 详情'
+                      this.index = params.index
+                      this.modal1 = true
                     }
                   }
                 }, '详情'),
@@ -87,8 +127,28 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击删除')
-
+                      this.$Modal.confirm({
+                        title: '请再次确认',
+                        content: '确认删除 ' + this.data1[params.index].projectName + ' 吗?',
+                        okText: '确定',
+                        cancelText: '点错了',
+                        onOk: () => {
+                          axios({
+                            url: apiRoot + '/admin/deleteProjectCategory',
+                            method: 'post',
+                            data: {
+                              projectCategoryId: this.data1[params.index].projectCategoryId
+                            }
+                          }).then((res) => {
+                            if (res.data.code === 'SUCCESS') {
+                              this.data1.splice(params.index, 1);
+                              this.$Message.success("删除成功！")
+                            } else {
+                              this.$Message.error(res.data.message)
+                            }
+                          })
+                        }
+                      })
                     }
                   }
                 }, '删除')
@@ -102,7 +162,7 @@
       this.initData('初始化成功！')
     },
     methods: {
-      Refresh(){
+      Refresh() {
         this.initData("刷新成功！")
       },
       initData(msg) {
@@ -112,18 +172,18 @@
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
             this.data1 = res.data.data
-            console.log(typeof this.data1[0].applicationStartTime)
             this.$Message.success(msg)
-            this.loading=false
-          }else {
+            this.loading = false
+          } else {
             this.$Message.error(res.data.message)
-            this.loading=false
+            this.loading = false
           }
-        }).catch(()=>{
+        }).catch((err) => {
+          console.error(err)
           this.$Message.error("请检查网络连接！")
-          this.loading=false
-
+          this.loading = false
         })
       }
     }
