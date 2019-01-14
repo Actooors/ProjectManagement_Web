@@ -27,15 +27,15 @@
       <br>
       <p>是否提交中期报告：{{(data1[index].interimReport.isReportActivated===true)?'是':'否'}}</p>
       <br>
-      <p>中期报告开始时间：{{data1[index].interimReport.startTime}}</p>
+      <p>中期报告开始时间：{{(data1[index].interimReport.startTime===null)?'无':data1[index].interimReport.startTime}}</p>
       <br>
-      <p>中期报告截止时间：{{data1[index].interimReport.deadline}}</p>
+      <p>中期报告截止时间：{{(data1[index].interimReport.deadline===null)?'无':data1[index].interimReport.deadline}}</p>
       <br>
       <p>是否提交结题报告：{{(data1[index].concludingReport.isReportActivated===true)?'是':'否'}}</p>
       <br>
-      <p>结题报告开始时间：{{data1[index].concludingReport.startTime}}</p>
+      <p>结题报告开始时间：{{(data1[index].concludingReport.startTime===null)?'无':data1[index].concludingReport.startTime}}</p>
       <br>
-      <p>结题报告截止时间：{{data1[index].concludingReport.deadline}}</p>
+      <p>结题报告截止时间：{{(data1[index].concludingReport.deadline===null)?'无':data1[index].concludingReport.deadline}}</p>
       <br>
     </Modal>
   </div>

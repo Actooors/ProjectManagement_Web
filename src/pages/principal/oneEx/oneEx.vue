@@ -46,16 +46,19 @@
       <br>
       <p>是否提交中期报告：{{(data2.interimReport.isReportActivated===true)?'是':'否'}}</p>
       <br>
-      <p>中期报告开始时间：{{data2.interimReport.startTime}}</p>
+      <p>中期报告开始时间：{{(data2.interimReport.startTime===null)?'无':data2.interimReport.startTime}}</p>
       <br>
-      <p>中期报告截止时间：{{data2.interimReport.deadline}}</p>
+      <p>中期报告截止时间：{{(data2.interimReport.deadline===null)?'无':data2.interimReport.deadline}}</p>
       <br>
       <p>是否提交结题报告：{{(data2.concludingReport.isReportActivated===true)?'是':'否'}}</p>
       <br>
-      <p>结题报告开始时间：{{data2.concludingReport.startTime}}</p>
+      <p>结题报告开始时间：{{(data2.concludingReport.startTime===null)?'无':data2.concludingReport.startTime}}</p>
       <br>
-      <p>结题报告截止时间：{{data2.concludingReport.deadline}}</p>
+      <p>结题报告截止时间：{{(data2.concludingReport.deadline===null)?'无':data2.concludingReport.deadline}}</p>
       <br>
+      <p>项目成员(默认第一个为项目负责人)：</p>
+      <br>
+      <Table :columns="columns2" :data="data3.members" size="small" stripe></Table>
     </Modal>
   </div>
 </template>
@@ -85,6 +88,11 @@
         reason: '',
         columns1: [
           {
+            title: '项目名称',
+            key: 'projectName',
+            align: 'center',
+          },
+          {
             title: '项目类别',
             key: 'projectCategoryName',
             align: 'center'
@@ -93,11 +101,6 @@
             title: '申请截止日期',
             key: 'applicationDeadLine',
             align: 'center'
-          },
-          {
-            title: '项目名称',
-            key: 'projectName',
-            align: 'center',
           },
           {
             title: '项目描述',
@@ -154,8 +157,36 @@
             }
           }
         ],
+        columns2: [
+          {
+            title: '姓名',
+            key: 'userName',
+            align: 'center'
+          },
+          {
+            title: '学号',
+            key: 'userId',
+            align: 'center'
+          },
+          {
+            title: '学院',
+            key: 'department',
+            align: 'center'
+          },
+          {
+            title: '电话',
+            key: 'phone',
+            align: 'center'
+          },
+          {
+            title: '邮箱',
+            key: 'mail',
+            align: 'center'
+          }
+        ],
         data1: [],
         data2: [],
+        data3: []
       }
     },
     mounted() {
@@ -174,9 +205,21 @@
           if (res.data.code === 'SUCCESS') {
             this.infoTitle = res.data.data.projectName
             this.data2 = res.data.data
-            this.modal2 = true
           }
         })
+        console.log(this.data1[index])
+        setTimeout(() => {
+        }, 2000)
+        axios({
+          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectId,
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
+            this.data3 = res.data.data
+          }
+        })
+        this.modal2 = true
       },
       pass(index) {
         this.$Modal.confirm({
@@ -238,8 +281,7 @@
         })
       },
       Refresh() {
-        this.initData();
-        this.$Message.success('刷新成功!')
+        this.initData('刷新成功!');
       },
       confirm() {
         axios({

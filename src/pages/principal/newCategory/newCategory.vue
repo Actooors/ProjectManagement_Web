@@ -18,6 +18,9 @@
             <span slot="close">否</span>
           </Switch>
         </FormItem>
+        <FormItem label="业务员联系方式" prop="telephone">
+          <AutoComplete v-model="projectMes.telephone" :data="phone"></AutoComplete>
+        </FormItem>
         <FormItem label="申请人类型" prop="userType">
           <CheckboxGroup v-model="projectMes.userType" :value="projectMes.userType">
             <Checkbox label="1">
@@ -88,6 +91,7 @@
     name: "newCategory",
     data() {
       return {
+        phone: [],
         ruleProjectMes: {
           projectName: [
             {required: true, message: '项目名称不能为空', trigger: 'blur'}
@@ -97,6 +101,9 @@
           ],
           isMeeting: [
             {required: true, type: 'boolean', message: '请选择是否上会', trigger: 'blur'}
+          ],
+          telephone: [
+            {required: true, message: '联系方式不能为空', trigger: 'blur'}
           ],
           userType: [
             {required: true, type: 'array', message: '请选择申请人类型', trigger: 'blur'}
@@ -141,6 +148,7 @@
           projectName: '',
           projectType: null,
           isMeeting: false,
+          telephone: '',
           userType: [],
           expertName: [],
           description: '',
@@ -172,10 +180,23 @@
     },
     mounted() {
       this.initExperts()
+      this.getPhone()
     },
     methods: {
-      onChange(){
-        console.log(this.projectMes.applicationTime[0],this.projectMes.applicationTime[1])
+      getPhone() {
+        axios({
+          url: apiRoot + '/user/userInfo/1',
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            console.log(res.data.data.phone)
+            this.phone.push(res.data.data.phone)
+            console.log('!')
+          }
+        })
+      },
+      onChange() {
+        console.log(this.projectMes.applicationTime[0], this.projectMes.applicationTime[1])
       },
       initExperts() {
         axios({
@@ -222,7 +243,7 @@
             projectName: this.projectMes.projectName,
             projectDescription: this.projectMes.description,
             projectType: this.projectMes.projectType,
-            principalPhone: '',
+            principalPhone: this.projectMes.telephone,
             applicantType: this.projectMes.userType,
             maxMoney: this.projectMes.maxMoney,
             projectApplicationDownloadAddress: apiRoot + '/file/download?fileAddress=' + this.projectMes.uploadAddress,
