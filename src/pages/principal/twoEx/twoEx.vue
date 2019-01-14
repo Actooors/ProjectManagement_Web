@@ -320,6 +320,25 @@
         await Promise.all([a, b])
         this.modal2 = true
       },
+      downloadProjectMaterial(address) {
+        const that = this
+        var filename = address.split('---')[1]
+        axios({
+          url: address,
+          method: 'get',
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
+            download(res.data, filename, 'text/plain');
+            this.$Message.success('下载成功！');
+          } else {
+            this.$Message.error('下载失败！');
+          }
+        }).catch(() => {
+          this.$Message.error('下载失败，请检查网络连接！')
+        })
+      },
       initData(msg) {
         this.loading = true
         axios({
