@@ -45,6 +45,40 @@
         </Button>
       </div>
     </Modal>
+    <Modal v-if="modal2_delay" v-model="modal2" :title="infoTitle" width="900px">
+      <p>项目描述：{{data2.projectDescription}}</p>
+      <br>
+      <p>业务员手机：{{data2.principalPhone}}</p>
+      <br>
+      <p>项目大类：{{data2.projectType}}</p>
+      <br>
+      <p>经费额度：{{data2.maxMoney}}元</p>
+      <br>
+      申报人类型：<p style="display: inline-flex;" v-for="item in data2.applicantType">{{item}}&nbsp;</p>
+      <br>
+      <br>
+      专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
+      <br>
+      <br>
+      <p>是否提交中期报告：{{(data2.interimReport.isReportActivated===true)?'是':'否'}}</p>
+      <br>
+      <p>中期报告开始时间：{{(data2.interimReport.startTime===null)?'无':data2.interimReport.startTime}}</p>
+      <br>
+      <p>中期报告截止时间：{{(data2.interimReport.deadline===null)?'无':data2.interimReport.deadline}}</p>
+      <br>
+      <p>是否提交结题报告：{{(data2.concludingReport.isReportActivated===true)?'是':'否'}}</p>
+      <br>
+      <p>结题报告开始时间：{{(data2.concludingReport.startTime===null)?'无':data2.concludingReport.startTime}}</p>
+      <br>
+      <p>结题报告截止时间：{{(data2.concludingReport.deadline===null)?'无':data2.concludingReport.deadline}}</p>
+      <br>
+      <p>项目成员(默认第一个为项目负责人)：</p>
+      <br>
+      <Table :columns="columns2" :data="data3.members" size="small" stripe></Table>
+      <br>
+      <p>项目申请书：<a @click="downloadProjectMaterial(data3.applicationAddress)">点击下载</a></p>
+      <br>
+    </Modal>
   </div>
 </template>
 
@@ -54,14 +88,25 @@
 
   export default {
     name: 'reqProject',
+    watch: {
+      modal2(val) {
+        if (val) {
+          this.modal2_delay = true
+        }
+      }
+    },
     data() {
       return {
         loading: false,
         model1: false,
+        modal2: false,
+        modal2_delay: false,
         accept: false,
         refuse: false,
         judge: false,
         projectIndex: 0,
+        index: 0,
+        infoTitle: null,
         refuseComment: '',
         columns: [
           {
@@ -75,23 +120,13 @@
             align: 'center'
           },
           {
-            title: '项目简介',
+            title: '申请截止日期',
+            key: 'applicationDeadLine',
+            align: 'center'
+          },
+          {
+            title: '项目描述',
             key: 'description',
-            align: 'center'
-          },
-          {
-            title: '负责人学/工号',
-            key: 'userId',
-            align: 'center'
-          },
-          {
-            title: '负责人姓名',
-            key: 'userName',
-            align: 'center'
-          },
-          {
-            title: '负责人部门',
-            key: 'department',
             align: 'center'
           },
           {
@@ -109,7 +144,7 @@
                       this.download(params.index)
                     }
                   }
-                }, '下载')
+                }, '项目申请书')
               ]);
             }
           },
@@ -119,6 +154,17 @@
             align: 'center',
             render: (h, params) => {
               return h('div', [
+                h('Button', {
+                  props: {type: 'info'},
+                  style: {
+                    marginRight: '10px'
+                  },
+                  on: {
+                    click: () => {
+                      this.details(params.index);
+                    }
+                  },
+                }, '详情'),
                 h('Button', {
                   props: {
                     type: 'primary'
@@ -134,7 +180,36 @@
             }
           }
         ],
-        data1: []
+        columns2: [
+          {
+            title: '姓名',
+            key: 'userName',
+            align: 'center'
+          },
+          {
+            title: '学号',
+            key: 'userId',
+            align: 'center'
+          },
+          {
+            title: '学院',
+            key: 'department',
+            align: 'center'
+          },
+          {
+            title: '电话',
+            key: 'phone',
+            align: 'center'
+          },
+          {
+            title: '邮箱',
+            key: 'mail',
+            align: 'center'
+          }
+        ],
+        data1: [],
+        data2: [],
+        data3: []
       };
     },
     mounted() {
@@ -173,15 +248,15 @@
         const that = this
         var filename = this.data1[index].uploadAddress.split('---')[1]  //---后为文件名
         axios({
-          url: apiRoot+'/file/download?fileAddress='+this.data1[index].uploadAddress,
+          url: apiRoot + '/file/download?fileAddress=' + this.data1[index].uploadAddress,
           method: 'get',
-          headers:{Authorization: localStorage.getItem('token')},
-          responseType:'blob'
-        }).then((res)=>{
-          if(res.status === 200) {
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
             download(res.data, filename, "text/plain")
             this.$Message.success("下载成功！")
-          }else {
+          } else {
             this.$Message.error("下载失败！")
           }
         }).catch(() => {
@@ -199,21 +274,61 @@
           url: apiRoot + '/leader/JudgeApplication',
           method: 'post',
           data: {
-            projectApplicationId: this.data1[index].projectApplicationId,
+            projectApplicationId: this.data1[index].projectId,
             judge: this.judge,
             msg: this.refuseComment
           }
-        }).then((res)=>{
-          if(res.data.code==='SUCCESS') {
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
             this.$Message.success("审核成功！");
             this.model1 = false;
             this.cancel();
             this.data1.splice(index, 1);
-          }else {
+          } else {
             this.$Message.error(res.data.message);
           }
-        }).catch(()=>{
+        }).catch(() => {
           this.$Message.error('审核失败，请检查网络连接！');
+        })
+      },
+      async details(index) {
+        const a = axios({
+          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.infoTitle = res.data.data.projectName
+            this.data2 = res.data.data
+          }
+        })
+        const b = axios({
+          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectId,
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.data3 = res.data.data
+          }
+        })
+        await Promise.all([a, b]);
+        this.modal2 = true
+      },
+      downloadProjectMaterial(address) {
+        const that = this
+        var filename = address.split('---')[1]
+        axios({
+          url: address,
+          method: 'get',
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
+            download(res.data, filename, 'text/plain');
+            this.$Message.success('下载成功！');
+          } else {
+            this.$Message.error('下载失败！');
+          }
+        }).catch(() => {
+          this.$Message.error('下载失败，请检查网络连接！')
         })
       },
       cancel() {

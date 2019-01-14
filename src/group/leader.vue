@@ -24,19 +24,14 @@
             ref="menu"
             :key="activeKey"
           >
-            <MenuItem
-              name="allProject">
-              <Icon type="md-menu"/>
-              &nbsp;所有项目
-            </MenuItem>
             <Submenu name="exProject">
               <template slot="title">
                 <Icon type="ios-stopwatch-outline"/>
-                待审核项目
+                待审核的
               </template>
-              <MenuItem name="exProject-projectCategory">
-                项目大类
-              </MenuItem>
+              <!--<MenuItem name="exProject-projectCategory">-->
+                <!--项目大类-->
+              <!--</MenuItem>-->
               <MenuItem
                 name="exProject-reqProject"
               >项目申请
@@ -49,7 +44,7 @@
             <Submenu name="Project">
               <template slot="title">
                 <Icon type="ios-archive-outline"/>
-                我管理的项目
+                我管理的
               </template>
               <MenuItem
                 name="Project-projectList"
@@ -92,7 +87,7 @@
                   我的信息
                 </DropdownItem>
                 <DropdownItem divided @click.native="Logout">
-                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17" />
+                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17"/>
                   登出
                 </DropdownItem>
               </DropdownMenu>
@@ -204,7 +199,7 @@
           ).innerHTML;
         });
       },
-      Logout(){
+      Logout() {
         localStorage.clear()
         this.$router.push('/login')
       }
