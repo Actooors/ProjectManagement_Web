@@ -6,6 +6,28 @@
       </Button>
     </ButtonGroup>
     <Table :columns="columns1" :data="data1" border class="table" size="large" :loading="loading" stripe></Table>
+    <Modal
+      @on-cancel="cancel"
+      maxHeight="800"
+      ref="model"
+      title="驳回理由"
+      v-model="modal1"
+      width="700">
+      <Form :label-width="180" style="margin-right: 25px">
+        <div class="from_middle">
+          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">
+            驳回理由填写（申请者可以重新修改）</p>
+          <Input :autosize="{minRows: 4,maxRows: 10}" placeholder="请填写驳回理由" type="textarea"
+                 v-model="reason"></Input>
+        </div>
+      </Form>
+      <div slot="footer">
+        <Button @click="confirm" style="margin-top: 20px;margin-left: 20px;width:100px"
+                type="primary">
+          完成
+        </Button>
+      </div>
+    </Modal>
     <Modal v-if="modal2_delay" v-model="modal2" :title="infoTitle" width="900px">
       <p>项目描述：{{data2.projectDescription}}</p>
       <br>
@@ -61,10 +83,12 @@
       return {
         loading: false,
         show: false,
+        modal1: false,
         modal2: false,
         modal2_delay: false,
         infoTitle: null,
         index: 0,
+        reason: '',
         columns1: [
           {
             title: '项目名称',
@@ -117,29 +141,43 @@
             title: '操作',
             key: 'content',
             align: 'center',
+            width: 300,
             render: (h, params) => {
               return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'info'
-                  },
-                  style: {
-                    marginRight: '10px'
-                  },
-                  on: {
-                    click: () => {
-                      this.details(params.index);
+                  h('Button', {
+                    props: {
+                      type: 'info'
+                    },
+                    style: {
+                      marginRight: '10px'
+                    },
+                    on: {
+                      click: () => {
+                        this.details(params.index);
+                      }
                     }
-                  }
-                }, '详情'),
-                h('Button', {
-                  props: {type: 'warning'},
-                  on: {
-                    click: () => {
-                      this.confirm()
+                  }, '详情'),
+                  h('Button', {
+                    props: {type: 'warning'},
+                    style: {
+                      marginRight: '10px'
+                    },
+                    on: {
+                      click: () => {
+                        this.pass(params.index)
+                      }
+                    },
+                  }, '跳过专家审核'),
+                  h('Button', {
+                    props: {type: 'error'},
+                    on: {
+                      click: () => {
+                        this.reject(params.index)
+                      }
                     }
-                  },
-                }, '跳过专家审核')])
+                  }, '驳回')
+                ]
+              )
             }
           }
         ],
@@ -202,17 +240,64 @@
       Refresh() {
         this.initData('刷新成功!');
       },
-      confirm() {
+      cancel() {
+        this.modal1 = false
+      },
+      pass(index) {
         this.$Modal.confirm({
           title: '请再次确认',
-          content: '<p>请确认是否将该项目跳过专家审核</p>',
+          content: '您确定跳过项目 ' + this.data1[index].projectName + ' 的专家审核阶段吗？',
+          okText: '确定',
+          cancelText: '再想想',
           onOk: () => {
-            this.$Message.info('已经成功跳过');
-          },
-          onCancel: () => {
-            this.$Message.info('已经取消操作');
+            axios({
+              url: apiRoot + '/admin/expertTrial',
+              method: 'post',
+              data: {
+                applicationId: this.data1[index].projectId,
+                judge: true,
+              }
+            }).then((res) => {
+              if (res.data.code === 'SUCCESS') {
+                this.data1.splice(index, 1)
+                this.$Message.success('该项目已通过专家审核阶段！');
+              } else {
+                this.$Message.error(res.data.message);
+              }
+            })
           }
-        });
+        })
+      },
+      reject(index) {
+        this.$Modal.confirm({
+          title: '请再次确认',
+          content: '您确定驳回项目 ' + this.data1[index].projectName + ' 吗？',
+          okText: '确定',
+          cancelText: '再想想',
+          onOk: () => {
+            this.modal1 = true
+            this.index = index
+          }
+        })
+      },
+      confirm() {
+        axios({
+          url: apiRoot + '/admin/expertTrial',
+          method: 'post',
+          data: {
+            applicationId: this.data1[this.index].projectId,
+            judge: false,
+            msg: '项目处于何时被驳回：专家审核阶段\n操作人：' + localStorage.getItem('username') + '\n驳回理由：' + this.reason,
+          }
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.data1.splice(this.index, 1)
+            this.$Message.success('成功将该项目驳回！');
+          } else {
+            this.$Message.error(res.data.message);
+          }
+          this.modal1 = false
+        })
       },
       async details(index) {
         const a = axios({

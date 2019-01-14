@@ -5,7 +5,7 @@
         刷新
       </Button>
     </ButtonGroup>
-    <Table :columns="columns1" :data="data1" border class="table" size="large" stripe></Table>
+    <Table :columns="columns1" :data="data1" border class="table" size="large" :loading="loading" stripe></Table>
     <Modal
       :mask-closable="false"
       @on-cancel="cancel"
@@ -135,13 +135,26 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 500
+          },
+          {
+            title: '项目类别',
+            key: 'projectCategoryName',
+            align: 'center',
+          },
+          {
+            title: '申请截止日期',
+            key: 'applicationDeadLine',
+            align: 'center'
+          },
+          {
+            title: '项目描述',
+            key: 'description',
+            align: 'center',
           },
           {
             title: '下载申请书',
             key: 'downloadReport',
             align: 'center',
-            width: 200,
             render: (h, params) => {
               return h('div', [h('Button', {
                 props: {type: 'info'},
@@ -150,11 +163,11 @@
                     this.downloadEndReport(params.index)
                   }
                 },
-              }, '中期报告')]);
+              }, '项目申请书')]);
             }
           },
           {
-            title: '专家审核',
+            title: '其他专家评审结果',
             key: 'chooseExpert',
             align: 'center',
             render: (h, params) => {
@@ -174,83 +187,57 @@
                       }
                     },
                   },
-                  '查看专家评审结果'
+                  '点击查看'
                 )])
             }
           },
           {
-            title: '审核结果',
+            title: '操作',
             key: 'content',
             align: 'center',
+            width: 250,
             render: (h, params) => {
-              return h('div', [h('Button', {
-                props: {type: 'primary'},
-                on: {
-                  click: () => {
-                    this.declare(params.index)
-                  }
-                },
-              }, '同意并进行会评'), h('Button', {
-                props: {type: 'primary'},
-                style: {marginLeft: '28px'},
-                on: {
-                  click: () => {
-                    this.declare1(params.index)
-                  }
-                },
-              }, '驳回申请')]);
+              return h('div', [
+                  h('Button', {
+                    props: {type: 'info'},
+                    style: {marginRight: '10px'},
+                    on: {
+                      click: () => {
+                        this.details(params.index)
+                      }
+                    }
+                  }, '详情'),
+                  h('Button', {
+                    props: {type: 'success'},
+                    style: {marginRight: '10px'},
+                    on: {
+                      click: () => {
+                        this.declare(params.index)
+                      }
+                    },
+                  }, '同意'), h('Button', {
+                    props: {type: 'error'},
+                    on: {
+                      click: () => {
+                        this.declare1(params.index)
+                      }
+                    },
+                  }, '驳回')
+                ]
+              );
             }
           }
         ],
-        data1:
-          [
-            {
-              projectName: '项目1',
-              deadLine: '2019-01-01',
-              introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-            },
-            {
-              projectName: '项目2',
-              deadLine: '2019-01-01',
-              introduce: '本项目为个人消费借款项目，对接的资产是由多笔个人借款组成的资产包。资产提供方：该项目由国内某知名消费金融科技公司提供，累计放款金额过百亿，公司信誉良好，出借人可安心出借。'
-            }
-          ],
+        data1: [],
       }
     },
-    /*mounted() {
-       this.initData()
-        this.initInfo()
-      },*/
+    mounted() {
+      this.initData('初始化成功！')
+    },
     methods: {
-      /*initInfo() {
-        axios({
-          url: apiRoot + '/user/userInfo/1',
-          method: 'get',
-        }).then((res) => {
-          if (res.data.code === 'SUCCESS') {
-            this.official.department = res.data.data.department;
-            this.official.phone = res.data.data.phone;
-            this.official.mail = res.data.data.mail;
-          }
-        }).catch(() => {
-          this.$Message.error("请检查网络!")
-        })
-        console.log('localStorage', localStorage)
-        this.official.userId = localStorage.getItem('userid');
-        this.official.userName = localStorage.getItem('username');
-        console.log('official:', this.official)
-      },*/
       result(index) {
         this.modal3 = true;
-        this.$nextTick(() => {
-          this.$forceUpdate(this.$refs.modal);
-        })
       },
-      setListCheck: function (idx) {
-        var check = this.list[idx].check;
-        this.list[idx].check = check === true ? false : true;
-      },
-
       declare(index) {
         this.modal2 = true;
         this.$nextTick(() => {
@@ -266,12 +253,14 @@
       cancel() {
         this.modal1 = false
       },
+      async details(index) {
+
+      },
       downloadEndReport() {
         this.$Message.info('点击下载结题报告')
       },
       Refresh() {
-        this.initData();
-        this.$Message.success('刷新成功!')
+        this.initData('刷新成功！');
       },
       confirm() {
         this.$Modal.confirm({
@@ -285,15 +274,15 @@
           }
         });
       },
-
-      initData() {
+      initData(msg) {
         this.loading = true
         axios({
-          url: apiRoot + '/principal/AllAviProjectCategory',
+          url: apiRoot + '/admin/reviewPhase/3',
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             this.data1 = res.data.data;
+            this.$Message.success(msg)
             this.loading = false;
           } else {
             this.$Message.error('初始化失败！')
@@ -305,9 +294,6 @@
         })
       },
     }
-    /*created() {
-      this.initData()
-    }*/
   }
 </script>
 

@@ -7,7 +7,6 @@
     </ButtonGroup>
     <Table :columns="columns1" :data="data1" border :loading="loading" class="table" size="large" stripe></Table>
     <Modal
-      :mask-closable="false"
       @on-cancel="cancel"
       maxHeight="800"
       ref="model"
