@@ -29,7 +29,7 @@
         </Button>
       </div>
     </Modal>
-    <Modal v-if="modal2_delay" v-model="modal2" :title="infoTitle" width="600px">
+    <Modal v-if="modal2_delay" v-model="modal2" :title="infoTitle" width="900px">
       <p>项目描述：{{data2.projectDescription}}</p>
       <br>
       <p>业务员手机：{{data2.principalPhone}}</p>
@@ -59,6 +59,9 @@
       <p>项目成员(默认第一个为项目负责人)：</p>
       <br>
       <Table :columns="columns2" :data="data3.members" size="small" stripe></Table>
+      <br>
+      <p>项目申请书：<a @click="downloadProjectMaterial(data3.applicationAddress)">点击下载</a></p>
+      <br>
     </Modal>
   </div>
 </template>
@@ -193,12 +196,8 @@
       this.initData('初始化成功！')
     },
     methods: {
-      setListCheck: function (idx) {
-        var check = this.list[idx].check;
-        this.list[idx].check = check === true ? false : true;
-      },
-      details(index) {
-        axios({
+      async details(index) {
+        const a = axios({
           url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
           method: 'get'
         }).then((res) => {
@@ -207,18 +206,15 @@
             this.data2 = res.data.data
           }
         })
-        console.log(this.data1[index])
-        setTimeout(() => {
-        }, 2000)
-        axios({
+        const b = axios({
           url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectId,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            console.log(res.data)
             this.data3 = res.data.data
           }
         })
+        await Promise.all([a, b]);
         this.modal2 = true
       },
       pass(index) {
@@ -322,6 +318,25 @@
           this.loading = false;
         })
       },
+      downloadProjectMaterial(address) {
+        const that = this
+        var filename = address.split('---')[1]
+        axios({
+          url: address,
+          method: 'get',
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
+            download(res.data, filename, 'text/plain');
+            this.$Message.success('下载成功！');
+          } else {
+            this.$Message.error('下载失败！');
+          }
+        }).catch(() => {
+          this.$Message.error('下载失败，请检查网络连接！')
+        })
+      }
     }
   }
 </script>
