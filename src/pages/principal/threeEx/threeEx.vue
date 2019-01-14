@@ -215,7 +215,8 @@
                         this.declare(params.index)
                       }
                     },
-                  }, '同意'), h('Button', {
+                  }, '同意'),
+                  h('Button', {
                     props: {type: 'error'},
                     on: {
                       click: () => {
