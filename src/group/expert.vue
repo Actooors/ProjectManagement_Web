@@ -53,7 +53,7 @@
             class="select"
             trigger="custom"
           >
-            <Avatar icon="ios-person" style="margin-bottom: 5px;margin-right: 5px;"/>
+            <Avatar style="margin-bottom: 5px;margin-right: 5px;color: #1856c6;background-color: #93d4fd">expert</Avatar>
             <Dropdown :visible="visible">
               <a @click="handleOpen">
                 {{this.UserName}}

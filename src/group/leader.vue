@@ -75,7 +75,7 @@
             class="select"
             trigger="custom"
           >
-            <Avatar icon="ios-person" style="margin-bottom: 5px;margin-right: 5px;"/>
+            <Avatar style="margin-bottom: 5px;margin-right: 5px;color: #49a000;background-color: #a9fd99">leader</Avatar>
             <Dropdown :visible="visible">
               <a @click="handleOpen">
                 {{this.UserName}}
