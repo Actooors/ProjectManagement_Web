@@ -141,7 +141,7 @@
             align: 'center'
           },
           {
-            title: '项目申请书',
+            title: '下载申请书',
             key: 'ProjectFinalApply',
             align: 'center',
             render: (h, params) => {
@@ -233,7 +233,7 @@
       initData(str) {
         this.loading = true
         axios({
-          url: apiRoot + '/leader/unjudgeApplicatetion',
+          url: apiRoot + '/leader/unjudgeApplicatetion/1',
           mothod: 'get'
         }).then((res) => {
           console.log(res.data)
