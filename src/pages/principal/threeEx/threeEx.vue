@@ -21,13 +21,13 @@
       专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
       <br>
       <br>
-      <p>是否提交中期报告：{{(data2.interimReport.isReportActivated === true) ? '是' : '否'}}</p>
+      <p>是否提交中期报告：{{(data2.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a v-if="data2.interimReport.isReportActivated" @click="downloadProjectMaterial(data2.interimReport.reportTemplateAddress)">点击下载</a></p>
       <br>
       <p>中期报告开始时间：{{(data2.interimReport.startTime === null) ? '无' : data2.interimReport.startTime}}</p>
       <br>
       <p>中期报告截止时间：{{(data2.interimReport.deadline === null) ? '无' : data2.interimReport.deadline}}</p>
       <br>
-      <p>是否提交结题报告：{{(data2.concludingReport.isReportActivated === true) ? '是' : '否'}}</p>
+      <p>是否提交结题报告：{{(data2.concludingReport.isReportActivated === true) ? '是 ' : '否'}}<a v-if="data2.concludingReport.isReportActivated" @click="downloadProjectMaterial(data2.concludingReport.reportTemplateAddress)">点击下载</a></p>
       <br>
       <p>结题报告开始时间：{{(data2.concludingReport.startTime === null) ? '无' : data2.concludingReport.startTime}}</p>
       <br>
