@@ -108,29 +108,9 @@
             }
           }
         ],
-        data1: [
-          {
-            projectName: '项目1',
-            status: '未终审',
-            type: '理工'
-          },
-          {
-            projectName: '项目2',
-            status: '未终审',
-            type: '理工'
-          },
-          {
-            projectName: '项目3',
-            status: '未终审',
-            type: '人文'
-          },
-          {
-            projectName: '项目4',
-            status: '已通过',
-            type: 'CES'
-          }
-        ]
-
+        data1: [],
+        data2: [],
+        data3: []
       };
     },
     methods: {

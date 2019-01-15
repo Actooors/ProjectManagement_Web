@@ -60,17 +60,21 @@
       专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
       <br>
       <br>
-      <p>是否提交中期报告：{{(data2.interimReport.isReportActivated===true)?'是 ':'否'}}<a v-if="data2.interimReport.isReportActivated">点击下载</a></p>
+      <p>是否可提交中期报告：{{(data2.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a
+        v-if="data2.interimReport.isReportActivated"
+        @click="downloadProjectMaterial(data2.interimReport.reportTemplateAddress)">点击下载模板</a></p>
       <br>
-      <p>中期报告开始时间：{{(data2.interimReport.startTime===null)?'无':data2.interimReport.startTime}}</p>
+      <p>中期报告开始时间：{{(data2.interimReport.startTime === null) ? '无' : data2.interimReport.startTime}}</p>
       <br>
-      <p>中期报告截止时间：{{(data2.interimReport.deadline===null)?'无':data2.interimReport.deadline}}</p>
+      <p>中期报告截止时间：{{(data2.interimReport.deadline === null) ? '无' : data2.interimReport.deadline}}</p>
       <br>
-      <p>是否提交结题报告：{{(data2.concludingReport.isReportActivated===true)?'是 ':'否'}}<a v-if="data2.concludingReport.isReportActivated">点击下载</a></p>
+      <p>是否可提交结题报告：{{(data2.concludingReport.isReportActivated === true) ? '是 ' : '否'}}<a
+        v-if="data2.concludingReport.isReportActivated"
+        @click="downloadProjectMaterial(data2.concludingReport.reportTemplateAddress)">点击下载模板</a></p>
       <br>
-      <p>结题报告开始时间：{{(data2.concludingReport.startTime===null)?'无':data2.concludingReport.startTime}}</p>
+      <p>结题报告开始时间：{{(data2.concludingReport.startTime === null) ? '无' : data2.concludingReport.startTime}}</p>
       <br>
-      <p>结题报告截止时间：{{(data2.concludingReport.deadline===null)?'无':data2.concludingReport.deadline}}</p>
+      <p>结题报告截止时间：{{(data2.concludingReport.deadline === null) ? '无' : data2.concludingReport.deadline}}</p>
       <br>
       <p>项目成员(默认第一个为项目负责人)：</p>
       <br>
@@ -78,6 +82,11 @@
       <br>
       <p>项目申请书：<a @click="downloadProjectMaterial(data3.applicationAddress)">点击下载</a></p>
       <br>
+      <p v-if="data3.interimAddress!==null">项目中期报告：<a @click="downloadProjectMaterial(data3.interimAddress)">点击下载</a>
+      </p>
+      <br v-if="data3.concludingAddress!==null">
+      <p v-if="data3.concludingAddress!==null">项目结题报告：<a
+        @click="downloadProjectMaterial(data3.concludingAddress)">点击下载</a></p>
     </Modal>
   </div>
 </template>
@@ -313,6 +322,7 @@
         this.modal2 = true
       },
       downloadProjectMaterial(address) {
+        console.log(address,'!')
         const that = this
         var filename = address.split('---')[1]
         axios({

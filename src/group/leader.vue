@@ -34,11 +34,11 @@
               <!--</MenuItem>-->
               <MenuItem
                 name="exProject-reqProject"
-              >项目申请
+              >项目初审
               </MenuItem>
               <MenuItem
                 name="exProject-endProject"
-              >项目结题
+              >项目终审
               </MenuItem>
             </Submenu>
             <Submenu name="Project">
