@@ -102,47 +102,28 @@
       title="查看专家评审结果"
       v-model="modal5"
       width="650">
-      <Collapse accordion v-model="value3">
-        <Panel name="1">
-          专家1
+      <Spin size="large" fix v-if="spinShow"></Spin>
+      <Collapse>
+        <Panel v-for="item in comment.expertOpinionInfoList" :key="item.index">
+          {{item.expertName}}
           <div slot="content">
-            很有创意
-            <Collapse accordion v-model="value4">
-              <Panel name="1-1">
-                评审分数
-                <p slot="content">99</p>
-              </Panel>
-              <Panel name="1-2">
-                优先级
-                <p slot="content">支持</p>
-              </Panel>
-            </Collapse>
-          </div>
-        </Panel>
-        <Panel name="2">
-          专家2
-          <p slot="content">未进行评审</p>
-        </Panel>
-        <Panel name="3">
-          专家3
-          <div slot="content">很糟糕
-
-            <Collapse accordion v-model="value4">
-              <Panel name="1-1">
-                评审分数
-                <p slot="content">10</p>
-              </Panel>
-              <Panel name="1-2">
-                优先级
-                <p slot="content">反对</p>
-              </Panel>
-            </Collapse>
+            <Tag color="purple">完成审核</Tag>
+            <span>{{item.isFinished===1?'是':'否'}}</span>
+            <br v-if="item.isFinished===1">
+            <Tag color="green" v-if="item.isFinished===1">专家评分</Tag>
+            <span v-if="item.isFinished===1">{{ item.score }}分</span>
+            <br v-if="item.isFinished===1">
+            <Tag color="gold" v-if="item.isFinished===1">专家评语</Tag>
+            <span v-if="item.isFinished===1">{{ item.reviewOpinion }}</span>
+            <br v-if="item.isFinished===1">
+            <Tag color="blue" v-if="item.isFinished===1">最终意见</Tag>
+            <span
+              v-if="item.isFinished===1">{{((item.finalOpinion===1)?'优先支持':(item.finalOpinion===2))?'支持':'反对'}}</span>
           </div>
         </Panel>
       </Collapse>
       <div slot="footer">
-        <Button @click="this.modal5=false" style="margin-top: 20px;margin-left: 20px;width:100px"
-                type="primary">
+        <Button @click="modal5=false" type="primary">
           确定
         </Button>
       </div>
@@ -173,14 +154,12 @@
         modal3: false,
         modal4: false,
         modal5: false,
-        value1: 1,
-        value3: '1',
-        value4: '1-1',
         priority: '',
         passReason: '',
         rejectReason: '',
         infoTitle: null,
         index: 0,
+        spinShow: false,
         columns1: [
           {
             title: '项目名称',
@@ -233,6 +212,7 @@
                     },
                     on: {
                       click: () => {
+                        this.initComment(params.index)
                         this.modal5 = true
                       }
                     },
@@ -308,7 +288,8 @@
         ],
         data1: [],
         data2: [],
-        data3: []
+        data3: [],
+        comment: [],
       }
     },
     mounted() {
@@ -386,7 +367,7 @@
       },
       async details(index) {
         const a = axios({
-          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
+          url: apiRoot + 'g' + this.data1[index].projectCategoryId,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
@@ -466,6 +447,24 @@
           this.loading = false;
         })
       },
+      initComment(index) {
+        this.spinShow = true
+        axios({
+          url: apiRoot + '/admin/project/' + this.data1[index].projectId,
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
+            this.comment = res.data.data;
+          } else {
+            this.$Message.error(res.data.message)
+          }
+          this.spinShow = false
+        }).catch(() => {
+          this.$Message.error("查看其他专家评审结果失败，请检查网络连接！")
+          this.spinShow = false
+        })
+      }
     }
   }
 </script>
