@@ -78,12 +78,12 @@
     </Modal>
     <Modal v-model="modal4" title="开通提交结题报告" @on-ok="ok2(index)" @on-cancel="cancel2(index)">
       <Form ref="concludingReport" :model="concludingReport" :rules="concludingReportRule">
-        <FormItem label="中期报告开始时间" prop="startTime">
+        <FormItem label="结题报告开始时间" prop="startTime">
           <DatePicker type="datetime" :value="concludingReport.startTime" v-model="concludingReport.startTime"
                       format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                       placeholder="选择开始时间"></DatePicker>
         </FormItem>
-        <FormItem label="中期报告截止时间" prop="startTime">
+        <FormItem label="结题报告截止时间" prop="startTime">
           <DatePicker type="datetime" :value="concludingReport.endTime" v-model="concludingReport.endTime"
                       format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                       placeholder="选择截止时间"></DatePicker>
@@ -118,6 +118,7 @@
 
 <script>
   import axios from 'axios'
+
 
   export default {
     name: "categoryList",
@@ -338,8 +339,8 @@
                 projectCategoryId: this.data1[index].projectCategoryId,
                 type: 1,
                 reportAddress: this.interimReport.uploadAddress,
-                startTime: this.interimReport.startTime,
-                deadline: this.interimReport.endTime
+                startTime: this.interimReport.startTime.Format("yyyy-MM-dd hh:mm"),
+                deadline: this.interimReport.endTime.Format("yyyy-MM-dd hh:mm")
               }
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
@@ -347,7 +348,9 @@
                 this.data1[index].interimReport.startTime = res.data.startTime;
                 this.data1[index].interimReport.deadline = res.data.endTime;
                 this.$Message.success('开通中期报告成功！');
+                console.log(this.data1[index].interimReport)
                 this.$refs['interimReport'].resetFields()
+                console.log('!! ')
                 this.modal3 = false;
               } else {
                 this.$Message.error('开通失败！')
@@ -372,15 +375,16 @@
                 projectCategoryId: this.data1[index].projectCategoryId,
                 type: 2,
                 reportAddress: this.concludingReport.uploadAddress,
-                startTime: this.concludingReport.startTime,
-                deadline: this.concludingReport.endTime
+                startTime: this.concludingReport.startTime.Format("yyyy-MM-dd hh:mm"),
+                deadline: this.concludingReport.endTime.Format("yyyy-MM-dd hh:mm")
               }
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
                 this.data1[index].concludingReport.isReportActivated = true;
                 this.data1[index].concludingReport.startTime = res.data.startTime;
                 this.data1[index].concludingReport.deadline = res.data.endTime;
-                this.$Message.success('开通中期报告成功！');
+                console.log(this.data1[index].concludingReport)
+                this.$Message.success('开通结题报告成功！');
                 this.$refs['concludingReport'].resetFields()
                 this.modal4 = false;
               } else {

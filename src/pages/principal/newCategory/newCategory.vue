@@ -62,7 +62,7 @@
                       placeholder="选择项目截止时间"></DatePicker>
         </FormItem>
         <FormItem label="经费额度" prop="maxMoney">
-          <Input-number :max="100000" :min="100" v-model="projectMes.maxMoney"
+          <Input-number v-model="projectMes.maxMoney"
                         :value="projectMes.maxMoney"></Input-number>
         </FormItem>
         <FormItem label="上传模板" prop="uploadAddress">
