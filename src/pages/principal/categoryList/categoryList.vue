@@ -345,6 +345,7 @@
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
                 this.data1[index].interimReport.isReportActivated = true;
+                //TODO startTime deadline undifined??
                 this.data1[index].interimReport.startTime = res.data.startTime;
                 this.data1[index].interimReport.deadline = res.data.endTime;
                 this.$Message.success('开通中期报告成功！');
@@ -381,6 +382,7 @@
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
                 this.data1[index].concludingReport.isReportActivated = true;
+                //TODO startTime deadline undifined??
                 this.data1[index].concludingReport.startTime = res.data.startTime;
                 this.data1[index].concludingReport.deadline = res.data.endTime;
                 console.log(this.data1[index].concludingReport)

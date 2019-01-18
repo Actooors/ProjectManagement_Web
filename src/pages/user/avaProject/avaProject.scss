@@ -36,7 +36,7 @@
     height: 600px;
     max-height: 600px;
     overflow-y: scroll;
-    .isMeeting{
+    .isMeeting {
       margin-top: 20px;
       text-align: center;
     }
@@ -54,13 +54,17 @@
     height: 600px;
     max-height: 600px;
     position: relative;
-    .description{
+    .projectTitle {
       margin: 40px auto;
-      width:60%;
+      width: 60%;
+    }
+    .description {
+      margin: 40px auto;
+      width: 60%;
     }
     .upload {
       margin: 40px auto;
-      width:60%;
+      width: 60%;
     }
     .allSuccess {
       display: flex;

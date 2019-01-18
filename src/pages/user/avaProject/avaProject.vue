@@ -183,6 +183,10 @@
         <CarouselItem>
           <div class="step3">
             <div class="content">
+              <div class="projectTitle">
+                项目名称：
+                <Input v-model="projectTitle" :rows="1" placeholder="请输入项目名称" />
+              </div>
               <div class="description">
                 对该项目进行简单描述(200字以内):
                 <Input v-model="description" type="textarea" :rows="4" placeholder="对该项目进行简单描述(200字以内)"
@@ -252,6 +256,7 @@
 
         projectId: '',       //项目id
         projectName: '',     //项目名称
+        projectTitle: '',     //项目题目
         description: '',    //项目简介
         uploadAddress: '',  //申报书上传之后的地址
         isMeeting: 'false', //是否上会

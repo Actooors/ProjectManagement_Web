@@ -16,13 +16,13 @@
         <Modal
           v-model="modal1"
           title="上传中期报告"
-          @on-ok="uploadMiddleReport"
+          @on-ok="uploadReport(index,1)"
         >
           <Upload
             type="drag"
             :headers="uploadHeaders"
-            :on-success="uploadSuccess"
-            :on-error="uploadError"
+            :on-success="uploadSuccess1"
+            :on-error="uploadError1"
             action="http://129.204.71.113:8888/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
@@ -34,6 +34,23 @@
       <TabPane label="待提交结题报告" name="3" icon="md-document">
         <Table stripe border :loading="loading" :columns="columns3" :data="data3" class="table" height="750"
                size="large"></Table>
+        <Modal
+          v-model="modal2"
+          title="上传结题报告"
+          @on-ok="uploadReport(index,2)"
+        >
+          <Upload
+            type="drag"
+            :headers="uploadHeaders"
+            :on-success="uploadSuccess2"
+            :on-error="uploadError2"
+            action="http://129.204.71.113:8888/api/file/upload">
+            <div style="padding: 20px 0">
+              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+              <p>点击或拖拽文件以上传</p>
+            </div>
+          </Upload>
+        </Modal>
       </TabPane>
       <TabPane label="已结项的项目" name="4" icon="md-checkbox">
         <Table stripe border :loading="loading" :columns="columns4" :data="data4" class="table" height="750"
@@ -45,6 +62,7 @@
 
 <script>
   import axios from 'axios'
+  import download from '../../../assets/js/download'
 
   export default {
     name: "myProject",
@@ -52,8 +70,8 @@
       return {
         loading: false,
         modal1: false,
-        data2index: 0,
-        data3index: 0,
+        modal2: false,
+        index: 0,
         middleReportAddress: '',
         lastReportAddress: '',
         uploadHeaders: {
@@ -64,13 +82,11 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 250,
           },
           {
             title: '立项日期',
             key: 'time',
             align: 'center',
-            width: 200,
           },
           {
             title: '项目简介',
@@ -80,7 +96,6 @@
           {
             title: '项目状态',
             key: 'reviewPhase',
-            width: 100,
             align: 'center'
           },
           {
@@ -112,13 +127,16 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 250,
           },
           {
             title: '提交截止日期',
             key: 'time',
             align: 'center',
-            width: 200,
+          },
+          {
+            title: '提交状态',
+            key: 'isOverTime',
+            align: 'center'
           },
           {
             title: '项目简介',
@@ -128,7 +146,6 @@
           {
             title: '项目状态',
             key: 'reviewPhase',
-            width: 100,
             align: 'center'
           },
           {
@@ -147,10 +164,10 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击查看详情')
+                      this.download(params.index, 1)
                     }
                   }
-                }, '详情'),
+                }, '下载模板'),
                 h('Button', {
                   props: {
                     type: 'success'
@@ -158,10 +175,10 @@
                   on: {
                     click: () => {
                       this.modal1 = true;
-                      this.data2index = params.index;
+                      this.index = params.index;
                     }
                   }
-                }, '上传中期报告')
+                }, '上传')
               ])
             }
           }
@@ -171,13 +188,16 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 250,
           },
           {
             title: '提交截止日期',
             key: 'time',
             align: 'center',
-            width: 200,
+          },
+          {
+            title: '提交状态',
+            key: 'isOverTime',
+            align: 'center'
           },
           {
             title: '项目简介',
@@ -187,7 +207,6 @@
           {
             title: '项目状态',
             key: 'reviewPhase',
-            width: 100,
             align: 'center'
           },
           {
@@ -206,20 +225,21 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击查看详情')
+                      this.download(params.index, 2)
                     }
                   }
-                }, '详情'),
+                }, '下载模板'),
                 h('Button', {
                   props: {
                     type: 'success'
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击上传结题报告')
+                      this.modal2 = true
+                      this.index = params.index
                     }
                   }
-                }, '上传结题报告')
+                }, '上传')
               ])
             }
           }
@@ -229,13 +249,11 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 250,
           },
           {
             title: '结项时间',
             key: 'time',
             align: 'center',
-            width: 200,
           },
           {
             title: '项目简介',
@@ -245,7 +263,6 @@
           {
             title: '项目状态',
             key: 'reviewPhase',
-            width: 100,
             align: 'center'
           },
           {
@@ -292,6 +309,21 @@
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
+            for (let i = 0; i < res.data.data.middleProject.length; i++) {
+              if (res.data.data.middleProject[i].isOverTime === true) {
+                res.data.data.middleProject[i].isOverTime = '已超过提交时间';
+              } else {
+                res.data.data.middleProject[i].isOverTime = '可提交';
+              }
+            }
+            for (let i = 0; i < res.data.data.finalProject.length; i++) {
+              if (res.data.data.finalProject[i].isOverTime === true) {
+                res.data.data.finalProject[i].isOverTime = '已超过提交时间';
+              } else {
+                res.data.data.finalProject[i].isOverTime = '可提交';
+              }
+            }
             this.data1 = res.data.data.buildProject;
             this.data2 = res.data.data.middleProject;
             this.data3 = res.data.data.finalProject;
@@ -302,36 +334,81 @@
             this.$Message.error(res.data.message);
             this.loading = false;
           }
-        }).catch(() => {
+        }).catch((err) => {
+          console.error(err)
           this.$Message.error("初始化失败,请检查网络！");
           this.loading = false
         })
       },
-      uploadSuccess(response) {
+      uploadSuccess1(response) {
         this.middleReportAddress = response.data
       },
-      uploadError() {
+      uploadSuccess2(response) {
+        this.middleReportAddress = response.data
+      },
+      uploadError1() {
         this.$Message.error("上传失败！");
       },
-      uploadMiddleReport() {
+      uploadError2() {
+        this.$Message.error("上传失败！");
+      },
+      uploadReport(index, type) {
+        if (type === 1) {
+          var appId = this.data2[index].projectApplicationId;
+          var address = this.middleReportAddress
+        } else {
+          var appId = this.data3[index].projectApplicationId;
+          var address = this.lastReportAddress
+        }
         axios({
           url: apiRoot + '/user/commitReport',
           method: 'post',
           data: {
-            applicationId: this.data2[this.data2index].projectApplicationId,
-            uploadAddress: this.middleReportAddress,
-            type: 1
+            applicationId: appId,
+            uploadAddress: address,
+            type: type
           }
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             this.$Message.success("上传成功！");
-            this.data2.splice(this.data2index, 1);
+            if (type === 1) {
+              this.data2.splice(index, 1)
+            } else {
+              this.data3.splice(index, 1)
+            }
           } else {
             this.$Message.error(res.data.message);
           }
         }).catch(() => {
           this.$Message.error("请检查网络连接！");
-        })
+        });
+      },
+      download(index, type) {
+        const that = this
+        if (type === 1) {
+          var filename = this.data2[index].reportAddress.split('---')[1];
+          var address = that.data2[index].reportAddress
+        } else {
+          var filename = this.data3[index].reportAddress.split('---')[1];
+          var address = that.data3[index].reportAddress
+        }
+        axios({
+          url: apiRoot + '/file/download?fileAddress=' + address,
+          method: 'get',
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
+            download(res.data, filename, 'text/plain')
+            this.$Message.success("下载成功！")
+
+          } else {
+            this.$Message.error("下载失败！")
+          }
+        }).catch((err) => {
+          console.error(err)
+          this.$Message.error("下载失败，请检查网络连接！")
+        });
       }
     }
   }
