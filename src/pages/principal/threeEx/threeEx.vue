@@ -96,32 +96,12 @@
       </div>
     </Modal>
     <Modal
-      @on-cancel="cancel"
       maxHeight="1700"
       ref="modal"
       title="查看专家评审结果"
       v-model="modal5"
       width="800">
       <Table :columns="columns3" :data="data4" :loading="spinShow" border></Table>
-      <!--<Collapse>-->
-      <!--<Panel v-for="item in comment.expertOpinionInfoList" :key="item.index">-->
-      <!--{{item.expertName}}-->
-      <!--<div slot="content">-->
-      <!--<Tag color="purple">完成审核</Tag>-->
-      <!--<span>{{item.isFinished===1?'是':'否'}}</span>-->
-      <!--<br v-if="item.isFinished===1">-->
-      <!--<Tag color="green" v-if="item.isFinished===1">专家评分</Tag>-->
-      <!--<span v-if="item.isFinished===1">{{ item.score }}分</span>-->
-      <!--<br v-if="item.isFinished===1">-->
-      <!--<Tag color="gold" v-if="item.isFinished===1">专家评语</Tag>-->
-      <!--<span v-if="item.isFinished===1">{{ item.reviewOpinion }}</span>-->
-      <!--<br v-if="item.isFinished===1">-->
-      <!--<Tag color="blue" v-if="item.isFinished===1">最终意见</Tag>-->
-      <!--<span-->
-      <!--v-if="item.isFinished===1">{{((item.finalOpinion===1)?'优先支持':(item.finalOpinion===2))?'支持':'反对'}}</span>-->
-      <!--</div>-->
-      <!--</Panel>-->
-      <!--</Collapse>-->
       <div slot="footer">
         <Button @click="modal5=false" type="primary">
           确定
@@ -204,11 +184,7 @@
               return h('div', [
                 h('Button', {
                     props: {
-                      type: 'success',//还需加判断函数
-                      size: 'large'
-                    },
-                    style: {
-                      marginRight: '5px'
+                      type: 'success',
                     },
                     on: {
                       click: () => {
@@ -322,7 +298,6 @@
         data2: [],
         data3: [],
         data4: [],
-        comment: [],
       }
     },
     mounted() {
@@ -400,7 +375,7 @@
       },
       async details(index) {
         const a = axios({
-          url: apiRoot + 'g' + this.data1[index].projectCategoryId,
+          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {

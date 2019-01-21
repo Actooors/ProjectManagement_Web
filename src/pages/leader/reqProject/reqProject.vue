@@ -90,6 +90,19 @@
       <p v-if="data3.concludingAddress!==null">项目结题报告：<a
         @click="downloadProjectMaterial(data3.concludingAddress)">点击下载</a></p>
     </Modal>
+    <Modal
+      maxHeight="1700"
+      ref="modal"
+      title="查看专家评审结果"
+      v-model="modal3"
+      width="800">
+      <Table :columns="columns3" :data="data4" :loading="spinShow" border></Table>
+      <div slot="footer">
+        <Button @click="modal3=false" type="primary">
+          确定
+        </Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -112,12 +125,14 @@
         model1: false,
         modal2: false,
         modal2_delay: false,
+        modal3: false,
         accept: false,
         refuse: false,
         judge: false,
         projectIndex: 0,
         index: 0,
         infoTitle: null,
+        spinShow: false,
         refuseComment: '',
         columns: [
           {
@@ -139,6 +154,27 @@
             title: '项目描述',
             key: 'description',
             align: 'center'
+          },
+          {
+            title: '其他专家评审结果',
+            key: 'chooseExpert',
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                    props: {
+                      type: 'success',
+                    },
+                    on: {
+                      click: () => {
+                        this.initComment(params.index)
+                        this.modal3 = true
+                      }
+                    },
+                  },
+                  '点击查看'
+                )])
+            }
           },
           {
             title: '下载申请书',
@@ -218,9 +254,42 @@
             align: 'center'
           }
         ],
+        columns3: [
+          {
+            title: '专家姓名',
+            key: 'expertName',
+            align: 'center'
+          },
+          {
+            title: '专家学/工号',
+            key: 'expertId',
+            align: 'center'
+          },
+          {
+            title: '完成评审',
+            key: 'isFinished',
+            align: 'center'
+          },
+          {
+            title: '评语',
+            key: 'reviewOpinion',
+            align: 'center'
+          },
+          {
+            title: '评分',
+            key: 'score',
+            align: 'center'
+          },
+          {
+            title: '最终意见',
+            key: 'finalOpinion',
+            align: 'center'
+          }
+        ],
         data1: [],
         data2: [],
-        data3: []
+        data3: [],
+        data4: []
       };
     },
     mounted() {
@@ -323,7 +392,7 @@
         this.modal2 = true
       },
       downloadProjectMaterial(address) {
-        console.log(address,'!')
+        console.log(address, '!')
         const that = this
         var filename = address.split('---')[1]
         axios({
@@ -353,6 +422,38 @@
       showRefuse() {
         this.refuse = !this.refuse
         this.accept = false
+      },
+      initComment(index) {
+        this.spinShow = true
+        axios({
+          url: apiRoot + '/admin/project/' + this.data1[index].projectId,
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            console.log(res.data)
+            for (let i = 0; i < res.data.data.expertOpinionInfoList.length; i++) {
+              if (res.data.data.expertOpinionInfoList[i].isFinished === 1) {
+                res.data.data.expertOpinionInfoList[i].isFinished = '是';
+              } else {
+                res.data.data.expertOpinionInfoList[i].isFinished = '否';
+              }
+              if (res.data.data.expertOpinionInfoList[i].finalOpinion === 1) {
+                res.data.data.expertOpinionInfoList[i].finalOpinion = '优先支持'
+              } else if (res.data.data.expertOpinionInfoList[i].finalOpinion === 2) {
+                res.data.data.expertOpinionInfoList[i].finalOpinion = '支持'
+              } else if (res.data.data.expertOpinionInfoList[i].finalOpinion === 3) {
+                res.data.data.expertOpinionInfoList[i].finalOpinion = '反对'
+              }
+            }
+            this.data4 = res.data.data.expertOpinionInfoList;
+          } else {
+            this.$Message.error(res.data.message)
+          }
+          this.spinShow = false
+        }).catch(() => {
+          this.$Message.error("查看其他专家评审结果失败，请检查网络连接！")
+          this.spinShow = false
+        })
       }
     }
   }
