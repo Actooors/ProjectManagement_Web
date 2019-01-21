@@ -178,7 +178,7 @@
                         this.pass(params.index)
                       }
                     },
-                  }, '跳过专家审核'),
+                  }, '进入下一阶段'),
                   h('Button', {
                     props: {type: 'error'},
                     on: {
@@ -362,7 +362,7 @@
             this.$Message.success(msg);
             this.loading = false;
           } else {
-            this.$Message.error('初始化失败！')
+            this.$Message.warning(res.data.message)
             this.loading = false;
           }
         }).catch(() => {

@@ -101,27 +101,27 @@
       ref="modal"
       title="查看专家评审结果"
       v-model="modal5"
-      width="650">
-      <Spin size="large" fix v-if="spinShow"></Spin>
-      <Collapse>
-        <Panel v-for="item in comment.expertOpinionInfoList" :key="item.index">
-          {{item.expertName}}
-          <div slot="content">
-            <Tag color="purple">完成审核</Tag>
-            <span>{{item.isFinished===1?'是':'否'}}</span>
-            <br v-if="item.isFinished===1">
-            <Tag color="green" v-if="item.isFinished===1">专家评分</Tag>
-            <span v-if="item.isFinished===1">{{ item.score }}分</span>
-            <br v-if="item.isFinished===1">
-            <Tag color="gold" v-if="item.isFinished===1">专家评语</Tag>
-            <span v-if="item.isFinished===1">{{ item.reviewOpinion }}</span>
-            <br v-if="item.isFinished===1">
-            <Tag color="blue" v-if="item.isFinished===1">最终意见</Tag>
-            <span
-              v-if="item.isFinished===1">{{((item.finalOpinion===1)?'优先支持':(item.finalOpinion===2))?'支持':'反对'}}</span>
-          </div>
-        </Panel>
-      </Collapse>
+      width="800">
+      <Table :columns="columns3" :data="data4" :loading="spinShow" border></Table>
+      <!--<Collapse>-->
+      <!--<Panel v-for="item in comment.expertOpinionInfoList" :key="item.index">-->
+      <!--{{item.expertName}}-->
+      <!--<div slot="content">-->
+      <!--<Tag color="purple">完成审核</Tag>-->
+      <!--<span>{{item.isFinished===1?'是':'否'}}</span>-->
+      <!--<br v-if="item.isFinished===1">-->
+      <!--<Tag color="green" v-if="item.isFinished===1">专家评分</Tag>-->
+      <!--<span v-if="item.isFinished===1">{{ item.score }}分</span>-->
+      <!--<br v-if="item.isFinished===1">-->
+      <!--<Tag color="gold" v-if="item.isFinished===1">专家评语</Tag>-->
+      <!--<span v-if="item.isFinished===1">{{ item.reviewOpinion }}</span>-->
+      <!--<br v-if="item.isFinished===1">-->
+      <!--<Tag color="blue" v-if="item.isFinished===1">最终意见</Tag>-->
+      <!--<span-->
+      <!--v-if="item.isFinished===1">{{((item.finalOpinion===1)?'优先支持':(item.finalOpinion===2))?'支持':'反对'}}</span>-->
+      <!--</div>-->
+      <!--</Panel>-->
+      <!--</Collapse>-->
       <div slot="footer">
         <Button @click="modal5=false" type="primary">
           确定
@@ -286,9 +286,42 @@
             align: 'center'
           }
         ],
+        columns3: [
+          {
+            title: '专家姓名',
+            key: 'expertName',
+            align: 'center'
+          },
+          {
+            title: '专家学/工号',
+            key: 'expertId',
+            align: 'center'
+          },
+          {
+            title: '完成评审',
+            key: 'isFinished',
+            align: 'center'
+          },
+          {
+            title: '评语',
+            key: 'reviewOpinion',
+            align: 'center'
+          },
+          {
+            title: '评分',
+            key: 'score',
+            align: 'center'
+          },
+          {
+            title: '最终意见',
+            key: 'finalOpinion',
+            align: 'center'
+          }
+        ],
         data1: [],
         data2: [],
         data3: [],
+        data4: [],
         comment: [],
       }
     },
@@ -439,7 +472,7 @@
             this.$Message.success(msg)
             this.loading = false;
           } else {
-            this.$Message.error('初始化失败！')
+            this.$Message.warning(res.data.message)
             this.loading = false;
           }
         }).catch(() => {
@@ -455,7 +488,21 @@
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             console.log(res.data)
-            this.comment = res.data.data;
+            for (let i = 0; i < res.data.data.expertOpinionInfoList.length; i++) {
+              if (res.data.data.expertOpinionInfoList[i].isFinished === 1) {
+                res.data.data.expertOpinionInfoList[i].isFinished = '是';
+              } else {
+                res.data.data.expertOpinionInfoList[i].isFinished = '否';
+              }
+              if (res.data.data.expertOpinionInfoList[i].finalOpinion === 1) {
+                res.data.data.expertOpinionInfoList[i].finalOpinion = '优先支持'
+              } else if (res.data.data.expertOpinionInfoList[i].finalOpinion === 2) {
+                res.data.data.expertOpinionInfoList[i].finalOpinion = '支持'
+              } else if (res.data.data.expertOpinionInfoList[i].finalOpinion === 3) {
+                res.data.data.expertOpinionInfoList[i].finalOpinion = '反对'
+              }
+            }
+            this.data4 = res.data.data.expertOpinionInfoList;
           } else {
             this.$Message.error(res.data.message)
           }

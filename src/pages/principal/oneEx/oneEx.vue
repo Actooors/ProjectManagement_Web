@@ -319,7 +319,7 @@
             this.$Message.success(msg)
             this.loading = false;
           } else {
-            this.$Message.error('初始化失败！')
+            this.$Message.warning(res.data.message)
             this.loading = false;
           }
         }).catch((err) => {
