@@ -148,7 +148,10 @@
                 </div>
                 <Form :label-width="120" style="width: 100%">
                   <FormItem label="合作者学/工号" prop="item.userId">
-                    <Input v-model="item.userId" placeholder="输入合作者学/工号"></Input>
+                    <AutoComplete v-model="item.userId" @on-search='searchUserInfo'
+                                  @on-select="selectUserInfo(index,data2[0])"
+                                  :data="data2"
+                                  placeholder="输入合作者学/工号"></AutoComplete>
                   </FormItem>
                   <FormItem label="合作者姓名" prop="item.userName">
                     <Input v-model="item.userName" placeholder="输入合作者姓名"></Input>
@@ -318,7 +321,8 @@
             }
           }
         ],
-        data1: []
+        data1: [],
+        data2: []
       };
     },
     mounted() {
@@ -463,6 +467,43 @@
       },
       previousStep() {
         this.stepIndex = this.stepIndex - 1
+      },
+      searchUserInfo(value) {
+        this.data2 = ['查询中...']
+        if (value.length === 8) {
+          axios({
+            url: apiRoot + '/user/userInfoFromId/' + value,
+            method: 'get'
+          }).then((res) => {
+            if (res.data.code === 'SUCCESS') {
+              this.data2 = !value ? [] : [
+                res.data.data.userId + '—' + res.data.data.username + '—' + res.data.data.department
+              ];
+            } else {
+              this.data2 = ['暂无此人']
+            }
+          }).catch(() => {
+            this.data2 = ['查询失败']
+          })
+        } else {
+          this.data2 = ['请输入正确的学号']
+        }
+      },
+      selectUserInfo(index, value) {
+        if (value === "请输入正确的学号" || value === '"查询失败' || value === "暂无此人" || value === '查询中...') {
+          this.items[index].userId = ''
+          this.items[index].userName = ''
+          this.items[index].department = ''
+        } else {
+          var id = value.split("—")[0]   //用户学/工号
+          var name = value.split("—")[1] //用户姓名
+          var dep = value.split("—")[2]  //用户部门
+          console.log(value, id, name, dep)
+          this.items[index].userId = id
+          console.log('!', this.items, this.items[index].userId)
+          this.items[index].userName = name
+          this.items[index].department = dep
+        }
       }
     }
   }
