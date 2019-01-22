@@ -478,6 +478,14 @@
               }
             }
             this.data4 = res.data.data.expertOpinionInfoList;
+            this.data4.push({
+              expertName: '平均评分',
+              expertId: null,
+              finalOpinion: null,
+              isFinished: null,
+              reviewOpinion: null,
+              score: res.data.data.average
+            })
           } else {
             this.$Message.error(res.data.message)
           }
