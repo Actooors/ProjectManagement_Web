@@ -7,7 +7,7 @@ import Leader from 'group/leader'
 import Login from 'pages/login/login'
 import AvaProject from 'pages/user/avaProject/avaProject'
 import ReqProject from 'pages/user/reqProject/reqProject'
-import MyProject from 'pages/user/myProject/myProject'
+import User_MyProject from 'pages/user/myProject/myProject'
 import UserInfo from 'pages/user/myInfo/myInfo'
 import ExpertReqProject from 'pages/expert/reqProject/reqProject'
 import ExpertEndProject from 'pages/expert/endProject/endProject'
@@ -24,6 +24,7 @@ import CategoryList from 'pages/principal/categoryList/categoryList'
 import threeEx from 'pages/principal/threeEx/threeEx'
 import twoEx from 'pages/principal/twoEx/twoEx'
 import oneEx from 'pages/principal/oneEx/oneEx'
+import Principal_MyProject from 'pages/principal/myProject/myProject'
 import PrincipalInfo from 'pages/principal/myInfo/myInfo'
 
 
@@ -60,7 +61,7 @@ const router = new Router({
         },
         {
           path: 'myProject',
-          component: MyProject
+          component: User_MyProject
         },
         {
           path: 'myInfo',
@@ -96,6 +97,10 @@ const router = new Router({
         {
           path: 'oneEx',
           component: oneEx
+        },
+        {
+          path: 'myProject',
+          component: Principal_MyProject
         },
         {
           path: 'myInfo',

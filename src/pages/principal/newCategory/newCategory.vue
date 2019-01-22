@@ -65,7 +65,7 @@
           <Input-number v-model="projectMes.maxMoney"
                         :value="projectMes.maxMoney"></Input-number>
         </FormItem>
-        <FormItem label="上传模板" prop="uploadAddress">
+        <FormItem label="添加项目说明(包含申报书)" prop="uploadAddress">
           <Upload
             type="drag"
             :headers="uploadHeaders"
@@ -248,10 +248,10 @@
             maxMoney: this.projectMes.maxMoney,
             projectApplicationDownloadAddress: apiRoot + '/file/download?fileAddress=' + this.projectMes.uploadAddress,
             isExistMeetingReview: this.projectMes.isMeeting,
-            applicationStartTime: this.projectMes.applicationTime[0],
-            applicationEndTime: this.projectMes.applicationTime[1],
-            projectStartTime: this.projectMes.applicationTime[1],
-            projectEndTime: this.projectMes.projectEndTime,
+            applicationStartTime: this.projectMes.applicationTime[0].Format("yyyy-MM-dd hh:mm"),
+            applicationEndTime: this.projectMes.applicationTime[1].Format("yyyy-MM-dd hh:mm"),
+            projectStartTime: this.projectMes.applicationTime[1].Format("yyyy-MM-dd hh:mm"),
+            projectEndTime: this.projectMes.projectEndTime.Format("yyyy-MM-dd hh:mm"),
             expertList: this.projectMes.expertName,
           }
         }).then((res) => {

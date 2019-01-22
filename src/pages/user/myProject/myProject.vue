@@ -276,9 +276,6 @@
                   props: {
                     type: 'info'
                   },
-                  style: {
-                    marginRight: '5px'
-                  },
                   on: {
                     click: () => {
                       this.$Message.info('点击查看详情')
@@ -300,7 +297,7 @@
     },
     methods: {
       Refresh() {
-        this.initData('刷新成功!');
+        this.initData('刷新成功！');
       },
       initData(msg) {
         this.loading = true
@@ -331,7 +328,7 @@
             this.$Message.success(msg)
             this.loading = false;
           } else {
-            this.$Message.error(res.data.message);
+            this.$Message.warning(res.data.message);
             this.loading = false;
           }
         }).catch((err) => {
@@ -377,7 +374,7 @@
               this.data3.splice(index, 1)
             }
           } else {
-            this.$Message.error(res.data.message);
+            this.$Message.warning(res.data.message);
           }
         }).catch(() => {
           this.$Message.error("请检查网络连接！");
@@ -401,7 +398,6 @@
           if (res.status === 200) {
             download(res.data, filename, 'text/plain')
             this.$Message.success("下载成功！")
-
           } else {
             this.$Message.error("下载失败！")
           }

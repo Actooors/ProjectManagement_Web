@@ -55,6 +55,10 @@
               >待会评
               </MenuItem>
             </Submenu>
+            <MenuItem name="myProject">
+              <Icon type="ios-archive-outline"/>
+              &nbsp;我的项目
+            </MenuItem>
             <MenuItem
               name="myInfo"
             >
