@@ -73,6 +73,20 @@
       <p v-if="data3.concludingAddress!==null">项目结题报告：<a
         @click="downloadProjectMaterial(data3.concludingAddress)">点击下载</a></p>
     </Modal>
+    <Modal v-if="modal3_delay" v-model="modal3" title="请再次确认" @on-ok="pass(index)" ok-text="确定" cancel-text="再想想"
+           width="800px">
+      <p style="font-size: 15px">您确定通过该项目吗？ 若确定，请在确定前选择该项目的负责专家。</p>
+      <br>
+      <Form :label-width="73">
+        <FormItem label="负责专家">
+          <Select v-model="experts" multiple>
+            <Option v-for="(item,index) in expertList" :key="index" :value="item.userId">
+              {{ item.userName }}—{{ item.department }}
+            </Option>
+          </Select>
+        </FormItem>
+      </Form>
+    </Modal>
   </div>
 </template>
 
@@ -88,7 +102,12 @@
         if (val) {
           this.modal2_delay = true
         }
-      }
+      },
+      modal3(val) {
+        if (val) {
+          this.modal3_delay = true
+        }
+      },
     },
     data() {
       return {
@@ -96,6 +115,8 @@
         modal1: false,
         modal2: false,
         modal2_delay: false,
+        modal3: false,
+        modal3_delay: false,
         infoTitle: null,
         index: 0,
         reason: '',
@@ -154,7 +175,9 @@
                   style: {marginLeft: '10px'},
                   on: {
                     click: () => {
-                      this.pass(params.index)
+                      this.modal3 = true
+                      this.index = params.index
+                      // this.pass(params.index)
                     }
                   },
                 }, '通过'),
@@ -197,12 +220,15 @@
             align: 'center'
           }
         ],
+        expertList: [],
+        experts: [],
         data1: [],
         data2: [],
         data3: []
       }
     },
     mounted() {
+      this.initExperts()
       this.initData('初始化成功！')
     },
     methods: {
@@ -228,27 +254,21 @@
         this.modal2 = true
       },
       pass(index) {
-        this.$Modal.confirm({
-          title: '请再次确认',
-          content: '您确定通过项目 ' + this.data1[index].projectName + ' 吗？',
-          okText: '确定',
-          cancelText: '再想想',
-          onOk: () => {
-            axios({
-              url: apiRoot + '/admin/firstTrial',
-              method: 'post',
-              data: {
-                applicationId: this.data1[index].projectId,
-                judge: true,
-              }
-            }).then((res) => {
-              if (res.data.code === 'SUCCESS') {
-                this.data1.splice(index, 1)
-                this.$Message.success('该项目已通过初审！');
-              } else {
-                this.$Message.error(res.data.message);
-              }
-            })
+        axios({
+          url: apiRoot + '/admin/firstTrial',
+          method: 'post',
+          data: {
+            applicationId: this.data1[index].projectId,
+            judge: true,
+            expertList: this.experts
+          }
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.experts = []
+            this.data1.splice(index, 1)
+            this.$Message.success('该项目已通过初审！');
+          } else {
+            this.$Message.error(res.data.message);
           }
         })
       },
@@ -266,6 +286,18 @@
       },
       cancel() {
         this.modal1 = false
+      },
+      initExperts() {
+        axios({
+          url: apiRoot + '/admin/expertList',
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.expertList = res.data.data
+          } else {
+            this.$Message.error("获取审核专家列表有误！")
+          }
+        })
       },
       download(index) {
         const that = this

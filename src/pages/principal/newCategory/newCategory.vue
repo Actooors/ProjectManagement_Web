@@ -37,13 +37,13 @@
             </Checkbox>
           </CheckboxGroup>
         </FormItem>
-        <FormItem label="负责专家" prop="expertName">
-          <Select v-model="projectMes.expertName" multiple size="large">
-            <Option v-for="(item,index) in expertList" :key="index" :value="item.userId">
-              {{ item.userName }}—{{ item.department }}
-            </Option>
-          </Select>
-        </FormItem>
+        <!--<FormItem label="负责专家" prop="expertName">-->
+          <!--<Select v-model="projectMes.expertName" multiple size="large">-->
+            <!--<Option v-for="(item,index) in expertList" :key="index" :value="item.userId">-->
+              <!--{{ item.userName }}—{{ item.department }}-->
+            <!--</Option>-->
+          <!--</Select>-->
+        <!--</FormItem>-->
         <FormItem label="项目描述" prop="description">
           <i-input type="textarea" v-model="projectMes.description" :rows="4" placeholder="请输入项目描述..."></i-input>
         </FormItem>
@@ -108,9 +108,9 @@
           userType: [
             {required: true, type: 'array', message: '请选择申请人类型', trigger: 'blur'}
           ],
-          expertName: [
-            {required: true, type: 'array', message: '请选择审核专家', trigger: 'blur'}
-          ],
+          // expertName: [
+          //   {required: true, type: 'array', message: '请选择审核专家', trigger: 'blur'}
+          // ],
           description: [
             {required: true, message: '请填写项目描述', trigger: 'blur'}
           ],
@@ -150,7 +150,7 @@
           isMeeting: false,
           telephone: '',
           userType: [],
-          expertName: [],
+          // expertName: [],
           description: '',
           applicationTime: null,
           projectEndTime: null,
@@ -179,7 +179,7 @@
       }
     },
     mounted() {
-      this.initExperts()
+      // this.initExperts()
       this.getPhone()
     },
     methods: {
@@ -198,18 +198,18 @@
       onChange() {
         console.log(this.projectMes.applicationTime[0], this.projectMes.applicationTime[1])
       },
-      initExperts() {
-        axios({
-          url: apiRoot + '/admin/expertList',
-          method: 'get'
-        }).then((res) => {
-          if (res.data.code === 'SUCCESS') {
-            this.expertList = res.data.data
-          } else {
-            this.$Message.error("获取审核专家列表有误！")
-          }
-        })
-      },
+      // initExperts() {
+      //   axios({
+      //     url: apiRoot + '/admin/expertList',
+      //     method: 'get'
+      //   }).then((res) => {
+      //     if (res.data.code === 'SUCCESS') {
+      //       this.expertList = res.data.data
+      //     } else {
+      //       this.$Message.error("获取审核专家列表有误！")
+      //     }
+      //   })
+      // },
       handleButton() {
         this.$refs['projectMes'].validate((valid) => {
           if (valid) {
@@ -262,10 +262,6 @@
               desc: '您已成功新增一个项目类别，现在您可以在“项目类别管理-已开通类别”中查看已有项目，并且可对其进行修改和删除。',
               duration: 7
             });
-//            this.$Modal.success({
-//              title: '新增成功',
-//              content: '您已成功新增一个项目类别，现在您可以在“项目类别管理-已开通类别”中查看已有项目，并且可对其进行修改和删除。'
-//            });
             console.log("2")
             this.$refs['projectMes'].resetFields();
             this.$refs.upload.clearFiles();

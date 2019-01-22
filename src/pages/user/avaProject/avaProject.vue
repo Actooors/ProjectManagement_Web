@@ -185,7 +185,7 @@
             <div class="content">
               <div class="projectTitle">
                 项目名称：
-                <Input v-model="projectName" :rows="1" placeholder="请输入项目名称" />
+                <Input v-model="projectName" :rows="1" placeholder="请输入项目名称"/>
               </div>
               <div class="description">
                 对该项目进行简单描述(200字以内):
@@ -401,10 +401,7 @@
         })
       },
       declare(index) {
-        console.log(index)
-        this.$Message.info('点击申报')
         this.projectId = this.data1[index].projectId
-        // this.projectName = this.data1[index].projectName
         this.isMeeting = this.data1[index].isMeeting
         this.model1 = true
       },
@@ -442,6 +439,7 @@
             console.log(res.data)
             this.model1 = false;
             this.$Message.success("申报成功！请耐心等待审核！")
+            this.projectCancel()
           } else {
             this.$Message.error(res.data.message);
           }
