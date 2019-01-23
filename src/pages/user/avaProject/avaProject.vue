@@ -151,19 +151,20 @@
                     <AutoComplete v-model="item.userId" @on-search='searchUserInfo'
                                   @on-select="selectUserInfo(index,data2[0])"
                                   :data="data2"
+                                  clearable
                                   placeholder="输入合作者学/工号"></AutoComplete>
                   </FormItem>
                   <FormItem label="合作者姓名" prop="item.userName">
-                    <Input v-model="item.userName" placeholder="输入合作者姓名"></Input>
+                    <Input v-model="item.userName" clearable placeholder="输入合作者姓名"></Input>
                   </FormItem>
                   <FormItem label="合作者单位" prop="item.department">
-                    <Input v-model="item.department" placeholder="输入合作者单位"></Input>
+                    <Input v-model="item.department" clearable placeholder="输入合作者单位"></Input>
                   </FormItem>
                   <FormItem label="合作者手机" prop="item.phone">
-                    <Input v-model="item.phone" placeholder="输入合作者手机"></Input>
+                    <Input v-model="item.phone" clearable :maxlength='11' placeholder="输入合作者手机"></Input>
                   </FormItem>
                   <FormItem label="合作者邮箱" prop="item.mail">
-                    <Input v-model="item.mail" placeholder="输入合作者邮箱" type="email"></Input>
+                    <Input v-model="item.mail" clearable placeholder="输入合作者邮箱" type="email"></Input>
                   </FormItem>
                 </Form>
               </Card>
@@ -477,7 +478,7 @@
           }).then((res) => {
             if (res.data.code === 'SUCCESS') {
               this.data2 = !value ? [] : [
-                res.data.data.userId + '—' + res.data.data.username + '—' + res.data.data.department
+                res.data.data.userId + '-' + res.data.data.username + '-' + res.data.data.department
               ];
             } else {
               this.data2 = ['暂无此人']
@@ -490,19 +491,20 @@
         }
       },
       selectUserInfo(index, value) {
-        if (value === "请输入正确的学号" || value === '"查询失败' || value === "暂无此人" || value === '查询中...') {
+        if (value === '请输入正确的学号' || value === '查询失败' || value === '暂无此人' || value === '查询中...') {
           this.items[index].userId = ''
           this.items[index].userName = ''
           this.items[index].department = ''
         } else {
-          var id = value.split("—")[0]   //用户学/工号
-          var name = value.split("—")[1] //用户姓名
-          var dep = value.split("—")[2]  //用户部门
+          var id = value.split("-")[0]   //用户学/工号
+          var name = value.split("-")[1] //用户姓名
+          var dep = value.split("-")[2]  //用户部门
           console.log(value, id, name, dep)
-          this.items[index].userId = id
-          console.log('!', this.items, this.items[index].userId)
-          this.items[index].userName = name
-          this.items[index].department = dep
+          setTimeout(()=>{
+            this.items[index].userId = id
+            this.items[index].userName = name
+            this.items[index].department = dep
+          })
         }
       }
     }
