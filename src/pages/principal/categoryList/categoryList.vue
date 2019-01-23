@@ -39,7 +39,7 @@
       <br v-if="data1[index].concludingReport.isReportActivated">
       <p v-if="data1[index].concludingReport.isReportActivated">结题报告截止时间：{{data1[index].concludingReport.deadline}}</p>
     </Modal>
-    <Modal v-model="modal3" title="开通提交中期报告" @on-ok="ok1(index)" @on-cancel="cancel1(index)">
+    <Modal v-model="modal3" title="开通提交中期报告" @on-ok="ok1(index)" @on-cancel="cancel1(index)" :z-index="1000">
       <Form ref="interimReport" :model="interimReport" :rules="interimReportRule">
         <FormItem label="中期报告开始时间" prop="startTime">
           <DatePicker type="datetime" :value="interimReport.startTime" v-model="interimReport.startTime"
@@ -76,7 +76,7 @@
         </Button>
       </div>
     </Modal>
-    <Modal v-model="modal4" title="开通提交结题报告" @on-ok="ok2(index)" @on-cancel="cancel2(index)">
+    <Modal v-model="modal4" title="开通提交结题报告" @on-ok="ok2(index)" @on-cancel="cancel2(index)" :z-index="1000">
       <Form ref="concludingReport" :model="concludingReport" :rules="concludingReportRule">
         <FormItem label="结题报告开始时间" prop="startTime">
           <DatePicker type="datetime" :value="concludingReport.startTime" v-model="concludingReport.startTime"
@@ -302,7 +302,7 @@
             this.$Message.success(msg)
             this.loading = false
           } else {
-            this.$Message.error(res.data.message)
+            this.$Message.warnings(res.data.message)
             this.loading = false
           }
         }).catch((err) => {
@@ -346,8 +346,10 @@
               if (res.data.code === 'SUCCESS') {
                 this.data1[index].interimReport.isReportActivated = true;
                 //TODO startTime deadline undifined??
-                this.data1[index].interimReport.startTime = res.data.startTime;
-                this.data1[index].interimReport.deadline = res.data.endTime;
+                setTimeout(()=>{
+                  this.data1[index].interimReport.startTime = res.data.startTime;
+                  this.data1[index].interimReport.deadline = res.data.endTime;
+                })
                 this.$Message.success('开通中期报告成功！');
                 console.log(this.data1[index].interimReport)
                 this.$refs['interimReport'].resetFields()

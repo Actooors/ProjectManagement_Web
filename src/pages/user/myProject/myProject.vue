@@ -57,6 +57,51 @@
                size="large"></Table>
       </TabPane>
     </Tabs>
+    <Modal v-if="modal3_delay" v-model="modal3" :title="infoTitle" width="900px">
+      <p>项目描述：{{data4.projectDescription}}</p>jn
+      <br>
+      <p>业务员手机：{{data4.principalPhone}}</p>
+      <br>
+      <p>项目大类：{{data4.projectType}}</p>
+      <br>
+      <p>经费额度：{{data4.maxMoney}}元</p>
+      <br>
+      申报人类型：<p style="display: inline-flex;" v-for="item in data4.applicantType">{{item}}&nbsp;</p>
+      <br>
+      <br>
+      专家名单：<p style="display: inline-flex;" v-for="item in data5.expertList">{{item.userName}}&nbsp;</p>
+      <br>
+      <br>
+      <p>是否可提交中期报告：{{(data4.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a
+        v-if="data4.interimReport.isReportActivated"
+        @click="downloadProjectMaterial(data4.interimReport.reportTemplateAddress)">点击下载模板</a></p>
+      <br>
+      <p v-if="data4.interimReport.isReportActivated">中期报告开始时间：{{data4.interimReport.startTime}}</p>
+      <br v-if="data4.interimReport.isReportActivated">
+      <p v-if="data4.interimReport.isReportActivated">中期报告截止时间：{{data4.interimReport.deadline}}</p>
+      <br v-if="data4.interimReport.isReportActivated">
+      <p>是否可提交结题报告：{{(data4.concludingReport.isReportActivated === true) ? '是 ' : '否'}}<a
+        v-if="data4.concludingReport.isReportActivated"
+        @click="downloadProjectMaterial(data4.concludingReport.reportTemplateAddress)">点击下载模板</a></p>
+      <br>
+      <p v-if="data4.concludingReport.isReportActivated">结题报告开始时间：{{data4.concludingReport.startTime}}</p>
+      <br v-if="data4.concludingReport.isReportActivated">
+      <p v-if="data4.concludingReport.isReportActivated">结题报告截止时间：{{data4.concludingReport.deadline}}</p>
+      <br v-if="data4.concludingReport.isReportActivated">
+      <p>项目成员(默认第一个为项目负责人)：</p>
+      <br>
+      <Table :columns="columns2" :data="data5.members" size="small" stripe></Table>
+      <br>
+      <p>项目申请书：<a @click="downloadProjectMaterial(data5.applicationAddress)">点击下载</a></p>
+      <br>
+      <p v-if="data5.interimAddress===null">项目中期报告：未提交</p>
+      <p v-if="data5.interimAddress!==null">项目中期报告：<a @click="downloadProjectMaterial(data5.interimAddress)">点击下载</a>
+      </p>
+      <br>
+      <p v-if="data5.concludingAddress===null">项目结题报告：未提交</p>
+      <p v-if="data5.concludingAddress!==null">项目结题报告：<a
+        @click="downloadProjectMaterial(data5.concludingAddress)">点击下载</a></p>
+    </Modal>
   </div>
 </template>
 
@@ -71,6 +116,9 @@
         loading: false,
         modal1: false,
         modal2: false,
+        modal3: false,
+        modal3_delay: false,
+        infoTitle: null,
         index: 0,
         middleReportAddress: '',
         lastReportAddress: '',
@@ -115,6 +163,7 @@
                   on: {
                     click: () => {
                       this.$Message.info('点击查看详情')
+                      this.details(params.index)
                     }
                   }
                 }, '详情')
@@ -135,7 +184,7 @@
           },
           {
             title: '提交状态',
-            key: 'isOverTime',
+            key: 'status',
             align: 'center'
           },
           {
@@ -196,7 +245,7 @@
           },
           {
             title: '提交状态',
-            key: 'isOverTime',
+            key: 'status',
             align: 'center'
           },
           {
@@ -290,6 +339,8 @@
         data2: [],
         data3: [],
         data4: [],
+        data5: [],
+        data6: []
       }
     },
     mounted() {
@@ -308,17 +359,21 @@
           if (res.data.code === 'SUCCESS') {
             console.log(res.data)
             for (let i = 0; i < res.data.data.middleProject.length; i++) {
-              if (res.data.data.middleProject[i].isOverTime === true) {
-                res.data.data.middleProject[i].isOverTime = '已超过提交时间';
+              if (res.data.data.middleProject[i].status === 1) {
+                res.data.data.middleProject[i].status = '可提交';
+              } else if (res.data.data.middleProject[i].status === 2) {
+                res.data.data.middleProject[i].status = '已超过提交时间';
               } else {
-                res.data.data.middleProject[i].isOverTime = '可提交';
+                res.data.data.middleProject[i].status = '未到提交时间';
               }
             }
             for (let i = 0; i < res.data.data.finalProject.length; i++) {
-              if (res.data.data.finalProject[i].isOverTime === true) {
-                res.data.data.finalProject[i].isOverTime = '已超过提交时间';
+              if (res.data.data.finalProject[i].status === 1) {
+                res.data.data.finalProject[i].status = '可提交';
+              } else if (res.data.data.finalProject[i].status === 2) {
+                res.data.data.finalProject[i].status = '已超过提交时间';
               } else {
-                res.data.data.finalProject[i].isOverTime = '可提交';
+                res.data.data.finalProject[i].status = '未到提交时间';
               }
             }
             this.data1 = res.data.data.buildProject;
@@ -353,9 +408,25 @@
         if (type === 1) {
           var appId = this.data2[index].projectApplicationId;
           var address = this.middleReportAddress
+          var status
+          if (this.data2[index].status === '可提交') {
+            status = 1
+          } else if (this.data2[index].status === '已超过提交时间') {
+            status = 2
+          } else {
+            status = 3
+          }
         } else {
           var appId = this.data3[index].projectApplicationId;
           var address = this.lastReportAddress
+          var status
+          if (this.data3[index].status === '可提交') {
+            status = 1
+          } else if (this.data3[index].status === '已超过提交时间') {
+            status = 2
+          } else {
+            status = 3
+          }
         }
         axios({
           url: apiRoot + '/user/commitReport',
@@ -363,7 +434,8 @@
           data: {
             applicationId: appId,
             uploadAddress: address,
-            type: type
+            type: type,
+            status: status
           }
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
@@ -383,11 +455,21 @@
       download(index, type) {
         const that = this
         if (type === 1) {
-          var filename = this.data2[index].reportAddress.split('---')[1];
-          var address = that.data2[index].reportAddress
+          if (this.data2[index].reportAddress === null) {
+            this.$Message.error('该项目已超过中期报告提交时间，无法下载！');
+            return
+          } else {
+            var filename = that.data2[index].reportAddress.split('---')[1];
+            var address = that.data2[index].reportAddress;
+          }
         } else {
-          var filename = this.data3[index].reportAddress.split('---')[1];
-          var address = that.data3[index].reportAddress
+          if (this.data3[index].reportAddress === null) {
+            this.$Message.error('该项目已超过结题报告提交时间，无法下载！');
+            return
+          } else {
+            var filename = that.data3[index].reportAddress.split('---')[1];
+            var address = that.data3[index].reportAddress;
+          }
         }
         axios({
           url: apiRoot + '/file/download?fileAddress=' + address,
@@ -405,7 +487,29 @@
           console.error(err)
           this.$Message.error("下载失败，请检查网络连接！")
         });
-      }
+      },
+      async details(index) {
+        const a = axios({
+          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.infoTitle = res.data.data.projectName
+            this.data4 = res.data.data
+          }
+        })
+        const b = axios({
+          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectId,
+          method: 'get'
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.data5 = res.data.data
+          }
+        })
+        await Promise.all([a, b]);
+        this.modal3 = true
+      },
+
     }
   }
 </script>

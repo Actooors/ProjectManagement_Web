@@ -27,12 +27,12 @@
               <Icon type="ios-browsers-outline" />
               项目申请
             </MenuItem>
-            <MenuItem
-              name="endProject"
-            >
-              <Icon type="ios-browsers" />
-              项目结题
-            </MenuItem>
+            <!--<MenuItem-->
+              <!--name="endProject"-->
+            <!--&gt;-->
+              <!--<Icon type="ios-browsers" />-->
+              <!--项目结题-->
+            <!--</MenuItem>-->
             <MenuItem
               name="myInfo"
             >

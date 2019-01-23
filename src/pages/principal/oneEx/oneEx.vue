@@ -40,7 +40,7 @@
       申报人类型：<p style="display: inline-flex;" v-for="item in data2.applicantType">{{item}}&nbsp;</p>
       <br>
       <br>
-      专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
+      专家名单：<p style="display: inline-flex;" v-for="item in data3.expertList">{{item.userName}}&nbsp;</p>
       <br>
       <br>
       <p>是否可提交中期报告：{{(data2.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a

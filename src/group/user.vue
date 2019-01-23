@@ -33,6 +33,10 @@
               <Icon type="ios-fastforward-outline"/>
               &nbsp;申请中项目
             </MenuItem>
+            <MenuItem name="failProject">
+              <Icon type="ios-close-circle-outline" />
+              被驳回项目
+            </MenuItem>
             <MenuItem
               name="myProject"
             >

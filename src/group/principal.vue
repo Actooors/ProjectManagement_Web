@@ -54,6 +54,14 @@
                 name="threeEx"
               >待会评
               </MenuItem>
+              <MenuItem
+                name="fourEx"
+              >任务书阶段
+              </MenuItem>
+              <MenuItem
+                name="fiveEx"
+              >待终审
+              </MenuItem>
             </Submenu>
             <MenuItem name="myProject">
               <Icon type="ios-archive-outline"/>

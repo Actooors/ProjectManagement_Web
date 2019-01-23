@@ -8,6 +8,7 @@ import Login from 'pages/login/login'
 import AvaProject from 'pages/user/avaProject/avaProject'
 import ReqProject from 'pages/user/reqProject/reqProject'
 import User_MyProject from 'pages/user/myProject/myProject'
+import FailProject from 'pages/user/failProject/failProject'
 import UserInfo from 'pages/user/myInfo/myInfo'
 import ExpertReqProject from 'pages/expert/reqProject/reqProject'
 import ExpertEndProject from 'pages/expert/endProject/endProject'
@@ -21,9 +22,11 @@ import LeaderInfo from 'pages/leader/myInfo/myInfo'
 import Error from 'pages/error404/error404'
 import NewCategory from 'pages/principal/newCategory/newCategory'
 import CategoryList from 'pages/principal/categoryList/categoryList'
-import threeEx from 'pages/principal/threeEx/threeEx'
-import twoEx from 'pages/principal/twoEx/twoEx'
 import oneEx from 'pages/principal/oneEx/oneEx'
+import twoEx from 'pages/principal/twoEx/twoEx'
+import threeEx from 'pages/principal/threeEx/threeEx'
+import fourEx from 'pages/principal/fourEx/fourEx'
+import fiveEx from 'pages/principal/fiveEx/fiveEx'
 import Principal_MyProject from 'pages/principal/myProject/myProject'
 import PrincipalInfo from 'pages/principal/myInfo/myInfo'
 
@@ -60,6 +63,10 @@ const router = new Router({
           component: ReqProject
         },
         {
+          path: 'failProject',
+          component: FailProject
+        },
+        {
           path: 'myProject',
           component: User_MyProject
         },
@@ -85,6 +92,14 @@ const router = new Router({
         {
           path: 'categoryList',
           component: CategoryList
+        },
+        {
+          path: 'fiveEx',
+          component: fiveEx
+        },
+        {
+          path: 'fourEx',
+          component: fourEx
         },
         {
           path: 'threeEx',
