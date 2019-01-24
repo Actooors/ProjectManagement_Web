@@ -166,7 +166,7 @@
             this.$Message.success(msg)
             this.loading = false
           } else {
-            this.$Message.error(res.data.message)
+            this.$Message.warning(res.data.message)
             this.loading = false
           }
         }).catch(() => {
@@ -176,6 +176,7 @@
       },
 
       finish(name) {
+        console.log('1')
         this.$refs[name].validate((valid) => {
           if (valid) {
             axios({
@@ -188,11 +189,17 @@
                 finalOPinion: this.formItem.priority
               }
             }).then((res) => {
+              console.log('2', res.data.code)
               if (res.data.code === 'SUCCESS') {
-                this.model1 = false
-                this.$Message.success("评审意见填写成功！")
+                this.model1 = false;
+                this.$Message.success("评审意见填写成功！");
                 //删除一个项目
-                this.data1.splice(this.projectIndex, 1)
+                this.data1.splice(this.projectIndex, 1);
+                //对对话框中的内容进行重置
+                this.$refs['formItem'].resetFields();
+              } else {
+                this.model1 = false;
+                this.$Message.error(res.data.message);
                 //对对话框中的内容进行重置
                 this.$refs['formItem'].resetFields();
               }

@@ -85,7 +85,7 @@
             this.$Message.success(msg)
             this.loading = false
           }else {
-            this.$Message.error(res.data.message)
+            this.$Message.warning(res.data.message)
             this.loading = false
           }
         }).catch(()=>{
