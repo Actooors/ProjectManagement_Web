@@ -58,49 +58,49 @@
       </TabPane>
     </Tabs>
     <Modal v-if="modal3_delay" v-model="modal3" :title="infoTitle" width="900px">
-      <p>项目描述：{{data4.projectDescription}}</p>
+      <p>项目描述：{{data5.projectDescription}}</p>jn
       <br>
-      <p>业务员手机：{{data4.principalPhone}}</p>
+      <p>业务员手机：{{data5.principalPhone}}</p>
       <br>
-      <p>项目大类：{{data4.projectType}}</p>
+      <p>项目大类：{{data5.projectType}}</p>
       <br>
-      <p>经费额度：{{data4.maxMoney}}元</p>
+      <p>经费额度：{{data5.maxMoney}}元</p>
       <br>
-      申报人类型：<p style="display: inline-flex;" v-for="item in data4.applicantType">{{item}}&nbsp;</p>
-      <br>
-      <br>
-      专家名单：<p style="display: inline-flex;" v-for="item in data5.expertList">{{item.userName}}&nbsp;</p>
+      申报人类型：<p style="display: inline-flex;" v-for="item in data5.applicantType">{{item}}&nbsp;</p>
       <br>
       <br>
-      <p>是否可提交中期报告：{{(data4.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a
-        v-if="data4.interimReport.isReportActivated"
-        @click="downloadProjectMaterial(data4.interimReport.reportTemplateAddress)">点击下载模板</a></p>
+      专家名单：<p style="display: inline-flex;" v-for="item in data6.expertList">{{item.userName}}&nbsp;</p>
       <br>
-      <p v-if="data4.interimReport.isReportActivated">中期报告开始时间：{{data4.interimReport.startTime}}</p>
-      <br v-if="data4.interimReport.isReportActivated">
-      <p v-if="data4.interimReport.isReportActivated">中期报告截止时间：{{data4.interimReport.deadline}}</p>
-      <br v-if="data4.interimReport.isReportActivated">
-      <p>是否可提交结题报告：{{(data4.concludingReport.isReportActivated === true) ? '是 ' : '否'}}<a
-        v-if="data4.concludingReport.isReportActivated"
-        @click="downloadProjectMaterial(data4.concludingReport.reportTemplateAddress)">点击下载模板</a></p>
       <br>
-      <p v-if="data4.concludingReport.isReportActivated">结题报告开始时间：{{data4.concludingReport.startTime}}</p>
-      <br v-if="data4.concludingReport.isReportActivated">
-      <p v-if="data4.concludingReport.isReportActivated">结题报告截止时间：{{data4.concludingReport.deadline}}</p>
-      <br v-if="data4.concludingReport.isReportActivated">
+      <p>是否可提交中期报告：{{(data5.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a
+        v-if="data5.interimReport.isReportActivated"
+        @click="downloadProjectMaterial(data5.interimReport.reportTemplateAddress)">点击下载模板</a></p>
+      <br>
+      <p v-if="data5.interimReport.isReportActivated">中期报告开始时间：{{data5.interimReport.startTime}}</p>
+      <br v-if="data5.interimReport.isReportActivated">
+      <p v-if="data5.interimReport.isReportActivated">中期报告截止时间：{{data5.interimReport.deadline}}</p>
+      <br v-if="data5.interimReport.isReportActivated">
+      <p>是否可提交结题报告：{{(data5.concludingReport.isReportActivated === true) ? '是 ' : '否'}}<a
+        v-if="data5.concludingReport.isReportActivated"
+        @click="downloadProjectMaterial(data5.concludingReport.reportTemplateAddress)">点击下载模板</a></p>
+      <br>
+      <p v-if="data5.concludingReport.isReportActivated">结题报告开始时间：{{data5.concludingReport.startTime}}</p>
+      <br v-if="data5.concludingReport.isReportActivated">
+      <p v-if="data5.concludingReport.isReportActivated">结题报告截止时间：{{data5.concludingReport.deadline}}</p>
+      <br v-if="data5.concludingReport.isReportActivated">
       <p>项目成员(默认第一个为项目负责人)：</p>
       <br>
-      <Table :columns="columns2" :data="data5.members" size="small" stripe></Table>
+      <Table :columns="columns2" :data="data6.members" size="small" stripe></Table>
       <br>
-      <p>项目申请书：<a @click="downloadProjectMaterial(data5.applicationAddress)">点击下载</a></p>
+      <p>项目申请书：<a @click="downloadProjectMaterial(data6.applicationAddress)">点击下载</a></p>
       <br>
-      <p v-if="data5.interimAddress===null">项目中期报告：未提交</p>
-      <p v-if="data5.interimAddress!==null">项目中期报告：<a @click="downloadProjectMaterial(data5.interimAddress)">点击下载</a>
+      <p v-if="data6.interimAddress===null">项目中期报告：未提交</p>
+      <p v-if="data6.interimAddress!==null">项目中期报告：<a @click="downloadProjectMaterial(data6.interimAddress)">点击下载</a>
       </p>
       <br>
-      <p v-if="data5.concludingAddress===null">项目结题报告：未提交</p>
-      <p v-if="data5.concludingAddress!==null">项目结题报告：<a
-        @click="downloadProjectMaterial(data5.concludingAddress)">点击下载</a></p>
+      <p v-if="data6.concludingAddress===null">项目结题报告：未提交</p>
+      <p v-if="data6.concludingAddress!==null">项目结题报告：<a
+        @click="downloadProjectMaterial(data6.concludingAddress)">点击下载</a></p>
     </Modal>
   </div>
 </template>
@@ -327,7 +327,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击查看详情')
+                      this.details(params.index)
                     }
                   }
                 }, '详情')
@@ -490,12 +490,12 @@
       },
       async details(index) {
         const a = axios({
-          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,//类别
+          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             this.infoTitle = res.data.data.projectName
-            this.data4 = res.data.data
+            this.data5 = res.data.data
           }
         })
         const b = axios({
@@ -503,13 +503,12 @@
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            this.data5 = res.data.data
+            this.data6 = res.data.data
           }
         })
         await Promise.all([a, b]);
         this.modal3 = true
       },
-
     }
   }
 </script>

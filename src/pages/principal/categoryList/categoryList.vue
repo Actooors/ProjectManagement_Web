@@ -44,11 +44,15 @@
         <FormItem label="中期报告开始时间" prop="startTime">
           <DatePicker type="datetime" :value="interimReport.startTime" v-model="interimReport.startTime"
                       format="yyyy年MM月dd日 HH:mm" style="width: 300px"
+                      :options="options1"
+                      @on-change="setInterimReportStartTime(index,...arguments)"
                       placeholder="选择开始时间"></DatePicker>
         </FormItem>
         <FormItem label="中期报告截止时间" prop="startTime">
           <DatePicker type="datetime" :value="interimReport.endTime" v-model="interimReport.endTime"
                       format="yyyy年MM月dd日 HH:mm" style="width: 300px"
+                      :options="options2"
+                      @on-change="setInterimReportEndTime(index,...arguments)"
                       placeholder="选择截止时间"></DatePicker>
         </FormItem>
         <FormItem label="上传模板" prop="uploadAddress">
@@ -81,11 +85,14 @@
         <FormItem label="结题报告开始时间" prop="startTime">
           <DatePicker type="datetime" :value="concludingReport.startTime" v-model="concludingReport.startTime"
                       format="yyyy年MM月dd日 HH:mm" style="width: 300px"
+                      :options="options3"
+                      @on-change="setConcludingReportStartTime(index,...arguments)"
                       placeholder="选择开始时间"></DatePicker>
         </FormItem>
         <FormItem label="结题报告截止时间" prop="startTime">
           <DatePicker type="datetime" :value="concludingReport.endTime" v-model="concludingReport.endTime"
                       format="yyyy年MM月dd日 HH:mm" style="width: 300px"
+                      :options="options4"
                       placeholder="选择截止时间"></DatePicker>
         </FormItem>
         <FormItem label="上传模板" prop="uploadAddress">
@@ -138,6 +145,47 @@
         modal4: false,
         infoTitle: null,
         index: 0,
+        applicationEndTime: [],
+        interimReportStartTime: [],
+        interimReportEndTime: [],
+        concludingReportStartTime: [],
+        projectEndTime: [],
+        options1: {
+          disabledDate: date => {         //这里使用箭头函数是因为这样才能指向vue对象，也就是说使用this.applicationEndTime才不会报错
+            if ((date.valueOf() < this.applicationEndTime[this.index]) || (date.valueOf() > this.projectEndTime[this.index])) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        },
+        options2: {
+          disabledDate: date => {
+            if ((date.valueOf() <= this.interimReportStartTime[this.index]) || (date.valueOf() > this.projectEndTime[this.index])) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        },
+        options3: {
+          disabledDate: date => {
+            if ((date.valueOf() < this.interimReportEndTime[this.index]) || (date.valueOf() > this.projectEndTime[this.index])) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        },
+        options4: {
+          disabledDate: date => {
+            if ((date.valueOf() <= this.concludingReportStartTime[this.index]) || (date.valueOf() > this.projectEndTime[this.index])) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        },
         interimReport: {
           startTime: '',
           endTime: '',
@@ -299,6 +347,23 @@
           if (res.data.code === 'SUCCESS') {
             console.log(res.data)
             this.data1 = res.data.data
+            for (let i = 0; i < res.data.data.length; i++) {       //将申请截止时间由string变成date
+              if (res.data.data[i].applicationEndTime) {
+                var arr1 = res.data.data[i].applicationEndTime.split(" ");
+                var sdate = arr1[0].split('-');
+                var date = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+                this.applicationEndTime[i] = date
+              }
+            }
+            for (let i = 0; i < res.data.data.length; i++) {      //将项目截止时间由string变成date
+              if (res.data.data[i].projectEndTime) {
+                var arr1 = res.data.data[i].projectEndTime.split(" ");
+                var sdate = arr1[0].split('-');
+                var date = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+                this.projectEndTime[i] = date
+              }
+            }
+            console.log(this.applicationEndTime)
             this.$Message.success(msg)
             this.loading = false
           } else {
@@ -316,8 +381,13 @@
         this.index = index
       },
       openConcludingReport(index) {
-        this.modal4 = true
-        this.index = index
+        console.log(this.interimReportEndTime)
+        if (this.data1[index].interimReport.deadline || this.interimReportEndTime[index]) { //判断中期报告是否已经开通，否则不准开通结题报告
+          this.modal4 = true;
+          this.index = index;
+        } else {
+          this.$Message.warning("请先开通中期报告！")
+        }
       },
       uploadSuccess1(response) {
         this.interimReport.uploadAddress = response.data
@@ -346,14 +416,12 @@
               if (res.data.code === 'SUCCESS') {
                 this.data1[index].interimReport.isReportActivated = true;
                 //TODO startTime deadline undifined??
-                setTimeout(()=>{
-                  this.data1[index].interimReport.startTime = res.data.startTime;
-                  this.data1[index].interimReport.deadline = res.data.endTime;
-                })
+                this.data1[index].interimReport.startTime = res.data.startTime;
+                this.data1[index].interimReport.deadline = res.data.endTime;
+                this.$forceUpdate()
                 this.$Message.success('开通中期报告成功！');
                 console.log(this.data1[index].interimReport)
                 this.$refs['interimReport'].resetFields()
-                console.log('!! ')
                 this.modal3 = false;
               } else {
                 this.$Message.error('开通失败！')
@@ -387,10 +455,12 @@
                 //TODO startTime deadline undifined??
                 this.data1[index].concludingReport.startTime = res.data.startTime;
                 this.data1[index].concludingReport.deadline = res.data.endTime;
-                console.log(this.data1[index].concludingReport)
                 this.$Message.success('开通结题报告成功！');
                 this.$refs['concludingReport'].resetFields()
                 this.modal4 = false;
+                // setTimeout(() => {
+                //   window.location.reload()
+                // }, 1000)
               } else {
                 this.$Message.error('开通失败！')
               }
@@ -403,6 +473,40 @@
       cancel2() {
         this.modal4 = false
         this.$refs['concludingReport'].resetFields()
+      },
+      setInterimReportStartTime(index, date, type) {
+        if (date) {       //将格式化的时间变成标准date格式
+          date = date.replace('年', '-');
+          date = date.replace('月', '-');
+          date = date.replace('日', '');
+          var arr1 = date.split(" ");
+          var sdate = arr1[0].split('-');
+          var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+        }
+        this.interimReportStartTime[index] = newdate
+        console.log('1', newdate)
+      },
+      setInterimReportEndTime(index, date, type) {
+        if (date) {       //将格式化的时间变成标准date格式
+          date = date.replace('年', '-');
+          date = date.replace('月', '-');
+          date = date.replace('日', '');
+          var arr1 = date.split(" ");
+          var sdate = arr1[0].split('-');
+          var newdate1 = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+        }
+        this.interimReportEndTime[index] = newdate1;
+      },
+      setConcludingReportStartTime(index, date, type) {
+        if (date) {       //将格式化的时间变成标准date格式
+          date = date.replace('年', '-');
+          date = date.replace('月', '-');
+          date = date.replace('日', '');
+          var arr1 = date.split(" ");
+          var sdate = arr1[0].split('-');
+          var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+        }
+        this.concludingReportStartTime[index] = newdate
       }
     }
   }
