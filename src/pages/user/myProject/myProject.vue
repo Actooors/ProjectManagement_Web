@@ -58,7 +58,7 @@
       </TabPane>
     </Tabs>
     <Modal v-if="modal3_delay" v-model="modal3" :title="infoTitle" width="900px">
-      <p>项目描述：{{data4.projectDescription}}</p>jn
+      <p>项目描述：{{data4.projectDescription}}</p>
       <br>
       <p>业务员手机：{{data4.principalPhone}}</p>
       <br>
@@ -490,7 +490,7 @@
       },
       async details(index) {
         const a = axios({
-          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
+          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,//类别
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
