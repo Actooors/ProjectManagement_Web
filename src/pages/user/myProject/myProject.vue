@@ -58,7 +58,7 @@
       </TabPane>
     </Tabs>
     <Modal v-if="modal3_delay" v-model="modal3" :title="infoTitle" width="900px">
-      <p>项目描述：{{data5.projectDescription}}</p>jn
+      <p>项目描述：{{data5.projectDescription}}</p>
       <br>
       <p>业务员手机：{{data5.principalPhone}}</p>
       <br>
@@ -90,7 +90,7 @@
       <br v-if="data5.concludingReport.isReportActivated">
       <p>项目成员(默认第一个为项目负责人)：</p>
       <br>
-      <Table :columns="columns2" :data="data6.members" size="small" stripe></Table>
+      <Table :columns="columns5" :data="data6.members" size="small" stripe></Table>
       <br>
       <p>项目申请书：<a @click="downloadProjectMaterial(data6.applicationAddress)">点击下载</a></p>
       <br>
@@ -335,6 +335,33 @@
             }
           }
         ],
+        columns5:[
+          {
+            title: '姓名',
+            key: 'userName',
+            align: 'center'
+          },
+          {
+            title: '学号',
+            key: 'userId',
+            align: 'center'
+          },
+          {
+            title: '学院',
+            key: 'department',
+            align: 'center'
+          },
+          {
+            title: '电话',
+            key: 'phone',
+            align: 'center'
+          },
+          {
+            title: '邮箱',
+            key: 'mail',
+            align: 'center'
+          }
+        ],
         data1: [],
         data2: [],
         data3: [],
@@ -508,6 +535,26 @@
         })
         await Promise.all([a, b]);
         this.modal3 = true
+      },
+      downloadProjectMaterial(address) {
+        console.log(address, '!')
+        const that = this
+        var filename = address.split('---')[1]
+        axios({
+          url: address,
+          method: 'get',
+          headers: {Authorization: localStorage.getItem('token')},
+          responseType: 'blob'
+        }).then((res) => {
+          if (res.status === 200) {
+            download(res.data, filename, 'text/plain');
+            this.$Message.success('下载成功！');
+          } else {
+            this.$Message.error('下载失败！');
+          }
+        }).catch(() => {
+          this.$Message.error('下载失败，请检查网络连接！')
+        })
       },
     }
   }

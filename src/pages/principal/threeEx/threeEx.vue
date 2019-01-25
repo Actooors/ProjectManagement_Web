@@ -7,7 +7,7 @@
     </ButtonGroup>
     <Table :columns="columns1" :data="data1" border class="table" size="large" :loading="loading" stripe></Table>
     <Modal v-if="modal2_delay" v-model="modal2" :title="infoTitle" width="900px">
-      <p>项目描述：{{data2.projectDescription}}</p>jn
+      <p>项目描述：{{data2.projectDescription}}</p>
       <br>
       <p>业务员手机：{{data2.principalPhone}}</p>
       <br>

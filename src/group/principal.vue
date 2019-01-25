@@ -60,7 +60,7 @@
               </MenuItem>
               <MenuItem
                 name="fiveEx"
-              >待终审
+              >待结项
               </MenuItem>
             </Submenu>
             <MenuItem name="myProject">
