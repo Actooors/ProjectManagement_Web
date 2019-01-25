@@ -92,7 +92,7 @@
           if (res.data.code === 'SUCCESS') {
             myPieChart.setOption({
               series: [{
-                data: res.data.ProjectStatus
+                data: res.data.data.ProjectStatus
                 /*data: [
                   { value: 2, name: '已审核' },
                   { value: 10, name: '未审核' },
@@ -103,11 +103,11 @@
             }),
             myBarChart.setOption({
               xAxis: {
-                data: res.data.ProjectCategory
+                data: res.data.data.ProjectCategory
                 //data: ['人文', 'test', '理工', '计算机', '数学系', '通信']
               },
               series: [{
-                data: res.data.ProjectNums
+                data: res.data.data.ProjectNums
                 //data: [5, 20, 36, 10, 10, 20]
               }]
             })

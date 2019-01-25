@@ -303,7 +303,7 @@
         this.loading = true
         axios({
           url: apiRoot + '/leader/unjudgeApplicatetion/1',
-          mothod: 'get'
+          method: 'get'
         }).then((res) => {
           console.log(res.data)
           if (res.data.code === 'SUCCESS') {

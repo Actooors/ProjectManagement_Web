@@ -8,135 +8,25 @@
       </ButtonGroup>
     </div>
     <Tabs class="tabs">
-      <TabPane label="已立项的项目" name="1" icon="md-book">
+      <TabPane label="已驳回" name="5" icon="md-close-circle">
+      <Table sriple border :columns="columns5" :data="data_failProject"
+             table="table" :loading="loading" size="large"></Table>
+    </TabPane>
+      <TabPane label="已立项" name="1" icon="md-book">
         <Table sriple border :columns="columns1" :data="data_buildProject"
                table="table" :loading="loading" size="large"></Table>
-        <Modal v-if="modal_delay" v-model="modal_detail" title="已立项的项目" width="900px">
-          <p>项目描述：{{data1.projectDescription}}</p>
-          <br>
-          <p>业务员姓名：{{data1.principalName}}</p>
-          <br>
-          <p>业务员手机：{{data1.principalPhone}}</p>
-          <br>
-          <p>业务员邮箱：{{data1.principalEmail}}</p>
-          <br>
-          <p>项目大类：{{data1.projectType}}</p>
-          <br>
-          <p>经费额度：{{data1.maxMoney}}元</p>
-          <br>
-          <p>选择调整经费额度:</p>
-          <InputNumber v-model="value"></InputNumber>
-          <Button type="primary" @click.native="changeMoney">修改</Button>
-          <br>
-          申报人类型：<p style="display: inline-flex;" v-for="item in data1.applicantType">{{item}}&nbsp;</p>
-          <br>
-          <br>
-          专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
-          <br>
-          <p>项目成员(默认第一个为项目负责人)：</p>
-          <br>
-          <Table :columns="columns_members" :data="data2.members" size="small" stripe></Table>
-          <br>
-          <p>项目申请书：<a @click="downloadProjectMaterial(data2.applicationAddress)">点击下载</a></p>
-          <br>
-        </Modal>
       </TabPane>
       <TabPane label="待提交中期报告" name="2" icon="md-calendar">
         <Table sriple border :columns="columns2" :data="data_middleProject"
                table="table" :loading="loading" size="large"></Table>
-        <Modal v-if="modal_delay" v-model="modal_detail" title="待提交中期报告" width="900px">
-          <p>项目描述：{{data1.projectDescription}}</p>
-          <br>
-          <p>业务员姓名：{{data1.principalName}}</p>
-          <br>
-          <p>业务员手机：{{data1.principalPhone}}</p>
-          <br>
-          <p>业务员邮箱：{{data1.principalEmail}}</p>
-          <br>
-          <p>项目大类：{{data1.projectType}}</p>
-          <br>
-          <p>经费额度：{{data1.maxMoney}}元</p>
-          <br>
-          <p>选择调整经费额度:</p>
-          <InputNumber v-model="value"></InputNumber>
-          <Button type="primary" @click.native="changeMoney">修改</Button>
-          <br>
-          申报人类型：<p style="display: inline-flex;" v-for="item in data1.applicantType">{{item}}&nbsp;</p>
-          <br>
-          <br>
-          专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
-          <br>
-          <p>项目成员(默认第一个为项目负责人)：</p>
-          <br>
-          <Table :columns="columns_members" :data="data2.members" size="small" stripe></Table>
-          <br>
-          <p>项目申请书：<a @click="downloadProjectMaterial(data2.applicationAddress)">点击下载</a></p>
-          <br>
-        </Modal>
       </TabPane>
       <TabPane label="待提交结题报告" name="3" icon="md-document">
         <Table sriple border :columns="columns3" :data="data_finalProject"
                table="table" :loading="loading" size="large"></Table>
-        <Modal v-if="modal_delay" v-model="modal_detail" title="待提交结题报告" width="900px">
-          <p>项目描述：{{data1.projectDescription}}</p>
-          <br>
-          <p>业务员姓名：{{data1.principalName}}</p>
-          <br>
-          <p>业务员手机：{{data1.principalPhone}}</p>
-          <br>
-          <p>业务员邮箱：{{data1.principalEmail}}</p>
-          <br>
-          <p>项目大类：{{data1.projectType}}</p>
-          <br>
-          <p>经费额度：{{data1.maxMoney}}元</p>
-          <br>
-          <p>选择调整经费额度:</p>
-          <InputNumber v-model="value"></InputNumber>
-          <Button type="primary" @click.native="changeMoney">修改</Button>
-          <br>
-          申报人类型：<p style="display: inline-flex;" v-for="item in data1.applicantType">{{item}}&nbsp;</p>
-          <br>
-          <br>
-          专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
-          <br>
-          <p>项目成员(默认第一个为项目负责人)：</p>
-          <br>
-          <Table :columns="columns_members" :data="data2.members" size="small" stripe></Table>
-          <br>
-          <p>项目申请书：<a @click="downloadProjectMaterial(data2.applicationAddress)">点击下载</a></p>
-          <br>
-          <p>项目中期报告：<a @click="downloadProjectMaterial(data2.interimAddress)">点击下载</a></p>
-        </Modal>
       </TabPane>
-      <TabPane label="已结项的项目" name="4" icon="md-checkbox">
+      <TabPane label="已结项" name="4" icon="md-checkbox">
         <Table sriple border :columns="columns4" :data="data_finishProject"
                table="table" :loading="loading" size="large"></Table>
-        <Modal v-if="modal_delay" v-model="modal_detail" title="已结项的项目" width="900px">
-          <p>项目描述：{{data1.projectDescription}}</p>
-          <br>
-          <p>业务员手机：{{data1.principalPhone}}</p>
-          <br>
-          <p>业务员邮箱：{{data1_principalEmail}}</p>
-          <br>
-          <p>项目大类：{{data1.projectType}}</p>
-          <br>
-          <p>经费额度：{{data1.maxMoney}}元</p>
-          <br>
-          申报人类型：<p style="display: inline-flex;" v-for="item in data1.applicantType">{{item}}&nbsp;</p>
-          <br>
-          <br>
-          专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
-          <br>
-          <p>项目成员(默认第一个为项目负责人)：</p>
-          <br>
-          <Table :columns="columns_members" :data="data2.members" size="small" stripe></Table>
-          <br>
-          <p>项目申请书：<a @click="downloadProjectMaterial(data2.applicationAddress)">点击下载</a></p>
-          <br>
-          <p>项目中期报告：<a @click="downloadProjectMaterial(data2.interimAddress)">点击下载</a></p>
-          <br>
-          <p>项目结题报告：<a @click="downloadProjectMaterial(data2.concludingAddress)">点击下载</a></p>
-        </Modal>
         <Modal
           v-model="model_exam"
           title="填写最终审核结果"
@@ -175,20 +65,58 @@
           </div>
         </Modal>
       </TabPane>
-      <TabPane label="已驳回项目" name="5" icon="ios-close-circle">
-        <Table sriple border :columns="columns5" :data="data_failProject"
-               table="table" :loading="loading" size="large"></Table>
-        <Modal
-          v-model="modal_failPro"
-          title="驳回理由"
-          width="750px"
-        >
-          <p>驳回理由如下:</p>
-          <br>
-          <p v-model="failReason">{{failReason}}</p>
-        </Modal>
-      </TabPane>
     </Tabs>
+    <Modal v-if="modal_delay" v-model="modal_detail" :title="infoTitle" width="900px">
+      <p>项目描述：{{data4.projectDescription}}</p>
+      <br>
+      <p>业务员手机：{{data4.principalPhone}}</p>
+      <br>
+      <p>项目大类：{{data4.projectType}}</p>
+      <br>
+      <p>经费额度：{{data4.maxMoney}}元</p>
+      <br>
+      申报人类型：<p style="display: inline-flex;" v-for="item in data4.applicantType">{{item}}&nbsp;</p>
+      <br>
+      <br>
+      专家名单：<p style="display: inline-flex;" v-for="item in data5.expertList">{{item.userName}}&nbsp;</p>
+      <br>
+      <p>经费额度：{{data4.maxMoney}}元</p>
+      <br>
+      <p>选择调整经费额度:</p>
+      <InputNumber v-model="maxMoney"></InputNumber>
+      <Button type="primary" @click.native="changeMoney">修改</Button>
+      <br>
+      <br>
+      <p>是否可提交中期报告：{{(data4.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a
+        v-if="data4.interimReport.isReportActivated"
+        @click="downloadProjectMaterial(data4.interimReport.reportTemplateAddress)">点击下载模板</a></p>
+      <br>
+      <p v-if="data4.interimReport.isReportActivated">中期报告开始时间：{{data4.interimReport.startTime}}</p>
+      <br v-if="data4.interimReport.isReportActivated">
+      <p v-if="data4.interimReport.isReportActivated">中期报告截止时间：{{data4.interimReport.deadline}}</p>
+      <br v-if="data4.interimReport.isReportActivated">
+      <p>是否可提交结题报告：{{(data4.concludingReport.isReportActivated === true) ? '是 ' : '否'}}<a
+        v-if="data4.concludingReport.isReportActivated"
+        @click="downloadProjectMaterial(data4.concludingReport.reportTemplateAddress)">点击下载模板</a></p>
+      <br>
+      <p v-if="data4.concludingReport.isReportActivated">结题报告开始时间：{{data4.concludingReport.startTime}}</p>
+      <br v-if="data4.concludingReport.isReportActivated">
+      <p v-if="data4.concludingReport.isReportActivated">结题报告截止时间：{{data4.concludingReport.deadline}}</p>
+      <br v-if="data4.concludingReport.isReportActivated">
+      <p>项目成员(默认第一个为项目负责人)：</p>
+      <br>
+      <Table :columns="columns_members" :data="data5.members" size="small" stripe></Table>
+      <br>
+      <p>项目申请书：<a @click="downloadProjectMaterial(data5.applicationAddress)">点击下载</a></p>
+      <br>
+      <p v-if="data5.interimAddress===null">项目中期报告：未提交</p>
+      <p v-if="data5.interimAddress!==null">项目中期报告：<a @click="downloadProjectMaterial(data5.interimAddress)">点击下载</a>
+      </p>
+      <br>
+      <p v-if="data5.concludingAddress===null">项目结题报告：未提交</p>
+      <p v-if="data5.concludingAddress!==null">项目结题报告：<a
+        @click="downloadProjectMaterial(data5.concludingAddress)">点击下载</a></p>
+    </Modal>
     <Modal
       maxHeight="1700"
       ref="modal"
@@ -212,7 +140,7 @@
   export default {
     name: 'projectList',
     watch: {
-      modal2(val) {
+      modal_detail (val) {
         if (val) {
           this.modal_delay = true
         }
@@ -227,14 +155,18 @@
         model_exam: false,
         modal3: false,
         spinShow: false,
-        failReason: '',
         index: 0,
+        flag: 1,
+        url_a: 0,
+        url_b: 0,
+        url_tail: 0,
         projectIndex: 0,
         accept: false,
         refuse: false,
         judge: false,
         refuseComment: '',
-        value: 1,
+        maxMoney: 1000,
+        infoTitle: null,
         formItem: {
           textarea: '在此填写会评意见',
         },
@@ -257,6 +189,11 @@
           {
             title: '项目简介',
             key: 'description',
+            align: 'center'
+          },
+          {
+            title: '项目负责业务员',
+            key: 'adminName',
             align: 'center'
           },
           {
@@ -285,7 +222,6 @@
             key: 'ProjectDetail',
             align: 'center',
             width: 250,
-            flag: 1,
             render: (h, params) => {
               return h('div', [
                 h('Button', {
@@ -294,7 +230,7 @@
                   },
                   on: {
                     click: () => {
-                      this.details(flag,params.index)
+                      this.details(1,params.index)
                     }
                   }
                 }, '查看项目详情')
@@ -321,6 +257,11 @@
           {
             title: '项目描述',
             key: 'description',
+            align: 'center'
+          },
+          {
+            title: '项目负责业务员',
+            key: 'adminName',
             align: 'center'
           },
           {
@@ -355,7 +296,7 @@
                   props: {type: 'info'},
                   on: {
                     click: () => {
-                      this.details(flag,params.index);
+                      this.details(2,params.index);
                     }
                   },
                 }, '详情')
@@ -382,6 +323,11 @@
           {
             title: '项目描述',
             key: 'description',
+            align: 'center'
+          },
+          {
+            title: '项目负责业务员',
+            key: 'adminName',
             align: 'center'
           },
           {
@@ -416,7 +362,7 @@
                   props: {type: 'info'},
                   on: {
                     click: () => {
-                      this.details(flag,params.index);
+                      this.details(3,params.index);
                     }
                   },
                 }, '详情')
@@ -443,6 +389,11 @@
           {
             title: '项目描述',
             key: 'description',
+            align: 'center'
+          },
+          {
+            title: '项目负责业务员',
+            key: 'adminName',
             align: 'center'
           },
           {
@@ -477,7 +428,7 @@
                   props: {type: 'info'},
                   on: {
                     click: () => {
-                      this.details(flag,params.index);
+                      this.details(4,params.index);
                     }
                   },
                 }, '详情')
@@ -521,6 +472,11 @@
             align: 'center'
           },
           {
+            title: '驳回详情',
+            key: 'failMessage',
+            align: 'center'
+          },
+          {
             title: '操作',
             align: 'center',
             key: 'operation',
@@ -534,26 +490,6 @@
                     }
                   },
                 }, '详情'),
-              ]);
-            }
-          },
-          {
-            title: '驳回理由',
-            key: 'failProject',
-            align: 'center',
-            width: 250,
-            render: (h, params) => {
-              return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'info'
-                  },
-                  on: {
-                    click: () => {
-                      this.failDetails(params.index)
-                    }
-                  }
-                }, '查看驳回理由')
               ]);
             }
           }
@@ -603,8 +539,8 @@
       initData(msg) {
         this.loading = true
         axios({
-          url: apiRoot + '/leader/unjudgeApplicatetion/2',
-          mothod: 'get'
+          url: apiRoot + '/leader/MyProject',
+          method: 'get'
         }).then((res) => {
           console.log(res.data)
           if (res.data.code === 'SUCCESS') {
@@ -624,60 +560,41 @@
           this.loading = false
         })
       },
-      failDetails(index) {
-        this.$Message.info('点击查看驳回理由!')
-        axios({
-          url: apiRoot + '/admin/project/' + this.data_failProject[index].projectId,
-          method: 'get'
-        }).then((res) => {
-          if (res.data.code === 'SUCCESS') {
-            console.log(res.data)
-            this.failReason = res.data.data.failReason;
-          } else {
-            this.$Message.error(res.data.message)
-          }
-          this.modal_failPro = false
-        }).catch(() => {
-          this.$Message.error("查看驳回理由结果失败，请检查网络连接！")
-          this.modal_failPro = false
-        })
-        this.modal_failPro = true
-      },
       async details(flag,index) {
         if (flag === 1) {
-          url_a = this.data_buildProject[index].projectCategoryId
-          url_b = this.data_buildProject[index].projectId
+          this.url_a = this.data_buildProject[index].projectCategoryId
+          this.url_b = this.data_buildProject[index].projectApplicationId
         }
         else if (flag === 2) {
-          url_a = this.data_middleProject[index].projectCategoryId
-          url_b = this.data_middleProject[index].projectId
+          this.url_a = this.data_middleProject[index].projectCategoryId
+          this.url_b = this.data_middleProject[index].projectApplicationId
         }
         else if (flag === 3) {
-          url_a = this.data_finalProject[index].projectCategoryId
-          url_b = this.data_finalProject[index].projectId
+          this.url_a = this.data_finalProject[index].projectCategoryId
+          this.url_b = this.data_finalProject[index].projectApplicationId
         }
         else if (flag === 4) {
-          url_a = this.data_finishProject[index].projectCategoryId
-          url_b = this.data_finishProject[index].projectId
+          this.url_a = this.data_finishProject[index].projectCategoryId
+          this.url_b = this.data_finishProject[index].projectApplicationId
         }
         else if (flag === 5) {
-          url_a = this.data_failProject[index].projectCategoryId
-          url_b = this.data_failProject[index].projectId
+          this.url_a = this.data_failProject[index].projectCategoryId
+          this.url_b = this.data_failProject[index].projectApplicationId
         }
         const a = axios({
-          url: apiRoot + '/admin/category/' + url_a,
+          url: apiRoot + '/admin/category/' + this.url_a,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            this.data1 = res.data.data
+            this.data4 = res.data.data
           }
         })
         const b = axios({
-          url: apiRoot + '/user/projectMoreInfo?applicationId=' + url_b,
+          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.url_b,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            this.data2 = res.data.data
+            this.data5 = res.data.data
           }
         })
         await Promise.all([a, b]);
@@ -716,7 +633,7 @@
           url: apiRoot + '/leader/JudgeReport',
           method: 'post',
           data: {
-            projectApplicationId: this.data_finishProject[index].projectId,
+            projectApplicationId: this.data_finishProject[index].projectApplicationId,
             judge: this.judge,
             msg: this.refuseComment
           }
@@ -739,8 +656,8 @@
         this.refuse = false
       },
       changeMoney() {
-        this.data1.maxMoney = value
-        console.log('修改项目经费额度成功!')
+        this.data4.maxMoney = this.maxMoney
+        this.$Message.info('修改项目经费额度成功!')
       },
       showAccept() {
         this.accept = !this.accept
@@ -751,21 +668,21 @@
         this.accept = false
       },
       initComment(flag,index) {
-        this.spinShow = true
+        this.spinShow = true;
         if (flag === 1) {
-          url_tail = this.data_buildProject[index].projectId
+          this.url_tail = this.data_buildProject[index].projectApplicationId
         }
         else if (flag === 2) {
-          url_tail = this.data_middleProject[index].projectId
+          this.url_tail = this.data_middleProject[index].projectApplicationId
         }
         else if (flag === 3) {
-          url_tail = this.data_finalProject[index].projectId
+          this.url_tail = this.data_finalProject[index].projectApplicationId
         }
         else if (flag === 4) {
-          url_tail = this.data_finishProject[index].projectId
+          this.url_tail = this.data_finishProject[index].projectApplicationId
         }
         axios({
-          url: apiRoot + '/admin/project/' + url_tail,
+          url: apiRoot + '/admin/project/' + this.url_tail,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
