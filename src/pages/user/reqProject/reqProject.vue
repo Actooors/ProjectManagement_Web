@@ -45,7 +45,7 @@
         </FormItem>
       </Form>
       <p style="font-size: 14px;margin-bottom: 15px">请问您对项目经费有修改意见吗？(修改可能会被业务员驳回)&nbsp;
-        <Switch v-model="isModify">
+        <Switch v-model="isModify" @on-change="changeSwitch">
           <span slot="open">有</span>
           <span slot="close">无</span>
         </Switch>
@@ -251,7 +251,7 @@
             this.data2 = res.data.data
           }
         })
-        // await Promise.all([a, b]);
+        await Promise.all([a, b]);
         this.modal1 = true
         this.index = index
       },
@@ -286,6 +286,11 @@
       },
       cancelCommit() {
         this.$ref["targetValidate"].resetFields();
+      },
+      changeSwitch(flag) {
+        if (flag === false) {
+          this.modifiedMoney = null
+        }
       }
     }
   }
