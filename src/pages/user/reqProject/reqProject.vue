@@ -20,9 +20,6 @@
       申报人类型：<p style="display: inline-flex;" v-for="item in data3.applicantType">{{item}}&nbsp;</p>
       <br>
       <br>
-      专家名单：<p style="display: inline-flex;" v-for="item in data2.expertList">{{item.userName}}&nbsp;</p>
-      <br>
-      <br>
       <p>项目成员(默认第一个为项目负责人)：</p>
       <Table :columns="columns2" :data="data2.members" size="small" stripe></Table>
       <br>
@@ -36,7 +33,7 @@
       <p v-if="data2.concludingAddress!==null">项目结题报告：<a
         @click="downloadProjectMaterial(data2.concludingAddress)">点击下载</a></p>
       <br>
-      <Form ref="targetValidate" :label-width="70" :model="targetValidate" :rules="targetRules">
+      <Form ref="targetValidate" :label-width="90" :model="targetValidate" :rules="targetRules">
         <FormItem label="项目指标" prop="target">
           <Tooltip max-width="300" style="width: 100%" placement="top" content="项目指标是指此项目最终预期的完成情况，或是此项目的目标，亦或是项目愿景。">
             <Input v-model="targetValidate.target" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
@@ -278,7 +275,27 @@
       commitTask(index) {
         this.$refs["targetValidate"].validate((valid) => {
           if (valid) {
-            //TODO
+            axios({
+              url: apiRoot + '/user/commitTaskManual',
+              method: 'post',
+              data: {
+                projectApplicationId: this.data1[index].projectApplicationId,
+                projectIndex: this.targetValidate.target,
+                projectMoney: this.modifiedMoney
+              }
+            }).then((res) => {
+              if (res.data.code === 'SUCCESS') {
+                this.data1.splice(index, 1);
+                this.targetValidate.target = null
+                this.modifiedMoney = null
+                this.modal1 = false;
+                this.$Message.success("任务书提交成功！");
+              } else {
+                this.$Message.error(res.data.message)
+              }
+            }).catch(()=>{
+              this.$Message.error("提交失败，请检查网络连接！")
+            })
           } else {
             this.$Message.warning("请输入项目指标")
           }

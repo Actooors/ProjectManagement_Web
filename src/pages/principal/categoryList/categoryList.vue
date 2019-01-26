@@ -20,9 +20,6 @@
       申报人类型：<p style="display: inline-flex;" v-for="item in data1[index].applicantType">{{item}}&nbsp;</p>
       <br>
       <br>
-      专家名单：<p style="display: inline-flex;" v-for="item in data1[index].expertList">{{item.userName}}&nbsp;</p>
-      <br>
-      <br>
       <p>是否上会：{{(data1[index].isExistMeetingReview===1?'是':'否')}}</p>
       <br>
       <p>是否可提交中期报告：{{(data1[index].interimReport.isReportActivated===true)?'是':'否 '}}<a

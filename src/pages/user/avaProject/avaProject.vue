@@ -196,6 +196,10 @@
                 <Input v-model="description" type="textarea" :rows="4" placeholder="对该项目进行简单描述(200字以内)"
                        :maxlength="200"/>
               </div>
+              <div class="projectMoney">
+                该项目的经费额度为{{this.projectMoney}}元，请预算后申报项目需要经费：
+                <InputNumber :max="this.projectMoney" :min="0" v-model="declaredAmount"></InputNumber>
+              </div>
               <div class="upload">
                 上传项目申报书:
                 <Upload
@@ -263,6 +267,8 @@
         description: '',    //项目简介
         uploadAddress: '',  //申报书上传之后的地址
         isMeeting: 'false', //是否上会
+        projectMoney: null,  //项目经费额度
+        declaredAmount: null, //项目申报的经费
         items: [],
         columns: [
           {
@@ -407,6 +413,7 @@
       },
       declare(index) {
         this.projectId = this.data1[index].projectId
+        this.projectMoney = this.data1[index].projectMoney
         this.isMeeting = this.data1[index].isMeeting
         this.model1 = true
       },
@@ -437,6 +444,7 @@
             members: this.items,
             description: this.description,
             uploadAddress: this.uploadAddress,
+            projectMoney:this.declaredAmount,   //用户自己申报的经费
             isMeeting: this.isMeeting,
           }
         }).then((res) => {
@@ -500,7 +508,7 @@
           var name = value.split("-")[1] //用户姓名
           var dep = value.split("-")[2]  //用户部门
           console.log(value, id, name, dep)
-          setTimeout(()=>{
+          setTimeout(() => {
             this.items[index].userId = id
             this.items[index].userName = name
             this.items[index].department = dep

@@ -82,10 +82,6 @@
       <br>
       <p>经费额度：{{data4.maxMoney}}元</p>
       <br>
-      <p>选择调整经费额度:</p>
-      <InputNumber v-model="maxMoney"></InputNumber>
-      <Button type="primary" @click.native="changeMoney">修改</Button>
-      <br>
       <br>
       <p>是否可提交中期报告：{{(data4.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a
         v-if="data4.interimReport.isReportActivated"
@@ -654,10 +650,6 @@
       cancel() {
         this.accept = false
         this.refuse = false
-      },
-      changeMoney() {
-        this.data4.maxMoney = this.maxMoney
-        this.$Message.info('修改项目经费额度成功!')
       },
       showAccept() {
         this.accept = !this.accept

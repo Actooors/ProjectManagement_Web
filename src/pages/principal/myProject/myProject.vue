@@ -31,16 +31,15 @@
       <br>
       <p>经费额度：{{data4.maxMoney}}元</p>
       <br>
+      <p>申请经费：{{data5.projectMoney}}元</p>
+      <br>
       申报人类型：<p style="display: inline-flex;" v-for="item in data4.applicantType">{{item}}&nbsp;</p>
       <br>
       <br>
       专家名单：<p style="display: inline-flex;" v-for="item in data5.expertList">{{item.userName}}&nbsp;</p>
       <br>
-      <p>经费额度：{{data4.maxMoney}}元</p>
       <br>
-      <p>选择调整经费额度:</p>
-      <InputNumber v-model="maxMoney"></InputNumber>
-      <Button type="primary" @click.native="changeMoney">修改</Button>
+      <p>经费额度：{{data4.maxMoney}}元</p>
       <br>
       <br>
       <p>是否可提交中期报告：{{(data4.interimReport.isReportActivated === true) ? '是 ' : '否'}}<a
@@ -464,10 +463,6 @@
             }).catch(() => {
               this.$Message.error('下载失败，请检查网络连接！')
             })
-          },
-          changeMoney() {
-            this.data4.maxMoney = this.maxMoney
-            this.$Message.info('修改项目经费额度成功!')
           }
         }
     }

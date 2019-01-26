@@ -66,6 +66,8 @@
       <br>
       <p>经费额度：{{data5.maxMoney}}元</p>
       <br>
+      <p>申请经费：{{data6.projectMoney}}元</p>
+      <br>
       申报人类型：<p style="display: inline-flex;" v-for="item in data5.applicantType">{{item}}&nbsp;</p>
       <br>
       <br>
