@@ -35,9 +35,9 @@
       <br>
       <p>项目大类：{{data2.projectType}}</p>
       <br>
-      <p>经费额度：{{data3.maxMoney}}元</p>
+      <p>经费额度：{{data2.maxMoney}}元</p>
       <br>
-      <p>申请经费：{{data2.projectMoney}}元</p>
+      <p>申请经费：{{data3.projectMoney}}元</p>
       <br>
       申报人类型：<p style="display: inline-flex;" v-for="item in data2.applicantType">{{item}}&nbsp;</p>
       <br>

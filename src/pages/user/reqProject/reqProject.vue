@@ -48,7 +48,7 @@
         </Switch>
       </p>
       <p v-show="isModify" style="font-size: 14px">请输入修改后的经费：
-        <InputNumber v-model="modifiedMoney"></InputNumber>
+        <InputNumber :min="0" v-model="modifiedMoney"></InputNumber>
         元
       </p>
     </Modal>
@@ -73,13 +73,11 @@
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 250,
           },
           {
             title: '项目申报日期',
             key: 'time',
             align: 'center',
-            width: 200,
           },
           {
             title: '项目简介',
@@ -89,7 +87,6 @@
           {
             title: '项目状态',
             key: 'reviewPhase',
-            width: 200,
             align: 'center'
           },
           {
@@ -98,11 +95,6 @@
             align: 'center',
             width: 250,
             render: (h, params) => {
-              // return (
-              //   <div>
-              //   {(params.row.reviewPhase==='任务书阶段')?<div style="display:inline"><Button type="error" style="margin-right:5px" onClick={()=>{this.cancelConfirm(params.index)}}>取消</Button><Button onClick={()=>{this.fillInTask(params.index)}}>填写任务书</Button></div>:<Button onClick={()=>{this.cancelConfirm(params.index)}}>取消</Button>}
-              //   </div>
-              // )
               return h('div', [
                 h('Button', {
                   props: {

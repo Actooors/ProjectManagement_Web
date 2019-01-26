@@ -53,10 +53,24 @@
   .content {
     height: 600px;
     max-height: 600px;
+    overflow-y: scroll;
     position: relative;
-    .projectTitle .projectMoney .description .upload {
-      margin: 40px auto;
-      width: 60%;
+    font-size: 14px;
+    .projectTitle {
+      margin: 30px auto;
+      width: 80%;
+    }
+    .projectMoney {
+      margin: 30px auto;
+      width: 80%;
+    }
+    .description {
+      margin: 30px auto;
+      width: 80%;
+    }
+    .upload {
+      margin: 30px auto;
+      width: 80%;
     }
     .allSuccess {
       display: flex;

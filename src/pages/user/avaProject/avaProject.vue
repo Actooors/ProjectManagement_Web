@@ -197,8 +197,8 @@
                        :maxlength="200"/>
               </div>
               <div class="projectMoney">
-                该项目的经费额度为{{this.projectMoney}}元，请预算后申报项目需要经费：
-                <InputNumber :max="this.projectMoney" :min="0" v-model="declaredAmount"></InputNumber>
+                该项目的经费额度为<span style="font-weight: bold">{{this.projectMaxMoney}}元</span>，请预算后申报项目需要经费：
+                <InputNumber :max="this.projectMaxMoney" :min="0" v-model="declaredAmount"></InputNumber>&nbsp;元
               </div>
               <div class="upload">
                 上传项目申报书:
@@ -267,7 +267,7 @@
         description: '',    //项目简介
         uploadAddress: '',  //申报书上传之后的地址
         isMeeting: 'false', //是否上会
-        projectMoney: null,  //项目经费额度
+        projectMaxMoney: null,  //项目经费额度
         declaredAmount: null, //项目申报的经费
         items: [],
         columns: [
@@ -386,8 +386,11 @@
         this.allSuccess = false
       },
       projectCancel() {
-        this.stepIndex = 0
-        this.description = ''
+        console.log("!@@")
+        this.stepIndex = null
+        this.projectName = null
+        this.declaredAmount = null
+        this.description = null
         this.read = false
         this.items.splice(0, this.items.length)
         this.model1 = false
@@ -413,7 +416,7 @@
       },
       declare(index) {
         this.projectId = this.data1[index].projectId
-        this.projectMoney = this.data1[index].projectMoney
+        this.projectMaxMoney = parseInt(this.data1[index].projectMaxMoney)
         this.isMeeting = this.data1[index].isMeeting
         this.model1 = true
       },
@@ -444,7 +447,7 @@
             members: this.items,
             description: this.description,
             uploadAddress: this.uploadAddress,
-            projectMoney:this.declaredAmount,   //用户自己申报的经费
+            projectMoney: this.declaredAmount,   //用户自己申报的经费
             isMeeting: this.isMeeting,
           }
         }).then((res) => {
