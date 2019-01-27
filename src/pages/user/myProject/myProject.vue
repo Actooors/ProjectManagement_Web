@@ -197,16 +197,17 @@
             key: 'isFinished',
             align: 'center',
             render: (h, params) => {
-              if (this.isFinishedMidRe === true)
-              {
+              if (this.isFinishedMidRe === true) {
                 var status = '已提交'
                 var display = 'block'
               } else {
                 var status = '未提交'
                 var display = 'none'
               }
-              return h('div', [
-                h('span',status),
+              return h('div', {
+                style: 'inline-block'
+              }, [
+                h('span', status),
                 h('Button', {
                   props: {
                     type: 'info'
@@ -289,16 +290,19 @@
             key: 'isFinished',
             align: 'center',
             render: (h, params) => {
-              if (this.isFinishedEndRe === true)
-              {
+              if (this.isFinishedEndRe === true) {
                 var status = '已提交'
                 var display = 'block'
               } else {
                 var status = '未提交'
                 var display = 'none'
               }
-              return h('div', [
-                h('span',status),
+              return h('div', {
+                style: {
+                  display: 'inline-block'
+                }
+              }, [
+                h('span', status),
                 h('Button', {
                   props: {
                     type: 'info'
@@ -309,7 +313,7 @@
                   },
                   on: {
                     click: () => {
-                      this.this.download(params.index, 2)
+                      this.download(params.index, 2)
                     }
                   }
                 }, '下载结题报告')])
@@ -402,7 +406,7 @@
             }
           }
         ],
-        columns5:[
+        columns5: [
           {
             title: '姓名',
             key: 'userName',
