@@ -5,8 +5,17 @@
         刷新
       </Button>
     </ButtonGroup>
-    <Table stripe border :columns="columns" :loading="loading" :data="data1" class="table" size="large"
-           height="750"></Table>
+    <Tabs class="tabs">
+      <TabPane label="已立项" name="1" size="large" icon="md-apps">
+        <Table stripe border :columns="columns" :loading="loading" :data="data1" table="table" size="large"
+               height="750"></Table>
+      </TabPane>
+      <TabPane label="未立项" name="2" size="large" icon="md-bookmarks">
+        <Table stripe border :columns="columns" :loading="loading" :data="data2" table="table" size="large"
+               height="750"></Table>
+      </TabPane>
+    </Tabs>
+
   </div>
 </template>
 
@@ -27,7 +36,7 @@
               },
               {
                 title: '项目申报日期',
-                key: 'applicationDeadLine',
+                key: 'time',
                 align: 'center',
                 width: 200,
               },
@@ -49,6 +58,7 @@
               }
             ],
             data1: [],
+            data2: []
           }
         },
       mounted() {
@@ -61,12 +71,13 @@
           initData(msg) {
             this.loading = true
             axios({
-              url: apiRoot + '/user/inTheApplicationList',
+              url: apiRoot + '/user/failProject',
               method: 'get'
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
                 console.log(res.data)
-                this.data1 = res.data.data;
+                this.data1 = res.data.data.failProgressProjects;
+                this.data2 = res.data.data.failApplicationProjects;
                 this.$Message.success(msg)
                 this.loading = false
               }else {

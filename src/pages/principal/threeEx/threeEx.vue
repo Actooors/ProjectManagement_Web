@@ -63,22 +63,16 @@
       width="700">
       <Form :label-width="180" style="margin-right: 25px">
         <div class="from_middle">
-          <div style="font-size: 14px; font-weight: bold; color: rgb(70, 76, 91);margin-bottom: 10px">
-            该项目的经费额度为{{this.projectMaxMoney}}元，申报经费为{{this.projectMoney}}元，是否需要修改项目的申报经费？
-            <Switch v-model="isModify" @on-change="changeSwitch">
-              <span slot="open">是</span>
-              <span slot="close">否</span>
-            </Switch>
-          </div>
-          <p v-show="isModify" style="font-size: 14px">请输入修改后的经费：
-            <InputNumber :max="parseInt(this.projectMaxMoney)" :min="0"
-                         v-model="modifiedMoney"></InputNumber>
-            元
-          </p>
-          <p data-v-2526d47e="" style="font-size: 14px; font-weight: bold; color: rgb(70, 76, 91);margin-top: 20px">
-            评审内容填写</p>
+          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
           <Input :autosize="{minRows: 4,maxRows: 10}" placeholder="请填写会评（申请者可以重新修改）" type="textarea"
                  v-model="passReason"></Input>
+          <br>
+          <br>
+          <p>经费额度：{{projectMoney}}元</p>
+          <p>选择调整经费额度:</p>
+          <InputNumber v-model="projectMoney"></InputNumber>
+          <Button type="primary" @click.native="changeMoney">修改</Button>
+          <br>
         </div>
       </Form>
       <div slot="footer">
@@ -155,10 +149,7 @@
         infoTitle: null,
         index: 0,
         spinShow: false,
-        isModify: false,
-        modifiedMoney: null,
-        projectMaxMoney: null,
-        projectMoney: null,
+        projectMoney: 1000,
         columns1: [
           {
             title: '项目名称',
@@ -335,10 +326,11 @@
           onOk: () => {
             this.modal3 = true
             this.index = index
-            this.projectMaxMoney = this.data1[index].projectMaxMoney
-            this.projectMoney = this.data1[index].projectMoney
           }
         })
+      },
+      changeMoney() {
+        this.data2.projectMoney = this.projectMoney
       },
       passConfirm() {
         axios({
@@ -348,9 +340,10 @@
             applicationId: this.data1[this.index].projectId,
             judge: true,
             msg: this.passReason,
-            projectMoney: this.modifiedMoney
+            projectMoney: this.projectMoney
           }
         }).then((res) => {
+          console.log(res.data)
           if (res.data.code === 'SUCCESS') {
             this.data1.splice(this.index, 1)
             this.$Message.success('该项目已通过会评！');
@@ -402,6 +395,7 @@
           if (res.data.code === 'SUCCESS') {
             this.infoTitle = res.data.data.projectName
             this.data2 = res.data.data
+            this.projectMoney = res.data.data.projectMoney
           }
         })
         const b = axios({
@@ -515,11 +509,6 @@
           this.$Message.error("查看其他专家评审结果失败，请检查网络连接！")
           this.spinShow = false
         })
-      },
-      changeSwitch(flag) {
-        if (flag === false) {
-          this.modifiedMoney = null
-        }
       }
     }
   }

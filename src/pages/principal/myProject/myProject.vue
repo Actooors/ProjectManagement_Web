@@ -15,7 +15,7 @@
       <TabPane label="待提交结题报告" name="3" icon="md-analytics">
         <Table table="table" :columns="column3" :data="data3" :loading="loading" sriple border size="large"></Table>
       </TabPane>
-      <TabPane label="已立项" name="4" icon="md-barcode">
+      <TabPane label="已结项" name="4" icon="md-barcode">
         <Table table="table" :columns="column4" :data="data6" :loading="loading" sriple border size="large"></Table>
       </TabPane>
       <TabPane label="已驳回" name="5" icon="md-bookmarks">
@@ -110,13 +110,8 @@
                 align: 'center'
               },
               {
-                title: '申请日期',
-                key: 'applicationTime',
-                align: 'center'
-              },
-              {
-                title: '申请截止日期',
-                key: 'applicationDeadLine',
+                title: '立项日期',
+                key: 'time',
                 align: 'center'
               },
               {
@@ -157,13 +152,8 @@
                 align: 'center'
               },
               {
-                title: '申请日期',
-                key: 'applicationTime',
-                align: 'center'
-              },
-              {
-                title: '申请截止日期',
-                key: 'applicationDeadLine',
+                title: '提交截止日期',
+                key: 'time',
                 align: 'center'
               },
               {
@@ -204,13 +194,8 @@
                 align: 'center'
               },
               {
-                title: '申请日期',
-                key: 'applicationTime',
-                align: 'center'
-              },
-              {
-                title: '申请截止日期',
-                key: 'applicationDeadLine',
+                title: '提交截止日期',
+                key: 'time',
                 align: 'center'
               },
               {
@@ -251,13 +236,8 @@
                 align: 'center'
               },
               {
-                title: '申请日期',
-                key: 'applicationTime',
-                align: 'center'
-              },
-              {
-                title: '申请截止日期',
-                key: 'applicationDeadLine',
+                title: '结项日期',
+                key: 'time',
                 align: 'center'
               },
               {
@@ -298,16 +278,6 @@
                 align: 'center'
               },
               {
-                title: '申请日期',
-                key: 'applicationTime',
-                align: 'center'
-              },
-              {
-                title: '申请截止日期',
-                key: 'applicationDeadLine',
-                align: 'center'
-              },
-              {
                 title: '项目简介',
                 key: 'description',
                 align: 'center'
@@ -333,7 +303,7 @@
                 }
               },
               {
-                title: '驳回理由',
+                title: '驳回详情',
                 key: 'failMessage',
                 align: 'center'
               }
@@ -431,6 +401,7 @@
               method: 'get'
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
+                this.infoTitle = res.data.data.projectName
                 this.data4 = res.data.data
               }
             })
@@ -444,6 +415,42 @@
             })
             await Promise.all([a, b]);
             this.modal_detail = true
+          },
+          download(index, type) {
+            const that = this
+            if (type === 1) {
+              if (this.data2[index].reportAddress === null) {
+                this.$Message.error('该项目已超过中期报告提交时间，无法下载！');
+                return
+              } else {
+                var filename = that.data2[index].reportAddress.split('---')[1];
+                var address = that.data2[index].reportAddress;
+              }
+            } else {
+              if (this.data3[index].reportAddress === null) {
+                this.$Message.error('该项目已超过结题报告提交时间，无法下载！');
+                return
+              } else {
+                var filename = that.data3[index].reportAddress.split('---')[1];
+                var address = that.data3[index].reportAddress;
+              }
+            }
+            axios({
+              url: apiRoot + '/file/download?fileAddress=' + address,
+              method: 'get',
+              headers: {Authorization: localStorage.getItem('token')},
+              responseType: 'blob'
+            }).then((res) => {
+              if (res.status === 200) {
+                download(res.data, filename, 'text/plain')
+                this.$Message.success("下载成功！")
+              } else {
+                this.$Message.error("下载失败！")
+              }
+            }).catch((err) => {
+              console.error(err)
+              this.$Message.error("下载失败，请检查网络连接！")
+            });
           },
           downloadProjectMaterial(address) {
             const that = this

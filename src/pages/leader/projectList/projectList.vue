@@ -174,12 +174,12 @@
           },
           {
             title: '项目类别',
-            key: 'projectType',
+            key: 'projectCategory',
             align: 'center'
           },
           {
-            title: '申请截止日期',
-            key: 'applicationDeadLine',
+            title: '立项日期',
+            key: 'time',
             align: 'center'
           },
           {
@@ -242,12 +242,12 @@
           },
           {
             title: '项目类别',
-            key: 'projectCategoryName',
+            key: 'projectCategory',
             align: 'center'
           },
           {
-            title: '申请截止日期',
-            key: 'applicationDeadLine',
+            title: '提交截止日期',
+            key: 'time',
             align: 'center'
           },
           {
@@ -308,12 +308,12 @@
           },
           {
             title: '项目类别',
-            key: 'projectCategoryName',
+            key: 'projectCategory',
             align: 'center'
           },
           {
-            title: '申请截止日期',
-            key: 'applicationDeadLine',
+            title: '提交截止日期',
+            key: 'time',
             align: 'center'
           },
           {
@@ -374,12 +374,12 @@
           },
           {
             title: '项目类别',
-            key: 'projectCategoryName',
+            key: 'projectCategory',
             align: 'center'
           },
           {
-            title: '申请截止日期',
-            key: 'applicationDeadLine',
+            title: '结项日期',
+            key: 'time',
             align: 'center'
           },
           {
@@ -459,7 +459,7 @@
           },
           {
             title: '项目类别',
-            key: 'projectCategoryName',
+            key: 'projectCategory',
             align: 'center'
           },
           {

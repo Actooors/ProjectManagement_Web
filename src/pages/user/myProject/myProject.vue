@@ -122,8 +122,11 @@
         modal3_delay: false,
         infoTitle: null,
         index: 0,
+        isFinishedMidRe: true,
+        isFinishedEndRe: true,
         middleReportAddress: '',
         lastReportAddress: '',
+        i: 0,
         uploadHeaders: {
           Authorization: localStorage.getItem('token')
         },
@@ -190,6 +193,37 @@
             align: 'center'
           },
           {
+            title: '是否提交中期报告',
+            key: 'isFinished',
+            align: 'center',
+            render: (h, params) => {
+              if (this.isFinishedMidRe === true)
+              {
+                var status = '已提交'
+                var display = 'block'
+              } else {
+                var status = '未提交'
+                var display = 'none'
+              }
+              return h('div', [
+                h('span',status),
+                h('Button', {
+                  props: {
+                    type: 'info'
+                  },
+                  style: {
+                    marginRight: '5px',
+                    display: display
+                  },
+                  on: {
+                    click: () => {
+                      this.this.download(params.index, 1)
+                    }
+                  }
+                }, '下载中期报告')])
+            }
+          },
+          {
             title: '项目简介',
             key: 'description',
             align: 'center'
@@ -249,6 +283,37 @@
             title: '提交状态',
             key: 'status',
             align: 'center'
+          },
+          {
+            title: '是否提交结题报告',
+            key: 'isFinished',
+            align: 'center',
+            render: (h, params) => {
+              if (this.isFinishedEndRe === true)
+              {
+                var status = '已提交'
+                var display = 'block'
+              } else {
+                var status = '未提交'
+                var display = 'none'
+              }
+              return h('div', [
+                h('span',status),
+                h('Button', {
+                  props: {
+                    type: 'info'
+                  },
+                  style: {
+                    marginRight: '5px',
+                    display: display
+                  },
+                  on: {
+                    click: () => {
+                      this.this.download(params.index, 2)
+                    }
+                  }
+                }, '下载结题报告')])
+            }
           },
           {
             title: '项目简介',
@@ -396,6 +461,15 @@
                 res.data.data.middleProject[i].status = '未到提交时间';
               }
             }
+            for (let i = 0; i < res.data.data.middleProject.length; i++) {
+              if (res.data.data.middleProject[i].isFinished === true) {
+                res.data.data.middleProject[i].isFinished = '已提交';
+                this.isFinishedMidRe = true
+              } else {
+                res.data.data.middleProject[i].isFinished = '未提交';
+                this.isFinishedMidRe = false
+              }
+            }
             for (let i = 0; i < res.data.data.finalProject.length; i++) {
               if (res.data.data.finalProject[i].status === 1) {
                 res.data.data.finalProject[i].status = '可提交';
@@ -403,6 +477,15 @@
                 res.data.data.finalProject[i].status = '已超过提交时间';
               } else {
                 res.data.data.finalProject[i].status = '未到提交时间';
+              }
+            }
+            for (let i = 0; i < res.data.data.finalProject.length; i++) {
+              if (res.data.data.finalProject[i].isFinished === true) {
+                res.data.data.finalProject[i].isFinished = '已提交';
+                this.isFinishedEndRe = true
+              } else {
+                res.data.data.finalProject[i].isFinished = '未提交';
+                this.isFinishedEndRe = false
               }
             }
             this.data1 = res.data.data.buildProject;
