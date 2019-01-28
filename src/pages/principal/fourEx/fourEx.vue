@@ -31,7 +31,7 @@
       <p v-if="data3.concludingAddress!==null">项目结题报告：<a
         @click="downloadProjectMaterial(data3.concludingAddress)">点击下载</a></p>
       <br>
-      <p>项目指标：{{data3.ProjectIndex}}</p>
+      <p>项目指标：{{data3.indexContent}}</p>
     </Modal>
     <Modal
       @on-cancel="cancel"

@@ -62,16 +62,18 @@
       v-model="modal3"
       width="700">
       <Form :label-width="180" style="margin-right: 25px">
-        <div class="from_middle">
-          <p data-v-2526d47e="" style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
+        <div class="from_middle" style="font-size: 14px;">
+          <p data-v-2526d47e="" style="font-weight: bold; color: rgb(70, 76, 91);">评审内容填写</p>
           <Input :autosize="{minRows: 4,maxRows: 10}" placeholder="请填写会评（申请者可以重新修改）" type="textarea"
                  v-model="passReason"></Input>
           <br>
           <br>
-          <p>经费额度：{{projectMoney}}元</p>
-          <p>选择调整经费额度:</p>
-          <InputNumber v-model="projectMoney"></InputNumber>
-          <Button type="primary" @click.native="changeMoney">修改</Button>
+          <p>申请经费：{{this.projectMoney}}元，经费额度：{{this.projectMaxMoney}}元</p>
+          <br>
+          <div style="display: inline-flex;line-height: 32px">
+            <p>选择调整申请的经费：</p>
+            <InputNumber v-model="modifiedMoney" :max="projectMaxMoney"></InputNumber>&nbsp;元
+          </div>
           <br>
         </div>
       </Form>
@@ -149,7 +151,9 @@
         infoTitle: null,
         index: 0,
         spinShow: false,
-        projectMoney: 1000,
+        projectMoney: null,
+        projectMaxMoney: null,
+        modifiedMoney: null,
         columns1: [
           {
             title: '项目名称',
@@ -326,11 +330,11 @@
           onOk: () => {
             this.modal3 = true
             this.index = index
+            this.projectMaxMoney = parseInt(this.data1[index].projectMaxMoney)
+            this.projectMoney = this.data1[index].projectMoney
+            this.modifiedMoney = this.data1[index].projectMoney
           }
         })
-      },
-      changeMoney() {
-        this.data2.projectMoney = this.projectMoney
       },
       passConfirm() {
         axios({
@@ -340,7 +344,7 @@
             applicationId: this.data1[this.index].projectId,
             judge: true,
             msg: this.passReason,
-            projectMoney: this.projectMoney
+            projectMoney: this.modifiedMoney
           }
         }).then((res) => {
           console.log(res.data)
