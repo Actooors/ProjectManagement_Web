@@ -154,6 +154,7 @@
             title: '项目描述',
             key: 'description',
             align: 'center',
+            tooltip: true
           },
           {
             title: '查看任务书',

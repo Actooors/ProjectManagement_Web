@@ -117,7 +117,8 @@
               {
                 title: '项目简介',
                 key: 'description',
-                align: 'center'
+                align: 'center',
+                tooltip: true
               },
               {
                 title: '操作',
@@ -159,7 +160,8 @@
               {
                 title: '项目简介',
                 key: 'description',
-                align: 'center'
+                align: 'center',
+                tooltip: true
               },
               {
                 title: '操作',
@@ -201,7 +203,8 @@
               {
                 title: '项目简介',
                 key: 'description',
-                align: 'center'
+                align: 'center',
+                tooltip: true
               },
               {
                 title: '操作',
@@ -243,7 +246,8 @@
               {
                 title: '项目简介',
                 key: 'description',
-                align: 'center'
+                align: 'center',
+                tooltip: true
               },
               {
                 title: '操作',
@@ -280,7 +284,8 @@
               {
                 title: '项目简介',
                 key: 'description',
-                align: 'center'
+                align: 'center',
+                tooltip: true
               },
               {
                 title: '操作',

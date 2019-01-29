@@ -174,6 +174,7 @@
             title: '项目描述',
             key: 'description',
             align: 'center',
+            tooltip: true
           },
           {
             title: '下载申请书',

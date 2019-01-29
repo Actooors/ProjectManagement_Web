@@ -155,7 +155,8 @@
           {
             title: '项目描述',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '其他专家评审结果',
