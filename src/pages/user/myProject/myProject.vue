@@ -537,11 +537,7 @@
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             this.$Message.success("上传成功！");
-            if (type === 1) {
-              this.data2.splice(index, 1)
-            } else {
-              this.data3.splice(index, 1)
-            }
+            this.initData('更新成功！')
           } else {
             this.$Message.warning(res.data.message);
           }
