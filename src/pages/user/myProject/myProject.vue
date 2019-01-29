@@ -113,6 +113,13 @@
 
   export default {
     name: "myProject",
+    watch: {
+      modal3(val) {
+        if (val) {
+          this.modal3_delay = val
+        }
+      }
+    },
     data() {
       return {
         loading: false,
