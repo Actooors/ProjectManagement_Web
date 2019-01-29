@@ -275,24 +275,22 @@
             title: '项目类别',
             key: 'type',
             align: 'center',
-            width: 250,
           },
           {
             title: '项目名称',
             key: 'projectName',
             align: 'center',
-            width: 250,
           },
           {
             title: '截止日期',
             key: 'deadLine',
             align: 'center',
-            width: 200,
           },
           {
             title: '项目简介',
             key: 'introduce',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '操作',
@@ -347,7 +345,9 @@
             this.official.phone = res.data.data.phone;
             this.official.mail = res.data.data.mail;
           }
-        }).catch(() => {
+        }).catch((err) => {
+          console.log("!!!!!")
+          console.error(err)
           this.$Message.error("请检查网络!")
         })
         console.log('localStorage', localStorage)

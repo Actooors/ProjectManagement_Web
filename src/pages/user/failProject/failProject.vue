@@ -43,7 +43,8 @@
               {
                 title: '项目简介',
                 key: 'description',
-                align: 'center'
+                align: 'center',
+                tooltip: true
               },
               {
                 title: '项目状态',

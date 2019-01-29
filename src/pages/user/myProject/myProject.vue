@@ -113,6 +113,13 @@
 
   export default {
     name: "myProject",
+    watch: {
+      modal3(val) {
+        if (val) {
+          this.modal3_delay = val
+        }
+      }
+    },
     data() {
       return {
         loading: false,
@@ -122,11 +129,9 @@
         modal3_delay: false,
         infoTitle: null,
         index: 0,
-        isFinishedMidRe: true,
-        isFinishedEndRe: true,
         middleReportAddress: '',
         lastReportAddress: '',
-        i: 0,
+        // i: 0,
         uploadHeaders: {
           Authorization: localStorage.getItem('token')
         },
@@ -144,7 +149,8 @@
           {
             title: '项目简介',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目状态',
@@ -167,7 +173,6 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击查看详情')
                       this.details(params.index)
                     }
                   }
@@ -197,15 +202,15 @@
             key: 'isFinished',
             align: 'center',
             render: (h, params) => {
-              if (this.isFinishedMidRe === true) {
-                var status = '已提交'
-                var display = 'block'
+              if (this.data2[params.index].isFinished === true) {
+                var status = ''
+                var display = ''
               } else {
                 var status = '未提交'
                 var display = 'none'
               }
               return h('div', {
-                style: 'inline-block'
+                style: 'inline-table'
               }, [
                 h('span', status),
                 h('Button', {
@@ -218,16 +223,17 @@
                   },
                   on: {
                     click: () => {
-                      this.this.download(params.index, 1)
+                      this.download(params.index, 1)
                     }
                   }
-                }, '下载中期报告')])
+                }, '中期报告')])
             }
           },
           {
             title: '项目简介',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目状态',
@@ -290,17 +296,15 @@
             key: 'isFinished',
             align: 'center',
             render: (h, params) => {
-              if (this.isFinishedEndRe === true) {
-                var status = '已提交'
-                var display = 'block'
+              if (this.data3[params.index].isFinished === true) {
+                var status = ''
+                var display = ''
               } else {
                 var status = '未提交'
                 var display = 'none'
               }
               return h('div', {
-                style: {
-                  display: 'inline-block'
-                }
+                style: 'inline-table'
               }, [
                 h('span', status),
                 h('Button', {
@@ -322,7 +326,8 @@
           {
             title: '项目简介',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目状态',
@@ -378,7 +383,8 @@
           {
             title: '项目简介',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目状态',
@@ -465,15 +471,6 @@
                 res.data.data.middleProject[i].status = '未到提交时间';
               }
             }
-            for (let i = 0; i < res.data.data.middleProject.length; i++) {
-              if (res.data.data.middleProject[i].isFinished === true) {
-                res.data.data.middleProject[i].isFinished = '已提交';
-                this.isFinishedMidRe = true
-              } else {
-                res.data.data.middleProject[i].isFinished = '未提交';
-                this.isFinishedMidRe = false
-              }
-            }
             for (let i = 0; i < res.data.data.finalProject.length; i++) {
               if (res.data.data.finalProject[i].status === 1) {
                 res.data.data.finalProject[i].status = '可提交';
@@ -481,15 +478,6 @@
                 res.data.data.finalProject[i].status = '已超过提交时间';
               } else {
                 res.data.data.finalProject[i].status = '未到提交时间';
-              }
-            }
-            for (let i = 0; i < res.data.data.finalProject.length; i++) {
-              if (res.data.data.finalProject[i].isFinished === true) {
-                res.data.data.finalProject[i].isFinished = '已提交';
-                this.isFinishedEndRe = true
-              } else {
-                res.data.data.finalProject[i].isFinished = '未提交';
-                this.isFinishedEndRe = false
               }
             }
             this.data1 = res.data.data.buildProject;
@@ -556,11 +544,7 @@
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             this.$Message.success("上传成功！");
-            if (type === 1) {
-              this.data2.splice(index, 1)
-            } else {
-              this.data3.splice(index, 1)
-            }
+            this.initData('更新成功！')
           } else {
             this.$Message.warning(res.data.message);
           }
@@ -615,7 +599,7 @@
           }
         })
         const b = axios({
-          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectId,
+          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectApplicationId,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {

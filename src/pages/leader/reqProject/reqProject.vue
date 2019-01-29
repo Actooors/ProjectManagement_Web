@@ -155,7 +155,8 @@
           {
             title: '项目描述',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '其他专家评审结果',
@@ -201,6 +202,7 @@
             title: '操作',
             key: 'operation',
             align: 'center',
+            width: 180,
             render: (h, params) => {
               return h('div', [
                 h('Button', {
@@ -327,9 +329,9 @@
       download(index) {
         this.$Message.info('点击下载终审项目申请书')
         console.log(this.data1[index])
-        var filename = this.data1[index].projectApplicationDownloadAddress.split('---')[1]  //---后为文件名
+        var filename = this.data1[index].projectDownloadAddress.split('---')[1]  //---后为文件名
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + this.data1[index].projectApplicationDownloadAddress,
+          url: apiRoot + '/file/download?fileAddress=' + this.data1[index].projectDownloadAddress,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'

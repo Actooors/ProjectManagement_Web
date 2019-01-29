@@ -185,7 +185,8 @@
           {
             title: '项目简介',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目负责业务员',
@@ -253,7 +254,8 @@
           {
             title: '项目描述',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目负责业务员',
@@ -319,7 +321,8 @@
           {
             title: '项目描述',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目负责业务员',
@@ -385,7 +388,8 @@
           {
             title: '项目描述',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目负责业务员',
@@ -465,7 +469,8 @@
           {
             title: '项目描述',
             key: 'description',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '驳回详情',

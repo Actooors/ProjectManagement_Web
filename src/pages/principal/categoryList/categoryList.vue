@@ -228,7 +228,8 @@
           {
             title: '项目简介',
             key: 'projectDescription',
-            align: 'center'
+            align: 'center',
+            tooltip: true
           },
           {
             title: '项目类别',

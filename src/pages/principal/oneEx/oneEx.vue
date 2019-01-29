@@ -142,6 +142,7 @@
             title: '项目描述',
             key: 'description',
             align: 'center',
+            tooltip: true
           },
           {
             title: '下载申请书',
@@ -304,9 +305,9 @@
       },
       download(index) {
         const that = this
-        var filename = this.data1[index].projectApplicationDownloadAddress.split('---')[1]
+        var filename = this.data1[index].projectDownloadAddress.split('---')[1]
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + that.data1[index].projectApplicationDownloadAddress,
+          url: apiRoot + '/file/download?fileAddress=' + that.data1[index].projectDownloadAddress,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'

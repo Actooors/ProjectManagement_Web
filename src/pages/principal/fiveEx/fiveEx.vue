@@ -128,6 +128,7 @@
             title: '项目描述',
             key: 'description',
             align: 'center',
+            tooltip: true
           },
           {
             title: '查看结题报告',
