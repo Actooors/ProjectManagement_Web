@@ -41,6 +41,7 @@
           </Tooltip>
         </FormItem>
       </Form>
+      <p style="font-size: 14px;margin-bottom: 15px;font-weight: bold">经审核，业务员将您申请的项目经费修改为：{{data2.projectMoney}}&nbsp;元</p>
       <p style="font-size: 14px;margin-bottom: 15px">请问您对项目经费有修改意见吗？(修改可能会被业务员驳回)&nbsp;
         <Switch v-model="isModify" @on-change="changeSwitch">
           <span slot="open">有</span>
@@ -286,7 +287,7 @@
               } else {
                 this.$Message.error(res.data.message)
               }
-            }).catch(()=>{
+            }).catch(() => {
               this.$Message.error("提交失败，请检查网络连接！")
             })
           } else {

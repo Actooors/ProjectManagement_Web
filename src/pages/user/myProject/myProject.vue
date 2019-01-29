@@ -166,7 +166,6 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('点击查看详情')
                       this.details(params.index)
                     }
                   }
@@ -597,7 +596,7 @@
           }
         })
         const b = axios({
-          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectId,
+          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectApplicationId,
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {

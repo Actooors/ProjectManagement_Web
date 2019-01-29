@@ -9,7 +9,7 @@
                  placeholder="密码"/>
           <ButtonGroup size="large">
             <div style="display: flex;">
-              <Button size="large"  type="primary" :loading="loading" @click="login" @keyup.enter="login">
+              <Button size="large"  type="primary" :loading="loading" @click="login" v-on:keyup.13="login">
                 登录
               </Button>
             </div>
