@@ -119,7 +119,7 @@
       title="查看专家评审结果"
       v-model="modal3"
       width="800">
-      <Table :columns="columns3" :data="data_expert" :loading="spinShow" border></Table>
+      <Table :columns="columns_expert" :data="data_expert" :loading="spinShow" border></Table>
       <div slot="footer">
         <Button @click="modal3=false" type="primary">
           确定
@@ -514,6 +514,38 @@
           {
             title: '邮箱',
             key: 'mail',
+            align: 'center'
+          }
+        ],
+        columns_expert: [
+          {
+            title: '专家姓名',
+            key: 'expertName',
+            align: 'center'
+          },
+          {
+            title: '专家学/工号',
+            key: 'expertId',
+            align: 'center'
+          },
+          {
+            title: '完成评审',
+            key: 'isFinished',
+            align: 'center'
+          },
+          {
+            title: '评语',
+            key: 'reviewOpinion',
+            align: 'center'
+          },
+          {
+            title: '评分',
+            key: 'score',
+            align: 'center'
+          },
+          {
+            title: '最终意见',
+            key: 'finalOpinion',
             align: 'center'
           }
         ],
