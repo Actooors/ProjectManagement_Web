@@ -29,9 +29,10 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
+
     new webpack.DefinePlugin({
       'process.env': env,
-      'apiRoot': '/v1'
+      'apiRoot': "'http://129.204.71.113:8888/api'"
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
