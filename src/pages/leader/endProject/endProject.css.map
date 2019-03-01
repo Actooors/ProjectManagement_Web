@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,QAAS;EACP,KAAK,EAAE,IAAI;EACX,mBAAW;IACT,MAAM,EAAE,eAAe;EAEzB,eAAO;IACL,MAAM,EAAE,WAAW;;AAIvB,OAAQ;EACN,SAAS,EAAE,IAAI;EAEf,KAAK,EAAE,OAAe;EACtB,UAAU,EAAC,IAAI;EACf,UAAU,EAAC,MAAM",
+"sources": ["endProject.scss"],
+"names": [],
+"file": "endProject.css"
+}
