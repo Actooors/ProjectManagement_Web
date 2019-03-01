@@ -1,0 +1,20 @@
+.wrapper {
+  width: 100%; }
+  .wrapper .operation {
+    margin: 25px 0 0 32.5px; }
+  .wrapper .table {
+    margin: 25px 32.5px; }
+
+.accept {
+  width: 600px;
+  height: 60px;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 22px;
+  font-weight: bold;
+  color: limegreen; }
+
+.refuse {
+  margin-top: 8px; }
+
+/*# sourceMappingURL=reqProject.css.map */

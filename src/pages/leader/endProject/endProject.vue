@@ -241,7 +241,7 @@
             this.loading = false
             this.$Message.success(msg)
           } else {
-            this.$Message.error(res.data.message)
+            this.$Message.warning(res.data.message)
             this.loading = false
           }
         }).catch(() => {
