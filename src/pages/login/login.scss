@@ -4,9 +4,11 @@
   overflow: hidden;
   position: relative;
   background: url("../../assets/img/SHU.jpg") no-repeat;
+  background-size: 100% 100%;
   .filter {
     //position: absolute;
     .SysTitle {
+      border-radius: 12px;
       z-index: 999;
       background-color: rgba(16, 16, 16, 0.53);
       padding-top: 40px;
@@ -14,7 +16,7 @@
       top: calc(50% - 175px);
       right: 200px;
       width: 300px;
-      height: 300px;
+      height: 260px;
       font-size: 2.5em;
       color: #b0b0b5;
       text-align: center;
