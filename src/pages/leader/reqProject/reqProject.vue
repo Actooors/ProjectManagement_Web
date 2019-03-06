@@ -315,7 +315,7 @@
             this.loading = false
             this.$Message.success(str)
           } else {
-            this.$Message.error(res.data.message)
+            this.$Message.warning(res.data.message)
             this.loading = false
           }
         }).catch(() => {

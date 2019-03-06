@@ -1,0 +1,14 @@
+.wrapper {
+  width: 100%; }
+  .wrapper .operation {
+    margin: 25px 0 0 32.5px; }
+  .wrapper .table {
+    margin: 25px 32.5px; }
+
+.button {
+  font-size: 15px;
+  color: #464c5b;
+  margin-top: 30px;
+  text-align: center; }
+
+/*# sourceMappingURL=endProject.css.map */
