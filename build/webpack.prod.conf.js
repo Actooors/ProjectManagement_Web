@@ -32,7 +32,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 
     new webpack.DefinePlugin({
       'process.env': env,
-      'apiRoot': "'http://129.204.71.113:8888/api'"
+      'apiRoot': "'/api'"
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
