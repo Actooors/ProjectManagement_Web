@@ -91,11 +91,6 @@
       }
     },
     created: function () {
-      // this.document.onkeyup = (event) => {
-      //   if (event.code === 'Enter') {
-      //     this.login()
-      //   }
-      // }
       window.onresize = () => {
         const windowWidth = document.body.clientWidth
         const windowHeight = document.body.clientHeight
