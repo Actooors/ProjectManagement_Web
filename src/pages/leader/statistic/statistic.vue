@@ -94,6 +94,7 @@
       /*initProjectData(msg) {
         var myPieChart = echarts.init(document.getElementById('piechart'));
         var myBarChart = echarts.init(document.getElementById('barchart'));
+
         axios({
           url: apiRoot + '/leader/statisic',
           method: 'get'

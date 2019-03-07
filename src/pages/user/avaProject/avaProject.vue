@@ -206,7 +206,7 @@
                   type="drag"
                   :headers="uploadHeaders"
                   :on-success="uploadSuccess"
-                  action="http://129.204.71.113:8888/api/file/upload">
+                  action="https://pm.alphalrx.cn/api/file/upload">
                   <div style="padding: 20px 0">
                     <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
                     <p>点击或将项目申报书拖拽到此处即可上传(注意只能是单文件)</p>

@@ -41,7 +41,8 @@
           </Tooltip>
         </FormItem>
       </Form>
-      <p style="font-size: 14px;margin-bottom: 15px;font-weight: bold">经审核，业务员将您申请的项目经费修改为：{{data2.projectMoney}}&nbsp;元</p>
+      <p style="font-size: 14px;margin-bottom: 15px;font-weight: bold">
+        经审核，业务员将您申请的项目经费修改为：{{data2.projectMoney}}&nbsp;元</p>
       <p style="font-size: 14px;margin-bottom: 15px">请问您对项目经费有修改意见吗？(修改可能会被业务员驳回)&nbsp;
         <Switch v-model="isModify" @on-change="changeSwitch">
           <span slot="open">有</span>
@@ -76,6 +77,11 @@
             align: 'center',
           },
           {
+            title: '项目类别',
+            key: 'type',
+            align: 'center'
+          },
+          {
             title: '项目申报日期',
             key: 'time',
             align: 'center',
@@ -89,7 +95,55 @@
           {
             title: '项目状态',
             key: 'reviewPhase',
-            align: 'center'
+            align: 'center',
+            filters: [
+              {
+                label: '业务员审核阶段',
+                value: 1
+              },
+              {
+                label: '评审专家审核阶段',
+                value: 2
+              },
+              {
+                label: '待会评阶段',
+                value: 3
+              },
+              {
+                label: '领导审核阶段',
+                value: 4
+              },
+              {
+                label: '待提交任务书阶段',
+                value: 5
+              },
+              {
+                label: '任务书审核阶段',
+                value: 6
+              }
+            ],
+            filterMultiple: true,
+            filterMethod(value, row) {
+              switch (value) {
+                case 1:
+                  return row.reviewPhase === '业务员审核阶段';
+                  break;
+                case 2:
+                  return row.reviewPhase === '评审专家审核阶段';
+                  break;
+                case 3:
+                  return row.reviewPhase === '会评阶段';
+                  break;
+                case 4:
+                  return row.reviewPhase === '领导审核阶段';
+                  break;
+                case 5:
+                  return row.reviewPhase === '待提交任务书阶段';
+                  break;
+                case 6:
+                  return row.reviewPhase === '任务书审核阶段'
+              }
+            }
           },
           {
             title: '操作',
@@ -164,7 +218,7 @@
             {required: true, message: '项目指标不能为空', trigger: 'blur'}
           ],
         }
-      }
+      };
     },
     mounted() {
       this.initData('初始化成功！');
