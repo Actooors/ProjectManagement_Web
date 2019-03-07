@@ -132,7 +132,7 @@
                   return row.reviewPhase === '评审专家审核阶段';
                   break;
                 case 3:
-                  return row.reviewPhase === '待会评阶段';
+                  return row.reviewPhase === '会评阶段';
                   break;
                 case 4:
                   return row.reviewPhase === '领导审核阶段';
