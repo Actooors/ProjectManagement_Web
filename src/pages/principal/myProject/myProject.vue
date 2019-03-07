@@ -5,23 +5,66 @@
         <Button type="success" size="large" @click="Refresh" icon="md-refresh" ghost>刷新</Button>
       </ButtonGroup>
     </div>
-    <Tabs class="tabs">
-      <TabPane label="已立项" name="1" icon="md-apps">
-        <Table table="table" :columns="column1" :data="data1" :loading="loading" sriple border size="large"></Table>
-      </TabPane>
-      <TabPane label="待提交中期报告" name="2" icon="md-albums">
-        <Table table="table" :columns="column2" :data="data2" :loading="loading" sriple border size="large"></Table>
-      </TabPane>
-      <TabPane label="待提交结题报告" name="3" icon="md-analytics">
-        <Table table="table" :columns="column3" :data="data3" :loading="loading" sriple border size="large"></Table>
-      </TabPane>
-      <TabPane label="已结项" name="4" icon="md-barcode">
-        <Table table="table" :columns="column4" :data="data6" :loading="loading" sriple border size="large"></Table>
-      </TabPane>
-      <TabPane label="已驳回" name="5" icon="md-bookmarks">
-        <Table table="table" :columns="column5" :data="data7" :loading="loading" sriple border size="large"></Table>
-      </TabPane>
+    <Tabs class="tab" type="card">
+      <Tab-pane label="理工">
+        <Tabs class="tabs">
+        <TabPane label="已立项" name="1" icon="md-apps">
+          <Table table="table" :columns="column1" :data="data1" :loading="loading" sriple border size="large"></Table>
+        </TabPane>
+        <TabPane label="待提交中期报告" name="2" icon="md-albums">
+          <Table table="table" :columns="column2" :data="data2" :loading="loading" sriple border size="large"></Table>
+        </TabPane>
+        <TabPane label="待提交结题报告" name="3" icon="md-analytics">
+          <Table table="table" :columns="column3" :data="data3" :loading="loading" sriple border size="large"></Table>
+        </TabPane>
+        <TabPane label="已结项" name="4" icon="md-barcode">
+          <Table table="table" :columns="column4" :data="data6" :loading="loading" sriple border size="large"></Table>
+        </TabPane>
+        <TabPane label="已驳回" name="5" icon="md-bookmarks">
+          <Table table="table" :columns="column5" :data="data7" :loading="loading" sriple border size="large"></Table>
+        </TabPane>
+      </Tabs>
+      </Tab-pane>
+      <Tab-pane label="人文">
+        <Tabs class="tabs">
+          <TabPane label="已立项" name="1" icon="md-apps">
+            <Table table="table" :columns="column1" :data="data1" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+          <TabPane label="待提交中期报告" name="2" icon="md-albums">
+            <Table table="table" :columns="column2" :data="data2" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+          <TabPane label="待提交结题报告" name="3" icon="md-analytics">
+            <Table table="table" :columns="column3" :data="data3" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+          <TabPane label="已结项" name="4" icon="md-barcode">
+            <Table table="table" :columns="column4" :data="data6" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+          <TabPane label="已驳回" name="5" icon="md-bookmarks">
+            <Table table="table" :columns="column5" :data="data7" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+        </Tabs>
+      </Tab-pane>
+      <Tab-pane label="经管">
+        <Tabs class="tabs">
+          <TabPane label="已立项" name="1" icon="md-apps">
+            <Table table="table" :columns="column1" :data="data1" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+          <TabPane label="待提交中期报告" name="2" icon="md-albums">
+            <Table table="table" :columns="column2" :data="data2" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+          <TabPane label="待提交结题报告" name="3" icon="md-analytics">
+            <Table table="table" :columns="column3" :data="data3" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+          <TabPane label="已结项" name="4" icon="md-barcode">
+            <Table table="table" :columns="column4" :data="data6" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+          <TabPane label="已驳回" name="5" icon="md-bookmarks">
+            <Table table="table" :columns="column5" :data="data7" :loading="loading" sriple border size="large"></Table>
+          </TabPane>
+        </Tabs>
+      </Tab-pane>
     </Tabs>
+
     <Modal v-if="modal_delay" v-model="modal_detail" :title="infoTitle" width="900px">
       <p>项目描述：{{data4.projectDescription}}</p>
       <br>
