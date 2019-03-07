@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="operation">
       <ButtonGroup>
-        <Button type="success" :loading="loading" icon="md-refresh" @click="loading=!loading" size="large" ghost>
+        <Button type="success" :loading="loading" icon="md-refresh" size="large" ghost>
           刷新
         </Button>
       </ButtonGroup>
