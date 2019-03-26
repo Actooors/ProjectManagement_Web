@@ -615,7 +615,7 @@
           this.url_b = this.data_failProject[index].projectApplicationId
         }
         const a = axios({
-          url: apiRoot + '/admin/category/' + this.url_a,
+          url: apiRoot + '/admin/category/' + this.url_a.toString(),
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
@@ -623,7 +623,7 @@
           }
         })
         const b = axios({
-          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.url_b,
+          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.url_b.toString(),
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {

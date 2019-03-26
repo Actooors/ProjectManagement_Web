@@ -254,7 +254,7 @@
     methods: {
       async details(index) {
         const a = axios({
-          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId,
+          url: apiRoot + '/admin/category/' + this.data1[index].projectCategoryId.toString(),
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
@@ -263,7 +263,7 @@
           }
         })
         const b = axios({
-          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectId,
+          url: apiRoot + '/user/projectMoreInfo?applicationId=' + this.data1[index].projectId.toString(),
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
