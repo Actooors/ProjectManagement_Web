@@ -117,12 +117,79 @@
         </Button>
       </div>
     </Modal>
+
+    <Modal v-model="modal_change" title="修改项目详情" @on-ok="finish(index)" @on-cancel="cancel3(index)" :z-index="1000">
+      <br>
+      <p>项目名称：</p><Input v-model="data2[index].projectName" :placeholder="data2[index].projectName"/>
+      <br>
+      <p>项目描述：</p><Input v-model="data2[index].projectDescription" :placeholder="data2[index].projectDescription"/>
+      <br>
+      <p>项目类型：</p><Input v-model="data2[index].projectType" :placeholder="data2[index].projectType"/>
+      <br>
+      <p>修改申请开始时间:</p>
+      <DatePicker type="datetime" :value="data2[index].applicationStartTime"
+                  format="yyyy年MM月dd日 HH:mm" style="width: 300px"
+                  @on-change="setAllTime(index,...arguments,1)"
+                  placeholder="修改时间"></DatePicker>
+      <br>
+      <p>修改申请截止时间:</p>
+      <DatePicker type="datetime" :value="data2[index].applicationEndTime"
+                  format="yyyy年MM月dd日 HH:mm" style="width: 300px"
+                  @on-change="setAllTime(index,...arguments,2)"
+                  placeholder="修改时间"></DatePicker>
+      <p>修改项目开始时间:</p>
+      <DatePicker type="datetime" :value="data2[index].projectStartTime"
+                  format="yyyy年MM月dd日 HH:mm" style="width: 300px"
+                  @on-change="setAllTime(index,...arguments,3)"
+                  placeholder="修改时间"></DatePicker>
+      <br>
+      <p>修改项目截止时间:</p>
+      <DatePicker type="datetime" :value="data2[index].projectEndTime"
+                  format="yyyy年MM月dd日 HH:mm" style="width: 300px"
+                  @on-change="setAllTime(index,...arguments,4)"
+                  placeholder="修改时间"></DatePicker>
+      <br>
+      <p>负责人电话：</p><Input v-model="data2[index].principalPhone" :placeholder="data2[index].principalPhone"/>
+      <br>
+      项目经费:<span style="font-weight: bold">{{this.data2[index].maxMoney}}元</span>
+      如需修改：
+      <br><InputNumber v-model="ChangeMoney" :max="10000" :min="0" ></InputNumber>
+      <br>
+      <span>上会状态：{{(data2[index].isExistMeetingReview===1?'是':'否')}}</span>
+      如需修改：<br><Select v-model="ChangeIsExistMeetingReview" style="width: 100px">
+        <Option v-for="item in trueOrfalse" :value="item.value" :key="item.value" >{{item.label}}</Option>
+      </Select>
+      <br>
+      <!--<span>中期报告提交状态：{{(data1[index].interimReport.isReportActivated===1?'是':'否')}}</span>如需修改：
+      <Select v-model="ChangeIsReportActivated">
+        <Option v-for="item in trueOrfalse" :value="item.value" :key="item.value" >{{item.label}}</Option>
+      </Select>
+      <br>-->
+      <p>修改申报人类型：</p>
+      <CheckboxGroup v-model="data2[index].applicantType">
+        <Checkbox label="本科生"></Checkbox>
+        <Checkbox label="研究生"></Checkbox>
+        <Checkbox label="博士生"></Checkbox>
+      </CheckboxGroup>
+      <br>
+
+      <div slot="footer">
+        <Button type="text" @click.native="cancel3(index)"
+                style="">
+          取消
+        </Button>
+        <Button type="primary" @click.native="finish(index)"
+                style="">
+          确定
+        </Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
 
+  import axios from 'axios'
 
   export default {
     name: "categoryList",
@@ -135,13 +202,28 @@
     },
     data() {
       return {
+        trueOrfalse:[
+          {
+            value: '1',
+            label: '是'
+          },
+          {
+            value: '0',
+            label: '否'
+          }
+        ],
         modal1_delay: false,
         loading: false,
         modal1: false,
         modal3: false,
         modal4: false,
+        modal_change: false,
         infoTitle: null,
+        ChangeMoney: 1000,
+        ChangeIsExistMeetingReview: 1,
+        ChangeIsReportActivated: 1,
         index: 0,
+        projectName: ' ',
         applicationEndTime: [],
         interimReportStartTime: [],
         interimReportEndTime: [],
@@ -219,6 +301,7 @@
           Authorization: localStorage.getItem('token')
         },
         data1: [],
+        data2: [],
         columns: [
           {
             title: '项目名称',
@@ -273,6 +356,8 @@
                   on: {
                     click: () => {
                       this.$Message.info("点击修改")
+                      this.index = params.index
+                      this.modal_change = true
                     }
                   }
                 }, '修改'),
@@ -345,6 +430,7 @@
           if (res.data.code === 'SUCCESS') {
             console.log(res.data)
             this.data1 = res.data.data
+            this.data2 = res.data.data
             for (let i = 0; i < res.data.data.length; i++) {       //将申请截止时间由string变成date
               if (res.data.data[i].applicationEndTime) {
                 var arr1 = res.data.data[i].applicationEndTime.split(" ");
@@ -472,6 +558,30 @@
         this.modal4 = false
         this.$refs['concludingReport'].resetFields()
       },
+      finish(index) {
+        axios({
+          url: apiRoot + '/admin/projectCategory/' + index,
+          //url: apiRoot + '/admin/projectCategory/2',
+          method: 'post',
+          data: {
+            projectName: this.projectName,
+            projectDescription: this.data1[index].projectDescription,
+            projectType: this.data1[index].projectType,
+            applicationStartTime : this.data1[index].applicationStartTime,
+            applicationEndTime: this.data1[index].applicationEndTime,
+            projectStartTime: this.data1[index].projectStartTime,
+            projectEndTime: this.data1[index].projectEndTime,
+            principalPhone: this.data1[index].principalPhone,
+            maxMoney: this.ChangeMoney,
+            isMeetingReview: this.ChangeIsExistMeetingReview,
+            application: this.data1[index].applicantType,
+          }
+        }),
+          this.modal_change = false;
+      },
+      cancel3() {
+        this.modal_change = false;
+      },
       setInterimReportStartTime(index, date, type) {
         if (date) {       //将格式化的时间变成标准date格式
           date = date.replace('年', '-');
@@ -505,6 +615,28 @@
           var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
         }
         this.concludingReportStartTime[index] = newdate
+      },
+      setAllTime(index,date,flag) {
+        if (date) {
+          date = date.replace('年', '-');
+          date = date.replace('月', '-');
+          date = date.replace('日', '-');
+          var arr1 = date.split(" ");
+          var sdate = arr1[0].split("-");
+          var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+        }
+        if (flag === 1) {
+          this.data1[index].applicationTime = newdate;
+        }
+        else if (flag === 2) {
+          this.data1[index].applicationEndTime = newdate;
+        }
+        else if (flag === 3) {
+          this.data1[index].projectStartTime = newdate;
+        }
+        else if (flag === 4) {
+          this.data1[index].projectEndTime = newdate;
+        }
       }
     }
   }
