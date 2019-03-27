@@ -120,36 +120,36 @@
 
     <Modal v-model="modal_change" title="修改项目详情" @on-ok="finish(index)" @on-cancel="cancel3(index)" :z-index="1000">
       <br>
-      <p>项目名称：</p><Input v-model="data2[index].projectName" :placeholder="data2[index].projectName"/>
+      <p>项目名称：</p><Input v-model="data1[index].projectName" :placeholder="data1[index].projectName"/>
       <br>
-      <p>项目描述：</p><Input v-model="data2[index].projectDescription" :placeholder="data2[index].projectDescription"/>
+      <p>项目描述：</p><Input v-model="data1[index].projectDescription" :placeholder="data1[index].projectDescription"/>
       <br>
-      <p>项目类型：</p><Input v-model="data2[index].projectType" :placeholder="data2[index].projectType"/>
+      <p>项目类型：</p><Input v-model="data1[index].projectType" :placeholder="data1[index].projectType"/>
       <br>
       <p>修改申请开始时间:</p>
-      <DatePicker type="datetime" :value="data2[index].applicationStartTime"
+      <DatePicker type="datetime" :value="data1[index].applicationStartTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                   @on-change="setAllTime(index,...arguments,1)"
                   placeholder="修改时间"></DatePicker>
       <br>
       <p>修改申请截止时间:</p>
-      <DatePicker type="datetime" :value="data2[index].applicationEndTime"
+      <DatePicker type="datetime" :value="data1[index].applicationEndTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                   @on-change="setAllTime(index,...arguments,2)"
                   placeholder="修改时间"></DatePicker>
       <p>修改项目开始时间:</p>
-      <DatePicker type="datetime" :value="data2[index].projectStartTime"
+      <DatePicker type="datetime" :value="data1[index].projectStartTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                   @on-change="setAllTime(index,...arguments,3)"
                   placeholder="修改时间"></DatePicker>
       <br>
       <p>修改项目截止时间:</p>
-      <DatePicker type="datetime" :value="data2[index].projectEndTime"
+      <DatePicker type="datetime" :value="data1[index].projectEndTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                   @on-change="setAllTime(index,...arguments,4)"
                   placeholder="修改时间"></DatePicker>
       <br>
-      <p>负责人电话：</p><Input v-model="data2[index].principalPhone" :placeholder="data2[index].principalPhone"/>
+      <p>负责人电话：</p><Input v-model="data1[index].principalPhone" :placeholder="data1[index].principalPhone"/>
       <br>
       项目经费:<span style="font-weight: bold">{{this.data2[index].maxMoney}}元</span>
       如需修改：
@@ -166,7 +166,7 @@
       </Select>
       <br>-->
       <p>修改申报人类型：</p>
-      <CheckboxGroup v-model="data2[index].applicantType">
+      <CheckboxGroup v-model="data1[index].applicantType">
         <Checkbox label="本科生"></Checkbox>
         <Checkbox label="研究生"></Checkbox>
         <Checkbox label="博士生"></Checkbox>
@@ -301,7 +301,6 @@
           Authorization: localStorage.getItem('token')
         },
         data1: [],
-        data2: [],
         columns: [
           {
             title: '项目名称',
@@ -559,6 +558,28 @@
         this.$refs['concludingReport'].resetFields()
       },
       finish(index) {
+        /*var i = 1;
+        if (this.data1[index].projectType === '人文哲学类')
+        {
+          i = 1;
+        }
+        else if (this.data1[index].projectType === '理学工学类')
+        {
+          i = 2;
+        }
+        else if (this.data1[index].projectType === '经济管理类')
+        {
+          i = 3;
+        }
+        else if (this.data1[index].projectType === '人文哲学类')
+        {
+          i = 4;
+        }
+        else if (this.data1[index].projectType === '人文哲学类')
+        {
+          i = 5;
+        }*/
+        console.log(this.data1[index].projectCategoryId)
         axios({
           url: apiRoot + '/admin/projectCategory/update',
           method: 'post',
@@ -567,7 +588,7 @@
             info: {
               projectName: this.data1[index].projectName,
               projectDescription: this.data1[index].projectDescription,
-              projectType: this.data1[index].projectType,
+              projectTypeName: this.data1[index].projectType,
               applicationStartTime : this.data1[index].applicationStartTime,
               applicationEndTime: this.data1[index].applicationEndTime,
               projectStartTime: this.data1[index].projectStartTime,
