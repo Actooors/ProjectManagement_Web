@@ -560,21 +560,23 @@
       },
       finish(index) {
         axios({
-          url: apiRoot + '/admin/projectCategory/' + index,
-          //url: apiRoot + '/admin/projectCategory/2',
+          url: apiRoot + '/admin/projectCategory/update',
           method: 'post',
           data: {
-            projectName: this.projectName,
-            projectDescription: this.data1[index].projectDescription,
-            projectType: this.data1[index].projectType,
-            applicationStartTime : this.data1[index].applicationStartTime,
-            applicationEndTime: this.data1[index].applicationEndTime,
-            projectStartTime: this.data1[index].projectStartTime,
-            projectEndTime: this.data1[index].projectEndTime,
-            principalPhone: this.data1[index].principalPhone,
-            maxMoney: this.ChangeMoney,
-            isMeetingReview: this.ChangeIsExistMeetingReview,
-            application: this.data1[index].applicantType,
+            pid: this.data1[index].projectCategoryId,
+            info: {
+              projectName: this.data1[index].projectName,
+              projectDescription: this.data1[index].projectDescription,
+              projectType: this.data1[index].projectType,
+              applicationStartTime : this.data1[index].applicationStartTime,
+              applicationEndTime: this.data1[index].applicationEndTime,
+              projectStartTime: this.data1[index].projectStartTime,
+              projectEndTime: this.data1[index].projectEndTime,
+              principalPhone: this.data1[index].principalPhone,
+              maxMoney: this.ChangeMoney,
+              isMeetingReview: this.ChangeIsExistMeetingReview,
+              application: this.data1[index].applicantType,
+            },
           }
         }),
           this.modal_change = false;
