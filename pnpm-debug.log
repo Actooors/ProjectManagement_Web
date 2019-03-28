@@ -1,0 +1,134 @@
+---
+  0 debug pnpm:scope: 
+    selected: 1
+    workspacePrefix: null
+  1 debug pnpm:package-json: 
+    initial: 
+      name: "coding_web"
+      version: "1.0.0"
+      description: "A Vue.js project"
+      author: 
+        name: "talcode"
+      private: true
+      scripts: 
+        dev: "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js"
+        start: "npm run dev"
+        build: "node build/build.js"
+      dependencies: 
+        axios: "^0.18.0"
+        babel: "^6.23.0"
+        babel-runtime: "^6.26.0"
+        echarts: "^4.2.0-rc.2"
+        file-saver: "^2.0.0"
+        helpers: "^0.0.6"
+        heyui: "^1.13.0"
+        iview: "^3.0.0"
+        normalize.css: "^8.0.0"
+        pug: "^2.0.3"
+        vue: "^2.5.2"
+        vue-hot-reload-api: "^2.3.0"
+        vue-router: "^3.0.1"
+        vuex: "^3.0.1"
+      devDependencies: 
+        autoprefixer: "^7.1.2"
+        babel-core: "^6.22.1"
+        babel-helper-vue-jsx-merge-props: "^2.0.3"
+        babel-loader: "^7.1.1"
+        babel-plugin-import: "^1.8.0"
+        babel-plugin-syntax-jsx: "^6.18.0"
+        babel-plugin-transform-runtime: "^6.22.0"
+        babel-plugin-transform-vue-jsx: "^3.5.0"
+        babel-preset-env: "^1.3.2"
+        babel-preset-stage-2: "^6.22.0"
+        chalk: "^2.0.1"
+        copy-webpack-plugin: "^4.0.1"
+        css-loader: "^0.28.0"
+        extract-text-webpack-plugin: "^3.0.0"
+        file-loader: "^1.1.4"
+        friendly-errors-webpack-plugin: "^1.6.1"
+        html-webpack-plugin: "^2.30.1"
+        iview-loader: "^1.2.1"
+        node-notifier: "^5.1.2"
+        node-sass: "^4.9.2"
+        optimize-css-assets-webpack-plugin: "^3.2.0"
+        ora: "^1.2.0"
+        portfinder: "^1.0.13"
+        postcss-import: "^11.0.0"
+        postcss-loader: "^2.0.8"
+        postcss-url: "^7.2.1"
+        rimraf: "^2.6.0"
+        sass-loader: "^7.1.0"
+        semver: "^5.3.0"
+        shelljs: "^0.7.6"
+        uglifyjs-webpack-plugin: "^1.1.1"
+        url-loader: "^0.5.8"
+        vue-loader: "^13.3.0"
+        vue-style-loader: "^3.0.1"
+        vue-template-compiler: "^2.5.2"
+        webpack: "^3.6.0"
+        webpack-bundle-analyzer: "^2.9.0"
+        webpack-dev-server: "^2.9.1"
+        webpack-merge: "^4.1.0"
+      engines: 
+        node: ">= 6.0.0"
+        npm: ">= 3.0.0"
+      browserslist: 
+        - "> 1%"
+        - "last 2 versions"
+        - "not ie <= 8"
+      readme: "# pm_web\r\n\r\n> A Vue.js project\r\n\r\n## Build Setup\r\n\r\n``` bash\r\n# install dependencies\r\nnpm install\r\n\r\n# serve with hot reload at localhost:8080\r\nnpm run dev\r\n\r\n# build for production with minification\r\nnpm run build\r\n\r\n# build for production and view the bundle analyzer report\r\nnpm run build --report\r\n```\r\n\r\nFor a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).\r\n"
+      readmeFilename: "README.md"
+      gitHead: "6a5f818314ee3f5e3929c7b9ddc8dc90f0dc15a0"
+      _id: "coding_web@1.0.0"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  2 warn pnpm: 
+    message: "Moving autoprefixer that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  3 warn pnpm: 
+    message: "Moving babel-core that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  4 warn pnpm: 
+    message: "Moving babel-helper-vue-jsx-merge-props that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  5 warn pnpm: 
+    message: "Moving babel-loader that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  6 warn pnpm: 
+    message: "Moving babel-plugin-import that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  7 warn pnpm: 
+    message: "Moving babel-plugin-syntax-jsx that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  8 warn pnpm: 
+    message: "Moving babel-plugin-transform-runtime that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  9 warn pnpm: 
+    message: "Moving babel-plugin-transform-vue-jsx that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  10 warn pnpm: 
+    message: "Moving babel-preset-env that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  11 warn pnpm: 
+    message: "Moving babel-preset-stage-2 that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  12 warn pnpm: 
+    message: "Moving chalk that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  13 warn pnpm: 
+    message: "Moving copy-webpack-plugin that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  14 warn pnpm: 
+    message: "Moving css-loader that was installed by a different package manager to \"node_modules/.ignored"
+    prefix: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web"
+  15 error pnpm: 
+    message: 
+      errno: -4048
+      code: "EPERM"
+      syscall: "rename"
+      path: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web\\node_modules\\css-loader"
+      dest: "C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web\\node_modules\\.ignored\\css-loader"
+    err: 
+      name: "Error"
+      message: "EPERM: operation not permitted, rename 'C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web\\node_modules\\css-loader' -> 'C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web\\node_modules\\.ignored\\css-loader'"
+      code: "EPERM"
+      stack: "Error: EPERM: operation not permitted, rename 'C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web\\node_modules\\css-loader' -> 'C:\\Users\\樊玲君\\WebstormProject_Web\\ProjectManagement_Web\\node_modules\\.ignored\\css-loader'"

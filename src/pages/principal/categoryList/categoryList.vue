@@ -124,8 +124,8 @@
       <br>
       <p>项目描述：</p><Input v-model="data1[index].projectDescription" :placeholder="data1[index].projectDescription"/>
       <br>
-      <p>项目类型：</p><Input v-model="data1[index].projectType" :placeholder="data1[index].projectType"/>
-      <br>
+      <!--<p>项目类型：</p><Input v-model="data1[index].projectType" :placeholder="data1[index].projectType"/>
+      <br>-->
       <p>修改申请开始时间:</p>
       <DatePicker type="datetime" :value="data1[index].applicationStartTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
@@ -558,27 +558,15 @@
         this.$refs['concludingReport'].resetFields()
       },
       finish(index) {
-        /*var i = 1;
-        if (this.data1[index].projectType === '人文哲学类')
+        var status = true;
+        if (this.ChangeIsExistMeetingReview === 1)
         {
-          i = 1;
+          status = true;
         }
-        else if (this.data1[index].projectType === '理学工学类')
+        else if (this.ChangeIsExistMeetingReview === 0)
         {
-          i = 2;
+          status = false;
         }
-        else if (this.data1[index].projectType === '经济管理类')
-        {
-          i = 3;
-        }
-        else if (this.data1[index].projectType === '人文哲学类')
-        {
-          i = 4;
-        }
-        else if (this.data1[index].projectType === '人文哲学类')
-        {
-          i = 5;
-        }*/
         console.log(this.data1[index].projectCategoryId)
         axios({
           url: apiRoot + '/admin/projectCategory/update',
@@ -595,7 +583,7 @@
               projectEndTime: this.data1[index].projectEndTime,
               principalPhone: this.data1[index].principalPhone,
               maxMoney: this.ChangeMoney,
-              isMeetingReview: this.ChangeIsExistMeetingReview,
+              isMeetingReview: this.status,
               application: this.data1[index].applicantType,
             },
           }
