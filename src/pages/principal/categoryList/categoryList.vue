@@ -595,7 +595,7 @@
               projectEndTime: this.data1[index].projectEndTime,
               principalPhone: this.data1[index].principalPhone,
               maxMoney: this.ChangeMoney,
-              isMeetingReview: this.ChangeIsExistMeetingReview,
+              isMeetingReviewNum: this.ChangeIsExistMeetingReview,
               application: this.data1[index].applicantType,
             },
           }
