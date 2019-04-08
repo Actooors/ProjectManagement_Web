@@ -34,7 +34,7 @@
               &nbsp;申请中项目
             </MenuItem>
             <MenuItem name="failProject">
-              <Icon type="ios-close-circle-outline" />
+              <Icon type="ios-close-circle-outline"/>
               被驳回项目
             </MenuItem>
             <MenuItem
@@ -63,19 +63,32 @@
             class="select"
             trigger="custom"
           >
+            用户身份：
+            <Dropdown style="margin-right: 10px">
+              <a>
+                {{this.identify_name}}
+                <Icon type="ios-arrow-down"></Icon>
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem v-for="item in user_identity" :key="item.index"
+                              @click.native="$router.push('/'+`${item.router}`)">
+                  {{item.name}}
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
             <Avatar style="margin-bottom: 3px;margin-right: 5px;color: #f56a00;background-color: #fde3cf">user</Avatar>
-            <Dropdown :visible="visible" trigger="click" >
+            <Dropdown :visible="visible" trigger="click">
               <a @click="handleOpen">
                 {{this.userName}}
                 <Icon type="ios-arrow-down"></Icon>
               </a>
               <DropdownMenu slot="list">
-                <DropdownItem  @click.native="$router.push('myInfo')">
-                  <Icon type="ios-person" style="margin-bottom: 3px" size="17" />
+                <DropdownItem @click.native="$router.push('myInfo')">
+                  <Icon type="ios-person" style="margin-bottom: 3px" size="17"/>
                   我的信息
                 </DropdownItem>
                 <DropdownItem @click.native="Logout" divided>
-                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17" />
+                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17"/>
                   登出
                 </DropdownItem>
               </DropdownMenu>
@@ -102,11 +115,24 @@
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
+        user_identity: [
+          {
+            router: 'user',
+            name: '用户'
+          },
+          {
+            router: 'principal',
+            name: '业务员'
+          },
+
+        ],
         userName: localStorage.getItem('username'),
+        identify_name: null,
       };
     },
     mounted() {
       this.initMenuActive();
+      this.initIdentify_name();
     },
     watch: {
       $route() {
@@ -116,7 +142,11 @@
       }
     },
     methods: {
-      Logout(){
+      initIdentify_name() {
+        this.identify_name = this.user_identity[0].name
+        this.$router.push('/' + this.user_identity[0].router)
+      },
+      Logout() {
         this.$router.push('/login')
         localStorage.clear()
       },
@@ -223,6 +253,7 @@
   .ivu-dropdown-rel :first-child {
     color: #515a6e !important;
   }
+
   .ivu-select-dropdown {
     width: 100px;
   }
@@ -248,7 +279,7 @@
   }
 
   /*.ivu-layout-content {*/
-    /*height: calc(100 vh-64px);*/
-    /*overflow: scroll;*/
+  /*height: calc(100 vh-64px);*/
+  /*overflow: scroll;*/
   /*}*/
 </style>

@@ -24,19 +24,13 @@
             <MenuItem
               name="reqProject"
             >
-              <Icon type="ios-browsers-outline" />
+              <Icon type="ios-browsers-outline"/>
               项目申请
             </MenuItem>
-            <!--<MenuItem-->
-              <!--name="endProject"-->
-            <!--&gt;-->
-              <!--<Icon type="ios-browsers" />-->
-              <!--项目结题-->
-            <!--</MenuItem>-->
             <MenuItem
               name="myInfo"
             >
-              <Icon type="ios-person-outline" />
+              <Icon type="ios-person-outline"/>
               个人信息
             </MenuItem>
           </CustomMenu>
@@ -53,19 +47,33 @@
             class="select"
             trigger="custom"
           >
-            <Avatar style="margin-bottom: 5px;margin-right: 5px;color: #1856c6;background-color: #93d4fd">expert</Avatar>
+            用户身份：
+            <Dropdown style="margin-right: 10px">
+              <a>
+                {{this.identify_name}}
+                <Icon type="ios-arrow-down"></Icon>
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem v-for="item in user_identity" :key="item.index"
+                              @click.native="$router.push('/'+`${item.router}`)">
+                  {{item.name}}
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Avatar style="margin-bottom: 5px;margin-right: 5px;color: #1856c6;background-color: #93d4fd">expert
+            </Avatar>
             <Dropdown :visible="visible">
               <a @click="handleOpen">
                 {{this.UserName}}
                 <Icon type="ios-arrow-down"></Icon>
               </a>
               <DropdownMenu slot="list">
-                <DropdownItem  @click.native="$router.push('myInfo')">
-                  <Icon type="ios-person" style="margin-bottom: 3px" size="17" />
+                <DropdownItem @click.native="$router.push('myInfo')">
+                  <Icon type="ios-person" style="margin-bottom: 3px" size="17"/>
                   我的信息
                 </DropdownItem>
                 <DropdownItem @click.native="Logout" divided>
-                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17" />
+                  <Icon type="ios-log-out" style="margin-bottom: 3px" size="17"/>
                   登出
                 </DropdownItem>
               </DropdownMenu>
@@ -87,11 +95,22 @@
   export default {
     name: "expert",
     components: {CustomMenu},
-    data(){
+    data() {
       return {
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
+        identify_name: null,
+        user_identity: [
+          {
+            router: 'expert',
+            name: '审核专家'
+          },
+          {
+            router: 'user',
+            name: '用户'
+          },
+        ],
         UserName: localStorage.getItem('username')
       }
     },
@@ -104,9 +123,14 @@
     },
     mounted() {
       this.initMenuActive();
+      this.initIdentify_name();
     },
     methods: {
-      Logout(){
+      initIdentify_name() {
+        this.identify_name = this.user_identity[0].name
+        this.$router.push('/' + this.user_identity[0].router)
+      },
+      Logout() {
         this.$router.push('/login')
         localStorage.clear()
       },
@@ -142,7 +166,7 @@
 </script>
 
 <style scoped lang="scss">
-@import "group";
+  @import "group";
 </style>
 <style lang="scss">
   .ivu-layout-content {

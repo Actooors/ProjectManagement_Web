@@ -87,6 +87,19 @@
             class="select"
             trigger="custom"
           >
+            用户身份：
+            <Dropdown style="margin-right: 10px">
+              <a>
+                {{this.identify_name}}
+                <Icon type="ios-arrow-down"></Icon>
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem v-for="item in user_identity" :key="item.index"
+                              @click.native="$router.push('/'+`${item.router}`)">
+                  {{item.name}}
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
             <Avatar style="margin-bottom: 5px;margin-right: 5px;color: #b80081;background-color: #fdb3ef">principal</Avatar>
             <Dropdown :visible="visible">
               <a @click="handleOpen">
@@ -126,12 +139,24 @@
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
+        identify_name:null,
+        user_identity:[
+          {
+            router: 'principal',
+            name: '业务员'
+          },
+          {
+            router: 'user',
+            name: '用户'
+          },
+        ],
         UserName: localStorage.getItem('username')
       }
     },
     //让页头出现标题，这里每个页面还没做出来
     mounted() {
       this.initMenuActive();
+      this.initIdentify_name();
     },
     watch: {
       $route() {
@@ -142,6 +167,10 @@
     },
 
     methods: {
+      initIdentify_name() {
+        this.identify_name = this.user_identity[0].name
+        this.$router.push('/' + this.user_identity[0].router)
+      },
       handleOpen() {
         this.visible = true
       },
