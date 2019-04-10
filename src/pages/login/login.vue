@@ -76,6 +76,10 @@
                 this.$Message.success('登录成功！');
                 console.log("res:", res.data)
                 this.loading = false;
+                console.log(this.selectedIdentity)
+                if(this.selectedIdentity===null) {
+                  this.$Message.warning('请选择用户身份！');
+                }
                 if (res.data.data.identity.indexOf('1') != -1 && this.selectedIdentity === 1) { //普通用户
                   this.$router.push({
                     path: '/user'
@@ -120,7 +124,7 @@
               }
             }
           ).catch((err) => {
-            console.log(err)
+            console.error(err)
             this.$Message.error("登录失败，请检查网络连接！");
             this.loading = false
           })
