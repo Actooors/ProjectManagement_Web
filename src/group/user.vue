@@ -63,19 +63,6 @@
             class="select"
             trigger="custom"
           >
-            用户身份：
-            <Dropdown style="margin-right: 10px">
-              <a>
-                {{this.identify_name}}
-                <Icon type="ios-arrow-down"></Icon>
-              </a>
-              <DropdownMenu slot="list">
-                <DropdownItem v-for="item in user_identity" :key="item.index"
-                              @click.native="$router.push('/'+`${item.router}`)">
-                  {{item.name}}
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
             <Avatar style="margin-bottom: 3px;margin-right: 5px;color: #f56a00;background-color: #fde3cf">user</Avatar>
             <Dropdown :visible="visible" trigger="click">
               <a @click="handleOpen">
@@ -115,24 +102,11 @@
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
-        user_identity: [
-          {
-            router: 'user',
-            name: '用户'
-          },
-          {
-            router: 'principal',
-            name: '业务员'
-          },
-
-        ],
         userName: localStorage.getItem('username'),
-        identify_name: null,
       };
     },
     mounted() {
       this.initMenuActive();
-      this.initIdentify_name();
     },
     watch: {
       $route() {
@@ -142,10 +116,6 @@
       }
     },
     methods: {
-      initIdentify_name() {
-        this.identify_name = this.user_identity[0].name
-        this.$router.push('/' + this.user_identity[0].router)
-      },
       Logout() {
         this.$router.push('/login')
         localStorage.clear()
