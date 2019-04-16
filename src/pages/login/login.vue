@@ -35,7 +35,7 @@
         UserId: '',
         Password: '',
         loading: false,
-        selectedIdentity: null,
+        selectedIdentity: "",
         identityList: [
           {
             value: '1',
@@ -63,7 +63,7 @@
     methods: {
       login() {
         this.loading = true
-        if (this.UserId && this.Password) {
+        if (this.UserId && this.Password && this.selectedIdentity) {
           axios({
             url: apiRoot + '/login',
             method: 'post',
@@ -73,47 +73,30 @@
             }
           }).then((res) => {
               if (res.data.code === 'SUCCESS') {
-                this.$Message.success('登录成功！');
                 console.log("res:", res.data)
                 this.loading = false;
-                console.log(this.selectedIdentity)
-                if(this.selectedIdentity===null) {
-                  this.$Message.warning('请选择用户身份！');
-                }
-                if (res.data.data.identity.indexOf('1') != -1 && this.selectedIdentity === 1) { //普通用户
-                  this.$router.push({
-                    path: '/user'
-                  });
+                if (res.data.data.identity.indexOf(this.selectedIdentity) != -1) { //普通用户
+                  this.$Message.success('登录成功！');
+                  switch (this.selectedIdentity) {
+                    case "1":
+                      this.$router.push('/user');
+                      break;
+                    case "2":
+                      this.$router.push('/principal');
+                      break;
+                    case "3":
+                      this.$router.push('/expert');
+                      break;
+                    case "4":
+                      this.$router.push('/leader');
+                      break;
+                    case "5":
+                      this.$router.push('/admin');
+                      break;
+                  }
                 } else {
                   this.$Message.error('您没有该用户权限！');
-                }
-                if (res.data.data.identity.indexOf('2') != -1 && this.selectedIdentity === 2) { //业务员
-                  this.$router.push({
-                    path: '/principal'
-                  });
-                } else {
-                  this.$Message.error('您没有该用户权限！');
-                }
-                if (res.data.data.identity.indexOf('3') != -1 && this.selectedIdentity === 3) {  //专家
-                  this.$router.push({
-                    path: '/expert'
-                  });
-                } else {
-                  this.$Message.error('您没有该用户权限！');
-                }
-                if (res.data.data.identity.indexOf('4') != -1 && this.selectedIdentity === 4) {  //领导
-                  this.$router.push({
-                    path: '/leader'
-                  });
-                } else {
-                  this.$Message.error('您没有该用户权限！');
-                }
-                if (res.data.data.identity.indexOf('5') != -1 && this.selectedIdentity === 5) { //系统管理员
-                  this.$router.push({
-                    path: '/admin'
-                  });
-                } else {
-                  this.$Message.error('您没有该用户权限！');
+                  return
                 }
                 localStorage.setItem('token', res.data.data.token);
                 localStorage.setItem('userid', res.data.data.uid)
@@ -128,41 +111,19 @@
             this.$Message.error("登录失败，请检查网络连接！");
             this.loading = false
           })
-        }
-        else {
+        } else {
+          if (this.selectedIdentity === null) {
+            this.$Message.warning('请选择用户身份！');
+            this.loading = false
+            return
+          }
           this.$Message.info("请完整填写有关字段！");
           this.loading = false
         }
       }
     },
-    created: function () {
-      window.onresize = () => {
-        const windowWidth = document.body.clientWidth
-        const windowHeight = document.body.clientHeight
-        const windowAspectRatio = windowHeight / windowWidth
-        let videoWidth
-        let videoHeight
-        if (windowAspectRatio < 0.5625) {
-          videoWidth = windowWidth
-          videoHeight = videoWidth * 0.5625
-          this.fixStyle = {
-            height: windowWidth * 0.5625 + 'px',
-            width: windowWidth + 'px',
-            'margin-bottom': (windowHeight - videoHeight) / 2 + 'px',
-            'margin-left': 'initial'
-          }
-        } else {
-          videoHeight = windowHeight
-          videoWidth = videoHeight / 0.5625
-          this.fixStyle = {
-            height: windowHeight + 'px',
-            width: windowHeight / 0.5625 + 'px',
-            'margin-left': (windowWidth - videoWidth) / 2 + 'px',
-            'margin-bottom': 'initial'
-          }
-        }
-      }
-      window.onresize()
+    created() {
+      this.selectedIdentity = null;
     }
   }
 </script>
