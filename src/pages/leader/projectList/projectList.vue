@@ -435,25 +435,25 @@
               ]);
             }
           },
-          {
-            title: '审核',
-            key: 'inputComment',
-            align: 'center',
-            render: (h,params) => {
-              return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'info'
-                  },
-                  on: {
-                    click: () => {
-                      this.examine(params.index)
-                    }
-                  }
-                })
-              ])
-            }
-          },
+          // {
+          //   title: '审核',
+          //   key: 'inputComment',
+          //   align: 'center',
+          //   render: (h,params) => {
+          //     return h('div', [
+          //       h('Button', {
+          //         props: {
+          //           type: 'info'
+          //         },
+          //         on: {
+          //           click: () => {
+          //             this.examine(params.index)
+          //           }
+          //         }
+          //       })
+          //     ])
+          //   }
+          // },
         ],
         columns5: [
           {

@@ -25,6 +25,7 @@ devDependencies:
   babel-preset-env: 1.7.0
   babel-preset-stage-2: 6.24.1
   chalk: 2.4.2
+  compression-webpack-plugin: 1.1.12
   copy-webpack-plugin: 4.6.0
   css-loader: 0.28.11
   extract-text-webpack-plugin: 3.0.2
@@ -1597,6 +1598,20 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-JQfEOdnI7dASwCuSPWIeVYwc/zMsu/+tRhoUvEfXz2gxOA2DNjmG5vhtFdBlhWPPGo+RdT9S3tgc/uH5qgDiiA==
+  /compression-webpack-plugin/1.1.12:
+    dependencies:
+      cacache: 10.0.4
+      find-cache-dir: 1.0.0
+      neo-async: 2.6.0
+      serialize-javascript: 1.6.1
+      webpack-sources: 1.3.0
+    dev: true
+    engines:
+      node: '>= 4.8 < 5.0.0 || >= 5.10'
+    peerDependencies:
+      webpack: ^2.0.0 || ^3.0.0 || ^4.0.0
+    resolution:
+      integrity: sha512-UpBXSHbrCSdSZieAffqXlAQpLO2fikVVRYibrWlbHYzKpOw1Y4jwkVZ/+S91GzWuJvXSbc8SBy/e8fQJh8uEMQ==
   /compression/1.7.4:
     dependencies:
       accepts: 1.3.5
@@ -7055,6 +7070,7 @@ specifiers:
   babel-preset-stage-2: ^6.22.0
   babel-runtime: ^6.26.0
   chalk: ^2.0.1
+  compression-webpack-plugin: ^1.1.12
   copy-webpack-plugin: ^4.0.1
   css-loader: ^0.28.0
   echarts: ^4.2.0-rc.2

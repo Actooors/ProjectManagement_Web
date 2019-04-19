@@ -27,7 +27,7 @@
             <Submenu name="exProject">
               <template slot="title">
                 <Icon type="ios-stopwatch-outline"/>
-                待审核的
+                待审核
               </template>
               <!--<MenuItem name="exProject-projectCategory">-->
                 <!--项目大类-->
@@ -44,7 +44,7 @@
             <Submenu name="Project">
               <template slot="title">
                 <Icon type="ios-archive-outline"/>
-                我管理的
+                项目概览
               </template>
               <MenuItem
                 name="Project-projectList"
