@@ -29,7 +29,7 @@
       this.initProjectData('更新项目信息成功!')
     },
     methods: {
-      initProjectData(msg) {
+      initProjectData: function (msg) {
 
         var myPieChart = echarts.init(document.getElementById('piechart'));
         var myBarChart = echarts.init(document.getElementById('barchart'));
@@ -43,12 +43,10 @@
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
 
-            for (let i = 0;i < res.data.data.projectStatistic.length;i++)
-            {
+            for (let i = 0; i < res.data.data.projectStatistic.length; i++) {
               statistic.push(res.data.data.projectStatistic[i]);
             }
-            for (let i = 0;i < res.data.data.projectTypeList.length;i++)
-            {
+            for (let i = 0; i < res.data.data.projectTypeList.length; i++) {
               names.push(res.data.data.projectTypeList[i].type);
               nums.push(res.data.data.projectTypeList[i].num);
             }
@@ -83,22 +81,22 @@
                 data: statistic
               }]
             }),
-            myBarChart.setOption({
-              title: {
-                text: '项目数据统计结果',
-                x: 'center'
-              },
-              tooltip: {},
-              xAxis: {
-                data: names
-              },
-              yAxis: {},
-              series: [{
-                name: '项目个数',
-                type: 'bar',
-                data: nums
-              }]
-            })
+              myBarChart.setOption({
+                title: {
+                  text: '项目数据统计结果',
+                  x: 'center'
+                },
+                tooltip: {},
+                xAxis: {
+                  data: names
+                },
+                yAxis: {},
+                series: [{
+                  name: '项目个数',
+                  type: 'bar',
+                  data: nums
+                }]
+              })
             this.$Message.success(msg)
           } else {
             this.$Message.error('初始化图数据错误！')

@@ -118,14 +118,14 @@
       </div>
     </Modal>
 
-    <Modal v-model="modal_change" title="修改项目详情" @on-ok="finish(index)" @on-cancel="cancel3(index)" :z-index="1000">
+    <Modal v-if="modal_change_delay" v-model="modal_change" title="修改项目详情" @on-ok="finish(index)" @on-cancel="cancel3(index)" :z-index="1000">
       <br>
       <p>项目名称：</p><Input v-model="data1[index].projectName" :placeholder="data1[index].projectName"/>
       <br>
       <p>项目描述：</p><Input v-model="data1[index].projectDescription" :placeholder="data1[index].projectDescription"/>
       <br>
-      <!--<p>项目类型：</p><Input v-model="data1[index].projectType" :placeholder="data1[index].projectType"/>
-      <br>-->
+      <p>项目类型：</p><Input v-model="data1[index].projectType" :placeholder="data1[index].projectType"/>
+      <br>
       <p>修改申请开始时间:</p>
       <DatePicker type="datetime" :value="data1[index].applicationStartTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
@@ -155,16 +155,18 @@
       如需修改：
       <br><InputNumber v-model="ChangeMoney" :max="10000" :min="0" ></InputNumber>
       <br>
-      <span>上会状态：{{(data2[index].isExistMeetingReview===1?'是':'否')}}</span>
+
+      <!--<span>上会状态：{{(data2[index].isExistMeetingReview===1?'是':'否')}}</span>
       如需修改：<br><Select v-model="ChangeIsExistMeetingReview" style="width: 100px">
         <Option v-for="item in trueOrfalse" :value="item.value" :key="item.value" >{{item.label}}</Option>
       </Select>
       <br>
-      <!--<span>中期报告提交状态：{{(data1[index].interimReport.isReportActivated===1?'是':'否')}}</span>如需修改：
+      <span>中期报告提交状态：{{(data1[index].interimReport.isReportActivated===1?'是':'否')}}</span>如需修改：
       <Select v-model="ChangeIsReportActivated">
         <Option v-for="item in trueOrfalse" :value="item.value" :key="item.value" >{{item.label}}</Option>
       </Select>
       <br>-->
+
       <p>修改申报人类型：</p>
       <CheckboxGroup v-model="data1[index].applicantType">
         <Checkbox label="本科生"></Checkbox>
@@ -198,6 +200,11 @@
         if (val) {
           this.modal1_delay = true;
         }
+      },
+      modal_change(val) {
+        if (val) {
+          this.modal_change_delay = true;
+        }
       }
     },
     data() {
@@ -213,6 +220,7 @@
           }
         ],
         modal1_delay: false,
+        modal_change_delay: false,
         loading: false,
         modal1: false,
         modal3: false,
@@ -223,7 +231,7 @@
         ChangeIsExistMeetingReview: 1,
         ChangeIsReportActivated: 1,
         index: 0,
-        projectName: ' ',
+        projectName: '',
         applicationEndTime: [],
         interimReportStartTime: [],
         interimReportEndTime: [],
@@ -354,9 +362,11 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info("点击修改")
-                      this.index = params.index
-                      this.modal_change = true
+                      this.$Message.info("点击修改");
+                      //alert(this.data1[index].projectName);
+                      this.index = params.index;
+                      console.log(this.index)
+                      this.modal_change = true;
                     }
                   }
                 }, '修改'),
@@ -423,15 +433,22 @@
       initData(msg) {
         this.loading = true
         axios({
-          url: apiRoot + '/admin/findMyProjectCategory',
+          //url: apiRoot + '/admin/findMyProjectCategory',
+          url: 'http://118.25.130.89:8081/api/admin/findMyProjectCategory',
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
             console.log(res.data)
             this.data1 = res.data.data
             this.data2 = res.data.data
+            console.log(this.data1[0].projectName)
+            console.log(this.data1[1].projectName)
+            console.log(this.data1[0].applicationEndTime)
+            console.log(this.data1[0].applicationStartTime)
             for (let i = 0; i < res.data.data.length; i++) {       //将申请截止时间由string变成date
-              if (res.data.data[i].applicationEndTime) {
+              //if (res.data.data[i].applicationEndTime) {
+              if (this.data1[i].applicationEndTime) {
+                //console.log(this.data1[i].projectName)
                 var arr1 = res.data.data[i].applicationEndTime.split(" ");
                 var sdate = arr1[0].split('-');
                 var date = new Date(sdate[0], sdate[1] - 1, sdate[2]);
@@ -439,14 +456,15 @@
               }
             }
             for (let i = 0; i < res.data.data.length; i++) {      //将项目截止时间由string变成date
-              if (res.data.data[i].projectEndTime) {
+              //if (res.data.data[i].projectEndTime) {
+                if (this.data1[i].projectEndTime) {
                 var arr1 = res.data.data[i].projectEndTime.split(" ");
                 var sdate = arr1[0].split('-');
                 var date = new Date(sdate[0], sdate[1] - 1, sdate[2]);
                 this.projectEndTime[i] = date
               }
             }
-            console.log(this.applicationEndTime)
+            //console.log(this.applicationEndTime)
             this.$Message.success(msg)
             this.loading = false
           } else {
@@ -571,6 +589,7 @@
         axios({
           url: apiRoot + '/admin/projectCategory/update',
           method: 'post',
+          timeout: 1000,
           data: {
             pid: this.data1[index].projectCategoryId,
             info: {
@@ -583,11 +602,22 @@
               projectEndTime: this.data1[index].projectEndTime,
               principalPhone: this.data1[index].principalPhone,
               maxMoney: this.ChangeMoney,
-              isMeetingReview: this.status,
-              application: this.data1[index].applicantType,
+              //isMeetingReviewNum: this.status,
+              //application: this.data1[index].applicantType,
             },
           }
-        }),
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            console.log("success!!")
+          } else {
+            this.$Message.error(res.data.message)
+            logError()
+            console.log('error!')
+            //console.log()
+          }
+        }).catch(() => {
+          this.$Message.error('请检查网络连接！')
+          })
           this.modal_change = false;
       },
       cancel3() {
