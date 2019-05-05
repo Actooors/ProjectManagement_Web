@@ -118,7 +118,7 @@
       </div>
     </Modal>
 
-    <Modal v-if="modal_change_delay" v-model="modal_change" title="修改项目详情" @on-ok="finish(index)" @on-cancel="cancel3(index)" :z-index="1000">
+    <Modal v-if="modal_change_delay" v-model="modal_change" title="修改项目详情" :z-index="1000">
       <br>
       <p>项目名称：</p><Input v-model="data1[index].projectName" :placeholder="data1[index].projectName"/>
       <br>
@@ -127,35 +127,35 @@
       <p>项目类型：</p><Input v-model="data1[index].projectType" :placeholder="data1[index].projectType"/>
       <br>
       <p>修改申请开始时间:</p>
-      <DatePicker type="datetime" :value="data1[index].applicationStartTime"
+      <DatePicker type="datetime" v-model="data1[index].applicationStartTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                   @on-change="setAllTime(index,...arguments,1)"
-                  placeholder="修改时间"></DatePicker>
+                  placeholder="修改申请开始时间"></DatePicker>
       <br>
       <p>修改申请截止时间:</p>
-      <DatePicker type="datetime" :value="data1[index].applicationEndTime"
+      <DatePicker type="datetime" v-model="data1[index].applicationEndTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                   @on-change="setAllTime(index,...arguments,2)"
-                  placeholder="修改时间"></DatePicker>
+                  placeholder="修改申请截止时间"></DatePicker>
       <p>修改项目开始时间:</p>
-      <DatePicker type="datetime" :value="data1[index].projectStartTime"
+      <DatePicker type="datetime" v-model="data1[index].projectStartTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                   @on-change="setAllTime(index,...arguments,3)"
-                  placeholder="修改时间"></DatePicker>
+                  placeholder="修改项目开始时间"></DatePicker>
       <br>
       <p>修改项目截止时间:</p>
-      <DatePicker type="datetime" :value="data1[index].projectEndTime"
+      <DatePicker type="datetime" v-model="data1[index].projectEndTime"
                   format="yyyy年MM月dd日 HH:mm" style="width: 300px"
                   @on-change="setAllTime(index,...arguments,4)"
-                  placeholder="修改时间"></DatePicker>
+                  placeholder="修改项目截止时间"></DatePicker>
       <br>
       <p>负责人电话：</p><Input v-model="data1[index].principalPhone" :placeholder="data1[index].principalPhone"/>
       <br>
       项目经费:<span style="font-weight: bold">{{this.data2[index].maxMoney}}元</span>
       如需修改：
-      <br><InputNumber v-model="ChangeMoney" :max="10000" :min="0" ></InputNumber>
       <br>
-
+      <InputNumber v-model="ChangeMoney" :max="10000" :min="0"></InputNumber>
+      <br>
       <!--<span>上会状态：{{(data2[index].isExistMeetingReview===1?'是':'否')}}</span>
       如需修改：<br><Select v-model="ChangeIsExistMeetingReview" style="width: 100px">
         <Option v-for="item in trueOrfalse" :value="item.value" :key="item.value" >{{item.label}}</Option>
@@ -176,7 +176,7 @@
       <br>
 
       <div slot="footer">
-        <Button type="text" @click.native="cancel3(index)"
+        <Button type="text" @click.native="cancel3()"
                 style="">
           取消
         </Button>
@@ -209,7 +209,7 @@
     },
     data() {
       return {
-        trueOrfalse:[
+        trueOrfalse: [
           {
             value: '1',
             label: '是'
@@ -433,8 +433,7 @@
       initData(msg) {
         this.loading = true
         axios({
-          //url: apiRoot + '/admin/findMyProjectCategory',
-          url: 'http://118.25.130.89:8081/api/admin/findMyProjectCategory',
+          url: apiRoot + '/admin/findMyProjectCategory',
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
@@ -446,9 +445,7 @@
             console.log(this.data1[0].applicationEndTime)
             console.log(this.data1[0].applicationStartTime)
             for (let i = 0; i < res.data.data.length; i++) {       //将申请截止时间由string变成date
-              //if (res.data.data[i].applicationEndTime) {
               if (this.data1[i].applicationEndTime) {
-                //console.log(this.data1[i].projectName)
                 var arr1 = res.data.data[i].applicationEndTime.split(" ");
                 var sdate = arr1[0].split('-');
                 var date = new Date(sdate[0], sdate[1] - 1, sdate[2]);
@@ -456,15 +453,13 @@
               }
             }
             for (let i = 0; i < res.data.data.length; i++) {      //将项目截止时间由string变成date
-              //if (res.data.data[i].projectEndTime) {
-                if (this.data1[i].projectEndTime) {
+              if (this.data1[i].projectEndTime) {
                 var arr1 = res.data.data[i].projectEndTime.split(" ");
                 var sdate = arr1[0].split('-');
                 var date = new Date(sdate[0], sdate[1] - 1, sdate[2]);
                 this.projectEndTime[i] = date
               }
             }
-            //console.log(this.applicationEndTime)
             this.$Message.success(msg)
             this.loading = false
           } else {
@@ -577,15 +572,12 @@
       },
       finish(index) {
         var status = true;
-        if (this.ChangeIsExistMeetingReview === 1)
-        {
+        if (this.ChangeIsExistMeetingReview === 1) {
           status = true;
-        }
-        else if (this.ChangeIsExistMeetingReview === 0)
-        {
+        } else if (this.ChangeIsExistMeetingReview === 0) {
           status = false;
         }
-        console.log(this.data1[index].projectCategoryId)
+        console.log('!',this.data1[index])
         axios({
           url: apiRoot + '/admin/projectCategory/update',
           method: 'post',
@@ -596,7 +588,7 @@
               projectName: this.data1[index].projectName,
               projectDescription: this.data1[index].projectDescription,
               projectTypeName: this.data1[index].projectType,
-              applicationStartTime : this.data1[index].applicationStartTime,
+              applicationStartTime: this.data1[index].applicationStartTime,
               applicationEndTime: this.data1[index].applicationEndTime,
               projectStartTime: this.data1[index].projectStartTime,
               projectEndTime: this.data1[index].projectEndTime,
@@ -611,14 +603,12 @@
             console.log("success!!")
           } else {
             this.$Message.error(res.data.message)
-            logError()
             console.log('error!')
-            //console.log()
           }
         }).catch(() => {
           this.$Message.error('请检查网络连接！')
-          })
-          this.modal_change = false;
+        })
+        this.modal_change = false;
       },
       cancel3() {
         this.modal_change = false;
@@ -654,10 +644,11 @@
           var arr1 = date.split(" ");
           var sdate = arr1[0].split('-');
           var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+          console.log(date, "!!")
         }
         this.concludingReportStartTime[index] = newdate
       },
-      setAllTime(index,date,flag) {
+      setAllTime(index, date, flag, type) {
         if (date) {
           date = date.replace('年', '-');
           date = date.replace('月', '-');
@@ -666,16 +657,14 @@
           var sdate = arr1[0].split("-");
           var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
         }
-        if (flag === 1) {
-          this.data1[index].applicationTime = newdate;
-        }
-        else if (flag === 2) {
+        console.log("type=", type, "index=", index, "newdate=", newdate)
+        if (type === 1) {
+          this.data1[index].applicationStartTime = newdate;
+        } else if (type === 2) {
           this.data1[index].applicationEndTime = newdate;
-        }
-        else if (flag === 3) {
+        } else if (type === 3) {
           this.data1[index].projectStartTime = newdate;
-        }
-        else if (flag === 4) {
+        } else if (type === 4) {
           this.data1[index].projectEndTime = newdate;
         }
       }
