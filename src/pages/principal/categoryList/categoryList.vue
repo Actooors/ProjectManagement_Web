@@ -614,58 +614,59 @@
         this.modal_change = false;
       },
       setInterimReportStartTime(index, date, type) {
-        if (date) {       //将格式化的时间变成标准date格式
-          date = date.replace('年', '-');
-          date = date.replace('月', '-');
-          date = date.replace('日', '');
-          var arr1 = date.split(" ");
-          var sdate = arr1[0].split('-');
-          var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
-        }
-        this.interimReportStartTime[index] = newdate
+        // if (date) {       //将格式化的时间变成标准date格式
+        //   date = date.replace('年', '-');
+        //   date = date.replace('月', '-');
+        //   date = date.replace('日', '');
+        //   var arr1 = date.split(" ");
+        //   var sdate = arr1[0].split('-');
+        //   var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+        // }
+        this.interimReportStartTime[index] = date
         console.log('1', newdate)
       },
       setInterimReportEndTime(index, date, type) {
-        if (date) {       //将格式化的时间变成标准date格式
-          date = date.replace('年', '-');
-          date = date.replace('月', '-');
-          date = date.replace('日', '');
-          var arr1 = date.split(" ");
-          var sdate = arr1[0].split('-');
-          var newdate1 = new Date(sdate[0], sdate[1] - 1, sdate[2]);
-        }
-        this.interimReportEndTime[index] = newdate1;
+        // if (date) {       //将格式化的时间变成标准date格式
+        //   date = date.replace('年', '-');
+        //   date = date.replace('月', '-');
+        //   date = date.replace('日', '');
+        //   var arr1 = date.split(" ");
+        //   var sdate = arr1[0].split('-');
+        //   var newdate1 = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+        // }
+        this.interimReportEndTime[index] = date;
       },
       setConcludingReportStartTime(index, date, type) {
-        if (date) {       //将格式化的时间变成标准date格式
-          date = date.replace('年', '-');
-          date = date.replace('月', '-');
-          date = date.replace('日', '');
-          var arr1 = date.split(" ");
-          var sdate = arr1[0].split('-');
-          var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
-          console.log(date, "!!")
-        }
-        this.concludingReportStartTime[index] = newdate
+        // if (date) {       //将格式化的时间变成标准date格式
+        //   date = date.replace('年', '-');
+        //   date = date.replace('月', '-');
+        //   date = date.replace('日', '');
+        //   var arr1 = date.split(" ");
+        //   var sdate = arr1[0].split('-');
+        //   var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+        //   console.log(date, "!!")
+        // }
+        this.concludingReportStartTime[index] = date
       },
       setAllTime(index, date, flag, type) {
-        if (date) {
-          date = date.replace('年', '-');
-          date = date.replace('月', '-');
-          date = date.replace('日', '-');
-          var arr1 = date.split(" ");
-          var sdate = arr1[0].split("-");
-          var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
-        }
-        console.log("type=", type, "index=", index, "newdate=", newdate)
+        // console.log('date=',date)
+        // if (date) {
+        //   date = date.replace('年', '-');
+        //   date = date.replace('月', '-');
+        //   date = date.replace('日', '-');
+        //   var arr1 = date.split(" ");
+        //   var sdate = arr1[0].split("-");
+        //   var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+        // }
+        // console.log("type=", type, "index=", index, "newdate=", newdate)
         if (type === 1) {
-          this.data1[index].applicationStartTime = newdate;
+          this.data1[index].applicationStartTime = date;
         } else if (type === 2) {
-          this.data1[index].applicationEndTime = newdate;
+          this.data1[index].applicationEndTime = date;
         } else if (type === 3) {
-          this.data1[index].projectStartTime = newdate;
+          this.data1[index].projectStartTime = date;
         } else if (type === 4) {
-          this.data1[index].projectEndTime = newdate;
+          this.data1[index].projectEndTime = date;
         }
       }
     }
