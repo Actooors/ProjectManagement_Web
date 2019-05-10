@@ -437,13 +437,9 @@
           method: 'get'
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            console.log(res.data)
             this.data1 = res.data.data
             this.data2 = res.data.data
-            console.log(this.data1[0].projectName)
-            console.log(this.data1[1].projectName)
-            console.log(this.data1[0].applicationEndTime)
-            console.log(this.data1[0].applicationStartTime)
+            console.log(this.data1)
             for (let i = 0; i < res.data.data.length; i++) {       //将申请截止时间由string变成date
               if (this.data1[i].applicationEndTime) {
                 var arr1 = res.data.data[i].applicationEndTime.split(" ");
@@ -505,8 +501,8 @@
                 projectCategoryId: this.data1[index].projectCategoryId,
                 type: 1,
                 reportAddress: this.interimReport.uploadAddress,
-                startTime: this.interimReport.startTime.Format("yyyy-MM-dd hh:mm"),
-                deadline: this.interimReport.endTime.Format("yyyy-MM-dd hh:mm")
+                startTime: this.interimReport.startTime.Format("yyyy年MM月dd日 hh:mm"),
+                deadline: this.interimReport.endTime.Format("yyyy年MM月dd日 hh:mm")
               }
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
@@ -542,8 +538,8 @@
                 projectCategoryId: this.data1[index].projectCategoryId,
                 type: 2,
                 reportAddress: this.concludingReport.uploadAddress,
-                startTime: this.concludingReport.startTime.Format("yyyy-MM-dd hh:mm"),
-                deadline: this.concludingReport.endTime.Format("yyyy-MM-dd hh:mm")
+                startTime: this.concludingReport.startTime.Format("yyyy年MM月dd日 hh:mm"),
+                deadline: this.concludingReport.endTime.Format("yyyy年MM月dd日 hh:mm")
               }
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
@@ -577,7 +573,7 @@
         } else if (this.ChangeIsExistMeetingReview === 0) {
           status = false;
         }
-        console.log('!',this.data1[index])
+        console.log('!', this.data1[index])
         axios({
           url: apiRoot + '/admin/projectCategory/update',
           method: 'post',
@@ -623,17 +619,8 @@
         //   var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
         // }
         this.interimReportStartTime[index] = date
-        console.log('1', newdate)
       },
       setInterimReportEndTime(index, date, type) {
-        // if (date) {       //将格式化的时间变成标准date格式
-        //   date = date.replace('年', '-');
-        //   date = date.replace('月', '-');
-        //   date = date.replace('日', '');
-        //   var arr1 = date.split(" ");
-        //   var sdate = arr1[0].split('-');
-        //   var newdate1 = new Date(sdate[0], sdate[1] - 1, sdate[2]);
-        // }
         this.interimReportEndTime[index] = date;
       },
       setConcludingReportStartTime(index, date, type) {
@@ -649,24 +636,39 @@
         this.concludingReportStartTime[index] = date
       },
       setAllTime(index, date, flag, type) {
-        // console.log('date=',date)
-        // if (date) {
-        //   date = date.replace('年', '-');
-        //   date = date.replace('月', '-');
-        //   date = date.replace('日', '-');
-        //   var arr1 = date.split(" ");
-        //   var sdate = arr1[0].split("-");
-        //   var newdate = new Date(sdate[0], sdate[1] - 1, sdate[2]);
-        // }
-        // console.log("type=", type, "index=", index, "newdate=", newdate)
+        function formatDate(date) {
+          console.log(typeof date)
+          let y = date.getFullYear();
+          let m = date.getMonth() + 1;
+          m = m < 10 ? ('0' + m) : m;
+          let d = date.getDate();
+          d = d < 10 ? ('0' + d) : d;
+          let h = date.getHours();
+          let minute = date.getMinutes();
+          minute = minute < 10 ? ('0' + minute) : minute;
+          return y + '年' + m + '月' + d + '日 ' + h + ':' + minute;
+        }
+
         if (type === 1) {
           this.data1[index].applicationStartTime = date;
+          this.data1[index].applicationEndTime = formatDate(this.data1[index].applicationEndTime)
+          this.data1[index].projectStartTime = formatDate(this.data1[index].projectStartTime)
+          this.data1[index].projectEndTime = formatDate(this.data1[index].projectEndTime)
         } else if (type === 2) {
           this.data1[index].applicationEndTime = date;
+          this.data1[index].applicationStartTime = formatDate(this.data1[index].applicationStartTime)
+          this.data1[index].projectStartTime = formatDate(this.data1[index].projectStartTime)
+          this.data1[index].projectEndTime = formatDate(this.data1[index].projectEndTime)
         } else if (type === 3) {
           this.data1[index].projectStartTime = date;
+          this.data1[index].applicationStartTime = formatDate(this.data1[index].applicationStartTime)
+          this.data1[index].applicationEndTime = formatDate(this.data1[index].applicationEndTime)
+          this.data1[index].projectEndTime = formatDate(this.data1[index].projectEndTime)
         } else if (type === 4) {
           this.data1[index].projectEndTime = date;
+          this.data1[index].applicationStartTime = formatDate(this.data1[index].applicationStartTime)
+          this.data1[index].applicationEndTime = formatDate(this.data1[index].applicationEndTime)
+          this.data1[index].projectStartTime = formatDate(this.data1[index].projectStartTime)
         }
       }
     }
