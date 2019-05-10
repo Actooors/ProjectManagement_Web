@@ -4,6 +4,7 @@ import Principal from 'group/principal'
 import User from 'group/user'
 import Expert from 'group/expert'
 import Leader from 'group/leader'
+import Admin from 'group/admin'
 import Login from 'pages/login/login'
 import AvaProject from 'pages/user/avaProject/avaProject'
 import ReqProject from 'pages/user/reqProject/reqProject'
@@ -13,12 +14,12 @@ import UserInfo from 'pages/user/myInfo/myInfo'
 import ExpertReqProject from 'pages/expert/reqProject/reqProject'
 import ExpertEndProject from 'pages/expert/endProject/endProject'
 import ExpertInfo from 'pages/expert/myInfo/myInfo'
-// import ProjectCategory from 'pages/leader/projectCategory/projectCategory'
 import LeaderReqProject from 'pages/leader/reqProject/reqProject'
 import LeaderEndProject from 'pages/leader/endProject/endProject'
 import LeaderProjectList from 'pages/leader/projectList/projectList'
 import LeaderStatistic from 'pages/leader/statistic/statistic'
 import LeaderInfo from 'pages/leader/myInfo/myInfo'
+import UserManage from 'pages/admin/userManage/userManage'
 import Error from 'pages/error404/error404'
 import NewCategory from 'pages/principal/newCategory/newCategory'
 import CategoryList from 'pages/principal/categoryList/categoryList'
@@ -29,6 +30,7 @@ import fourEx from 'pages/principal/fourEx/fourEx'
 import fiveEx from 'pages/principal/fiveEx/fiveEx'
 import Principal_MyProject from 'pages/principal/myProject/myProject'
 import PrincipalInfo from 'pages/principal/myInfo/myInfo'
+import AdminInfo from 'pages/admin/myinfo/myinfo'
 
 
 Vue.use(Router)
@@ -155,10 +157,6 @@ const router = new Router({
           path: '',
           redirect: 'reqProject'
         },
-        // {
-        //   path: 'projectCategory',
-        //   component: ProjectCategory
-        // },
         {
           path: 'reqProject',
           component: LeaderReqProject
@@ -181,7 +179,25 @@ const router = new Router({
         }
       ]
     },
-
+    {
+      path: '/admin',
+      component: Admin,
+      redirect: {name: 'userManage'},
+      children: [
+        {
+          path: '',
+          redirect: 'userManage'
+        },
+        {
+          path: 'userManage',
+          component: UserManage
+        },
+        {
+          path: 'myInfo',
+          component: AdminInfo
+        },
+      ]
+    },
     {
       path: '*',
       component: Error,
