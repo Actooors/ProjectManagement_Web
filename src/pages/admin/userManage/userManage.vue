@@ -21,7 +21,6 @@
         <Page :total="totalPage" :current="currentPage" @on-change="changePage"></Page>
       </div>
     </div>
-    //TODO Modal
     <Modal title="新增用户" v-model="modal_visible" v-if="modal_delay"
            width="450">
       <Form :model="formItem" ref="formItem" :label-width="60" :rules="ruleValidate">
@@ -41,11 +40,11 @@
         </FormItem>
         <FormItem label="身份" prop="identity">
           <CheckboxGroup v-model="formItem.identity">
-            <Checkbox label="用户" value="user"></Checkbox>
-            <Checkbox label="业务员" value="principal"></Checkbox>
-            <Checkbox label="领导" value="leader"></Checkbox>
-            <Checkbox label="审核专家" value="expert"></Checkbox>
-            <Checkbox label="管理员" value="admin"></Checkbox>
+            <Checkbox label="user">用户</Checkbox>
+            <Checkbox label="principal">业务员</Checkbox>
+            <Checkbox label="leader">领导</Checkbox>
+            <Checkbox label="expert">审核专家</Checkbox>
+            <Checkbox label="admin">管理员</Checkbox>
           </CheckboxGroup>
         </FormItem>
       </Form>
@@ -76,9 +75,8 @@
           userId: '',
           userName: '',
           identity: [],
-          password: null
+          password: ''
         },
-        formValidate: {},
         ruleValidate: {
           userName: [
             {required: true, message: '用户名不能为空', trigger: 'blur'}
@@ -306,7 +304,7 @@
           password += pasArr[x];
         }
         this.formItem.password = password;
-        console.log(password)
+        console.log(this.formItem.password)
       },
       Refresh() {
 
@@ -314,12 +312,14 @@
       Add() {
         this.modal_visible = true;
       },
-      ok_add() {
+      ok_add() { // TODO 这里为什么直接就清空了，答：当我看到console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
         this.$refs['formItem'].validate((valid) => {
           if (valid) {
             this.$Message.success('新增用户成功！');
-            this.$refs['formItem'].resetFields()
+            console.log(this.formItem)
+            console.log(Object.assign({},this.formItem))
             this.modal_visible = false
+            this.$refs['formItem'].resetFields()
           } else {
             this.$Message.error('请将有关字段填写完整！');
           }
@@ -406,37 +406,75 @@
         let index = params.index
         this.$Modal.confirm({
           title: "修改权限",
+          onOk: () => {
+            console.log(this.identity_arr)
+          },
           render: (h) => {
             return h('CheckboxGroup', {
                 props: {
                   value: this.identity_arr
+                },
+                on: {
+                  input: (value) => {
+                    this.identity_arr = value
+                  }
                 }
               }, [
                 h('Checkbox', {
                   props: {
-                    label: '用户'
+                    label: 'user'
                   }
-                }),
+                }, [
+                  h('span', {
+                    domProps: {
+                      innerHTML: '用户'
+                    }
+                  })
+                ]),
                 h('Checkbox', {
                   props: {
-                    label: '业务员'
+                    label: 'principal'
                   }
-                }),
+                }, [
+                  h('span', {
+                    domProps: {
+                      innerHTML: '业务员'
+                    }
+                  })
+                ]),
                 h('Checkbox', {
                   props: {
-                    label: '领导'
+                    label: 'leader'
                   }
-                }),
+                }, [
+                  h('span', {
+                    domProps: {
+                      innerHTML: '领导'
+                    }
+                  })
+                ]),
                 h('Checkbox', {
                   props: {
-                    label: '审核专家'
+                    label: 'expert'
                   }
-                }),
+                }, [
+                  h('span', {
+                    domProps: {
+                      innerHTML: '审核专家'
+                    }
+                  })
+                ]),
                 h('Checkbox', {
                   props: {
-                    label: '管理员'
+                    label: 'admin'
                   }
-                })
+                }, [
+                  h('span', {
+                    domProps: {
+                      innerHTML: '管理员'
+                    }
+                  })
+                ])
               ]
             )
           }
