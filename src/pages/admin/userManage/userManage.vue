@@ -165,6 +165,24 @@
             title: "状态",
             key: 'status',
             align: 'center',
+            filters: [
+              {
+                label: '冻结',
+                value: 0
+              },
+              {
+                label: '正常',
+                value: 1
+              }
+            ],
+            filterMultiple: true,
+            filterMethod(value, row) {
+              if (value === 0) {
+                return row.status === 0;
+              } else if (value === 1) {
+                return row.status === 1;
+              }
+            },
             render: (h, params) => {
               const row = params.row;
               const status = row.status;
@@ -413,7 +431,15 @@
         this.modal_visible = false
       },
       Delete() {
-        let selected = this.selected_list
+        let selected = []
+        let id_list = []
+        for (let i = 0; i < this.selected_list.length; i++) {
+          selected.push(this.selected_list[i].userId)
+        }
+        for (let i = 0; i < this.data1.length; i++) {
+          id_list.push(this.data1[i].userId)
+        }
+        console.log(selected)
         if (selected.length) {
           this.$Modal.confirm({
             title: '请确认',
@@ -428,18 +454,15 @@
               }).then(res => {
                 if (res.data) {
                   if (res.data.code === 'SUCCESS') {
-                    for (let i = 0; i < selected.length; i++) {
-                      let index = this.data1.indexOf(selected[i])
-                      this.data1.splice(index, 1)
-                    }
                     this.$Message.success("删除成功！");
+                    selected = []
                   } else {
-                    this.$Message.success()
+                    this.$Message.error(res.data.message)
                   }
                 }
               })
             }
-          })
+          });
         }
       },
       changePage(page) {
@@ -654,3 +677,9 @@
 <style lang="scss">
   @import "userManage";
 </style>
+<style lang="scss">
+  .ivu-select-selected-value {
+    color: #515a6e;
+  }
+</style>
+

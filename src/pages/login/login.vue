@@ -53,10 +53,10 @@
             value: '4',
             label: '领导'
           },
-          // {
-          //   value: '5',
-          //   label: '超级管理员'
-          // },
+          {
+            value: '5',
+            label: '管理员'
+          },
         ]
       }
     },
@@ -90,9 +90,9 @@
                     case "4":
                       this.$router.push('/leader');
                       break;
-                    // case "5":
-                    //   this.$router.push('/admin');
-                    //   break;
+                    case "5":
+                      this.$router.push('/admin');
+                      break;
                   }
                 } else {
                   this.$Message.error('您没有该用户权限！');

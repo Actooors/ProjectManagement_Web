@@ -70,7 +70,7 @@
       }
     },
     mounted() {
-      // this.initData('更新个人信息成功！')
+      this.initData('更新个人信息成功！')
     },
     methods: {
       initData(msg) {
