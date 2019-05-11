@@ -39,7 +39,7 @@
           </Tooltip>
         </FormItem>
         <FormItem label="身份" prop="identity">
-          <CheckboxGroup v-model="formItem.identity">
+          <CheckboxGroup v-model="formItem.identity" @on-change="selectedArr">
             <Checkbox label="user">用户</Checkbox>
             <Checkbox label="principal">业务员</Checkbox>
             <Checkbox label="leader">领导</Checkbox>
@@ -51,6 +51,17 @@
       <div slot="footer">
         <Button @click="cancel_add">取消</Button>
         <Button type='primary' @click="ok_add">确定</Button>
+      </div>
+    </Modal>
+    <Modal title="请选择业务员所对应的领导" v-model="select_leader" v-if="select_leader_delay">
+      <Select v-model="leaderId">
+        <Option v-for="item in leader_list" :value="item.userId" :key="item.userId">
+          {{item.userName}} — {{item.department}}
+        </Option>
+      </Select>
+      <div slot="footer">
+        <Button @click="cancel_select">取消</Button>
+        <Button type='primary' @click="ok_select">确定</Button>
       </div>
     </Modal>
   </div>
@@ -71,6 +82,26 @@
         identity_arr: [],
         selected_list: [],
         modal_delay: false,
+        select_leader: false,
+        select_leader_delay: false,
+        leaderId: null,
+        leader_list: [
+          {
+            userName: "领导1",
+            userId: "11111",
+            department: '计算机学院'
+          },
+          {
+            userName: "领导2",
+            userId: "22222",
+            department: '信息办'
+          },
+          {
+            userName: "领导3",
+            userId: "33333",
+            department: '美术学院'
+          }
+        ],
         formItem: {
           userId: '',
           userName: '',
@@ -135,6 +166,15 @@
               } else if (value === 5) {
                 return row.identity.indexOf('管理员') != -1;
               }
+            },
+            render: (h, params) => {
+              const row = params.row;
+              return h('Tooltip', {
+                props: {
+                  content: "所属领导：" + row.leaderName,
+                  disabled: row.leaderName === null ? true : false
+                }
+              }, row.identity)
             }
           },
           {
@@ -252,7 +292,8 @@
             department: '计算机学院',
             phone: '',
             mail: 'whzhu@shu.edu.cn',
-            position: '教授'
+            position: '教授',
+            leaderName: '徐文'
           },
           {
             identity: '用户',
@@ -262,7 +303,8 @@
             department: '理学院',
             phone: '',
             mail: '',
-            position: '教授'
+            position: '教授',
+            leaderName: null
           },
           {
             identity: '业务员',
@@ -272,7 +314,8 @@
             department: '文学院',
             phone: '18101971575',
             mail: '',
-            position: '教授'
+            position: '教授',
+            leaderName: '李瑞轩'
           },
           {
             identity: '专家,管理员',
@@ -282,7 +325,8 @@
             department: '理学院',
             phone: '',
             mail: '',
-            position: '教授'
+            position: '教授',
+            leaderName: null
           },
         ]
       }
@@ -293,6 +337,11 @@
           this.modal_delay = true
         }
       },
+      select_leader(val) {
+        if (val) {
+          this.select_leader_delay = val
+        }
+      }
     },
     methods: {
       genPassword() { //生成8位随机密码
@@ -309,15 +358,28 @@
       Refresh() {
 
       },
+      selectedArr(arr) {
+        console.log(arr)
+        if (arr.indexOf('principal') != -1) {
+          this.select_leader = true
+        }
+      },
+      cancel_select() {
+        this.select_leader = false
+        let index = this.formItem.identity.indexOf('principal')
+        this.formItem.identity.splice(index, 1)
+      },
+      ok_select() {
+      },
       Add() {
         this.modal_visible = true;
       },
-      ok_add() { // TODO 这里为什么直接就清空了，答：当我看到console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
+      ok_add() { // TODO 这里为什么直接就清空了，答：当看到console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
         this.$refs['formItem'].validate((valid) => {
           if (valid) {
             this.$Message.success('新增用户成功！');
             console.log(this.formItem)
-            console.log(Object.assign({},this.formItem))
+            console.log(Object.assign({}, this.formItem))
             this.modal_visible = false
             this.$refs['formItem'].resetFields()
           } else {
