@@ -85,23 +85,7 @@
         select_leader: false,
         select_leader_delay: false,
         leaderId: null,
-        leader_list: [
-          {
-            userName: "领导1",
-            userId: "11111",
-            department: '计算机学院'
-          },
-          {
-            userName: "领导2",
-            userId: "22222",
-            department: '信息办'
-          },
-          {
-            userName: "领导3",
-            userId: "33333",
-            department: '美术学院'
-          }
-        ],
+        leader_list: [],
         formItem: {
           userId: '',
           userName: '',
@@ -199,8 +183,25 @@
                   },
                   nativeOn: {
                     click: () => {
-                      this.data1[params.index].status = (status === 1 ? 0 : 1)
-                      this.$Notice.success({title: '操作成功！'})
+                      axios({
+                        url: apiRoot + '/system/updateStatus',
+                        method: 'post',
+                        data: {
+                          userId: row.userId,
+                          status: status === 1 ? 0 : 1
+                        }
+                      }).then(res => {
+                        if (res.data) {
+                          if (res.data.code === 'SUCCESS') {
+                            this.$Notice.success({title: '操作成功！'});
+                            this.data1[params.index].status = (status === 1 ? 0 : 1);
+                          } else {
+                            this.$Notice.error({title: res.data.message});
+                          }
+                        }
+                      }).catch(() => {
+                        this.$Message.error('请检查网络设置！')
+                      })
                     }
                   }
                 }, text)
@@ -283,52 +284,7 @@
             }
           }
         ],
-        data1: [
-          {
-            identity: '领导,用户,业务员', //此处用逗号隔开
-            userName: 'user1',
-            status: 1, //1：正常，0：冻结
-            userId: '12123',
-            department: '计算机学院',
-            phone: '',
-            mail: 'whzhu@shu.edu.cn',
-            position: '教授',
-            leaderName: '徐文'
-          },
-          {
-            identity: '用户',
-            userName: 'user2',
-            status: 0,
-            userId: 'aabbcc',
-            department: '理学院',
-            phone: '',
-            mail: '',
-            position: '教授',
-            leaderName: null
-          },
-          {
-            identity: '业务员',
-            userName: 'user3',
-            status: 0,
-            userId: 'aabbcc',
-            department: '文学院',
-            phone: '18101971575',
-            mail: '',
-            position: '教授',
-            leaderName: '李瑞轩'
-          },
-          {
-            identity: '专家,管理员',
-            userName: 'user4',
-            status: 1,
-            userId: 'aabbcc',
-            department: '理学院',
-            phone: '',
-            mail: '',
-            position: '教授',
-            leaderName: null
-          },
-        ]
+        data1: []
       }
     },
     watch: {
@@ -343,7 +299,50 @@
         }
       }
     },
+    mounted() {
+      this.initData('初始化成功！', 1)
+      this.initLeaderList()
+    },
     methods: {
+      initData(msg, page) {
+        this.loading = true
+        axios({
+          url: apiRoot + '/system/userInfo',
+          method: 'post',
+          data: {
+            page: page
+          }
+        }).then(res => {
+          if (res.data.data) {
+            if (res.data.code === "SUCCESS") {
+              this.data1 = res.data.data.userData
+              for (let i = 0; i < this.data1.length; i++) {
+                this.data1[i].identity = this.data1[i].identity.replace('1', '用户').replace('2', '业务员').replace('3', '审核专家').replace('4', '领导').replace('5', '管理员').split('|').join(',')
+              }
+              this.totalPage = res.data.data.totalPage
+              this.$Message.success(msg)
+              this.loading = false
+            } else {
+              this.$Message.error("初始化错误!")
+              this.loading = false
+            }
+          }
+        }).catch(() => {
+          this.$Message.error('请检查网络连接!')
+          this.loading = false
+        })
+      },
+      initLeaderList() {
+        axios({
+          url: apiRoot + '/system/leaderList'
+        }).then(res => {
+          if (res.data) {
+            if (res.data.code === 'SUCCESS') {
+              this.leader_list = res.data.data;
+            }
+          }
+        })
+      },
       genPassword() { //生成8位随机密码
         let pasArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_', '-', '$', '%', '&', '@', '+', '!'];
         let password = '';
@@ -356,7 +355,7 @@
         console.log(this.formItem.password)
       },
       Refresh() {
-
+        this.initData('刷新成功！', 1)
       },
       selectedArr(arr) {
         console.log(arr)
@@ -366,22 +365,44 @@
       },
       cancel_select() {
         this.select_leader = false
-        let index = this.formItem.identity.indexOf('principal')
-        this.formItem.identity.splice(index, 1)
+        let index1 = this.formItem.identity.indexOf('principal')
+        let index2 = this.identity_arr.indexOf('principal')
+        this.formItem.identity.splice(index1, 1)
+        this.identity_arr.splice(index2, 1)
       },
       ok_select() {
+        this.select_leader = false
       },
       Add() {
         this.modal_visible = true;
       },
-      ok_add() { // TODO 这里为什么直接就清空了，答：当看到console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
+      ok_add() { //这里为什么直接就清空了，答：当看到console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
         this.$refs['formItem'].validate((valid) => {
           if (valid) {
-            this.$Message.success('新增用户成功！');
-            console.log(this.formItem)
-            console.log(Object.assign({}, this.formItem))
-            this.modal_visible = false
-            this.$refs['formItem'].resetFields()
+            axios({
+              url: apiRoot + '/system/addUser',
+              method: 'post',
+              data: {
+                userName: this.formItem.userName,
+                userId: this.formItem.userId,
+                password: this.formItem.password,
+                identity: this.formItem.identity,
+                leader: this.leaderId
+              }
+            }).then(res => {
+              if (res.data) {
+                if (res.data.code === 'SUCCESS') {
+                  console.log(Object.assign({}, this.formItem));
+                  this.$Message.success('新增用户成功！');
+                  this.modal_visible = false;
+                  this.$refs['formItem'].resetFields();
+                } else {
+                  this.$Message.error(res.data.message);
+                }
+              }
+            }).catch(() => {
+              this.$Message.error("请检查网络设置！")
+            })
           } else {
             this.$Message.error('请将有关字段填写完整！');
           }
@@ -397,14 +418,33 @@
           this.$Modal.confirm({
             title: '请确认',
             content: "请确定是否要删除所选定的" + selected.length + "位用户？",
-            onOk: async () => {
-              this.$Message.success("删除成功！")
+            onOk: () => {
+              axios({
+                url: apiRoot + '/system/deleteUser',
+                method: 'post',
+                data: {
+                  userId: selected
+                }
+              }).then(res => {
+                if (res.data) {
+                  if (res.data.code === 'SUCCESS') {
+                    for (let i = 0; i < selected.length; i++) {
+                      let index = this.data1.indexOf(selected[i])
+                      this.data1.splice(index, 1)
+                    }
+                    this.$Message.success("删除成功！");
+                  } else {
+                    this.$Message.success()
+                  }
+                }
+              })
             }
           })
         }
       },
-      changePage() {
-
+      changePage(page) {
+        this.currentPage = page
+        this.initData('翻页成功！', page)
       },
       updateSelectedList(selection) {
         this.selected_list = selection
@@ -416,8 +456,26 @@
           title: "请确认",
           content: "确认删除" + params.row.userName + "吗？删除后该用户账号将销毁！",
           onOk: () => {
-            this.$Message.success('删除' + params.row.userName + '成功！')
-            this.data1.splice(index, 1)
+            let userList = []
+            userList.push(userId)
+            axios({
+              url: apiRoot + '/user/deleteUser',
+              method: 'post',
+              data: {
+                userId: userList
+              }
+            }).then(res => {
+              if (res.data) {
+                if (res.data.code === 'SUCCESS') {
+                  this.$Message.success('删除' + params.row.userName + '成功！');
+                  this.data1.splice(index, 1);
+                } else {
+                  this.$Message.error(res.data.message)
+                }
+              }
+            }).catch(() => {
+              this.$Message.error('请检查网络设置！')
+            })
           }
         });
       },
@@ -429,8 +487,25 @@
           onOk: () => {
             if (this.newpwd) {
               console.log(this.newpwd)
-              this.newpwd = null
-              this.$Notice.success({title: "修改成功！"})
+              axios({
+                url: apiRoot + '/user/updatePassword',
+                method: 'post',
+                data: {
+                  userId: userId,
+                  password: this.newpwd
+                }
+              }).then(res => {
+                if (res.data) {
+                  if (res.data.code === 'SUCCESS') {
+                    this.$Notice.success({title: "修改成功！"});
+                    this.newpwd = null;
+                  } else {
+                    this.$Notice.error({title: res.data.message});
+                  }
+                }
+              }).catch(() => {
+                this.$Message.error('请检查网络设置！')
+              })
             } else {
               this.$Notice.error({title: "密码不能为空！"})
             }
@@ -469,7 +544,32 @@
         this.$Modal.confirm({
           title: "修改权限",
           onOk: () => {
-            console.log(this.identity_arr)
+            axios({
+              url: apiRoot + '/system/updateIdentity',
+              method: 'post',
+              data: {
+                userId: userId,
+                identity: this.identity_arr,
+                leaderId: this.leaderId
+              }
+            }).then(res => {
+              if (res.data) {
+                if (res.data.code === 'SUCCESS') {
+                  this.$Notice.success({title: '操作成功！'});
+                  this.identity_arr = [];
+                  this.leaderId = null;
+                } else {
+                  this.$Notice.error({title: res.data.message});
+                  this.identity_arr = [];
+                  this.leaderId = null;
+                }
+              }
+            }).catch(() => {
+              this.$Message.error("请检查网络设置！");
+            })
+          },
+          onCancel: () => {
+            this.identity_arr = []
           },
           render: (h) => {
             return h('CheckboxGroup', {
@@ -479,6 +579,11 @@
                 on: {
                   input: (value) => {
                     this.identity_arr = value
+                  },
+                  'on-change': (arr) => {
+                    if (arr.indexOf('principal') != -1) {
+                      this.select_leader = true
+                    }
                   }
                 }
               }, [
