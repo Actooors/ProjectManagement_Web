@@ -53,7 +53,7 @@
         <Button type='primary' @click="ok_add">确定</Button>
       </div>
     </Modal>
-    <Modal title="请选择业务员所对应的领导" v-model="select_leader" v-if="select_leader_delay">
+    <Modal title="请选择业务员所对应的领导" v-model="select_leader" v-if="select_leader_delay" class="select_leader">
       <Select v-model="leaderId">
         <Option v-for="item in leader_list" :value="item.userId" :key="item.userId">
           {{item.userName}} — {{item.department}}
@@ -678,8 +678,10 @@
   @import "userManage";
 </style>
 <style lang="scss">
-  .ivu-select-selected-value {
-    color: #515a6e;
+  .select_leader {
+    .ivu-select-selected-value {
+      color: #515a6e;
+    }
   }
 </style>
 
