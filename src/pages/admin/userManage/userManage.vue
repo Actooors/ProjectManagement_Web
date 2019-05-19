@@ -482,7 +482,7 @@
             let userList = []
             userList.push(userId)
             axios({
-              url: apiRoot + '/user/deleteUser',
+              url: apiRoot + '/system/deleteUser',
               method: 'post',
               data: {
                 userId: userList
