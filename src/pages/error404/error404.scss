@@ -3,15 +3,9 @@
 html {
   min-height: 100%;
 }
-#app {
-  background-image: radial-gradient(#11581E, #041607);
-
-}
 body {
-
   box-sizing: border-box;
   height: 100%;
-  //background-color: #000000;
   background-image: radial-gradient(#11581E, #041607);
   font-family: 'Inconsolata', Helvetica, sans-serif;
   font-size: 1.5rem;
@@ -20,7 +14,11 @@ body {
     0 0 1ex rgba(51, 255, 51, 1),
     0 0 2px rgba(255, 255, 255, 0.8);
 }
-
+.page{
+  background-image: radial-gradient(#11581E, #041607);
+  width: 100%;
+  height: 100%;
+}
 .overlay {
   pointer-events: none;
   position: absolute;
@@ -34,6 +32,7 @@ body {
         rgba(0, 0, 0, 0) 100%);
   background-size: auto 4px;
   z-index: 99;
+
 }
 
 .overlay::before {

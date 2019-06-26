@@ -32,7 +32,6 @@ import Principal_MyProject from 'pages/principal/myProject/myProject'
 import PrincipalInfo from 'pages/principal/myInfo/myInfo'
 import AdminInfo from 'pages/admin/myinfo/myinfo'
 
-
 Vue.use(Router)
 
 const router = new Router({
@@ -195,7 +194,7 @@ const router = new Router({
         {
           path: 'myInfo',
           component: AdminInfo
-        },
+        }
       ]
     },
     {

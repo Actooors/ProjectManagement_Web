@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <div class="overlay"></div>
     <div class="terminal">
       <h1>Error <span class="errorcode">404</span></h1>
