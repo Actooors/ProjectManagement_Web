@@ -12,7 +12,6 @@
           删除
         </Button>
       </ButtonGroup>
-      <Input class="search" placeholder="检索用户..." icon="" search size="large"></Input>
     </div>
     <Table stripe border :loading="loading" :columns="columns" :data="data1" class="table" height="520"
            size="large" @on-selection-change="updateSelectedList"></Table>
@@ -22,7 +21,9 @@
       </div>
     </div>
     <Modal title="新增用户" v-model="modal_visible" v-if="modal_delay"
-           width="450">
+           :closable="false"
+           width="450"
+           :mask-closable="false">
       <Form :model="formItem" ref="formItem" :label-width="60" :rules="ruleValidate">
         <FormItem label="用户名" prop="userName">
           <Input v-model="formItem.userName" placeholder="输入用户名" clearable></Input>
@@ -53,7 +54,8 @@
         <Button type='primary' @click="ok_add">确定</Button>
       </div>
     </Modal>
-    <Modal title="请选择业务员所对应的领导" v-model="select_leader" v-if="select_leader_delay" class="select_leader">
+    <Modal title="请选择业务员所对应的领导" v-model="select_leader" v-if="select_leader_delay" class="select_leader"
+           :closable="false" :mask-closable="false">
       <Select v-model="leaderId">
         <Option v-for="item in leader_list" :value="item.userId" :key="item.userId">
           {{item.userName}} — {{item.department}}
@@ -165,6 +167,7 @@
             title: "状态",
             key: 'status',
             align: 'center',
+            width: '120px',
             filters: [
               {
                 label: '冻结',
@@ -378,6 +381,7 @@
       selectedArr(arr) {
         console.log(arr)
         if (arr.indexOf('principal') != -1) {
+          this.initLeaderList()
           this.select_leader = true
         }
       },
@@ -394,7 +398,7 @@
       Add() {
         this.modal_visible = true;
       },
-      ok_add() { //这里为什么直接就清空了，答：当看到console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
+      ok_add() { //这里为什么直接就清空了? 答：当看到console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
         this.$refs['formItem'].validate((valid) => {
           if (valid) {
             axios({
@@ -606,6 +610,7 @@
                   'on-change': (arr) => {
                     if (arr.indexOf('principal') != -1) {
                       this.select_leader = true
+                      this.initLeaderList()
                     }
                   }
                 }
