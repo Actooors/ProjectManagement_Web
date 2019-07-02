@@ -58,7 +58,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess1"
             ref="upload"
-            action="https://pm.alphalrx.cn/api/file/upload">
+            action="http://10.10.0.29/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或将文件拖拽到这里上传</p>
@@ -98,7 +98,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess2"
             ref="upload"
-            action="https://pm.alphalrx.cn/api/file/upload">
+            action="http://10.10.0.29/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或将文件拖拽到这里上传</p>
@@ -349,7 +349,7 @@
           {
             title: '操作',
             key: 'operation',
-            width: 300,
+            width: 230,
             align: 'center',
             render: (h, params) => {
               return h('div', [
@@ -459,7 +459,7 @@
             this.$Message.success(msg)
             this.loading = false
           } else {
-            this.$Message.warnings(res.data.message)
+            this.$Message.warning(res.data.message)
             this.loading = false
           }
         }).catch((err) => {

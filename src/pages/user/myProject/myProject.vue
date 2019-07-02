@@ -23,7 +23,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess1"
             :on-error="uploadError1"
-            action="https://pm.alphalrx.cn/api/file/upload">
+            action="http://10.10.0.29/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或拖拽文件以上传</p>
@@ -44,7 +44,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess2"
             :on-error="uploadError2"
-            action="https://pm.alphalrx.cn/api/file/upload">
+            action="http://10.10.0.29/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或拖拽文件以上传</p>

@@ -5,9 +5,9 @@
         <Button type="success" icon="md-refresh" @click.native="Refresh" size="large">
           刷新
         </Button>
-        <Button type="primary" icon="md-add" @click.native="Add" size="large">
-          添加
-        </Button>
+        <!--        <Button type="primary" icon="md-add" @click.native="Add" size="large">-->
+        <!--          添加-->
+        <!--        </Button>-->
         <Button type="error" icon="md-close" @click.native="Delete" size="large">
           删除
         </Button>
@@ -83,6 +83,7 @@
         modal_visible: false,
         identity_arr: [],
         selected_list: [],
+        tmp_arr: [],
         modal_delay: false,
         select_leader: false,
         select_leader_delay: false,
@@ -297,6 +298,7 @@
                   },
                   on: {
                     click: () => {
+                      this.tmp_arr = this.identity_arr
                       this.modifyIdentity(params);
                     }
                   }
@@ -373,13 +375,13 @@
           password += pasArr[x];
         }
         this.formItem.password = password;
-        console.log(this.formItem.password)
+        //console.log(this.formItem.password)
       },
       Refresh() {
         this.initData('刷新成功！', 1)
       },
       selectedArr(arr) {
-        console.log(arr)
+        //console.log(arr)
         if (arr.indexOf('principal') != -1) {
           this.initLeaderList()
           this.select_leader = true
@@ -398,7 +400,7 @@
       Add() {
         this.modal_visible = true;
       },
-      ok_add() { //这里为什么直接就清空了? 答：当看到console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
+      ok_add() { //这里为什么直接就清空了? 答：当看到//console.log的时候，已经执行this.$refs['formItem'].resetFields()了，所以采用了Object.assign({},this.formItem)浅拷贝只拷贝一层，第二层一下都是用指针来代替
         this.$refs['formItem'].validate((valid) => {
           if (valid) {
             axios({
@@ -414,7 +416,7 @@
             }).then(res => {
               if (res.data) {
                 if (res.data.code === 'SUCCESS') {
-                  console.log(Object.assign({}, this.formItem));
+                  //console.log(Object.assign({}, this.formItem));
                   this.$Message.success('新增用户成功！');
                   this.modal_visible = false;
                   this.$refs['formItem'].resetFields();
@@ -443,7 +445,7 @@
         for (let i = 0; i < this.data1.length; i++) {
           id_list.push(this.data1[i].userId)
         }
-        console.log(selected)
+        //console.log(selected)
         if (selected.length) {
           this.$Modal.confirm({
             title: '请确认',
@@ -513,7 +515,7 @@
           title: "修改密码",
           onOk: () => {
             if (this.newpwd) {
-              console.log(this.newpwd)
+              //console.log(this.newpwd)
               axios({
                 url: apiRoot + '/user/updatePassword',
                 method: 'post',
@@ -567,7 +569,21 @@
       },
       modifyIdentity(params) {
         let userId = params.row.userId
-        let index = params.index
+        //console.log(params.row.identity)
+        let identity = params.row.identity.split(',')
+        for (let i = 0; i < identity.length; i++) {
+          if (identity[i] === '用户') {
+            this.identity_arr.push("user")
+          } else if (identity[i] === '业务员') {
+            this.identity_arr.push("principal")
+          } else if (identity[i] === '领导') {
+            this.identity_arr.push("leader")
+          } else if (identity[i] === '审核专家') {
+            this.identity_arr.push("expert")
+          } else if (identity[i] === '管理员') {
+            this.identity_arr.push("admin")
+          }
+        }
         this.$Modal.confirm({
           title: "修改权限",
           onOk: () => {
@@ -577,7 +593,7 @@
               data: {
                 userId: userId,
                 identity: this.identity_arr,
-                leaderId: this.leaderId
+                leader: this.leaderId
               }
             }).then(res => {
               if (res.data) {
@@ -585,6 +601,7 @@
                   this.$Notice.success({title: '操作成功！'});
                   this.identity_arr = [];
                   this.leaderId = null;
+                  this.initData('刷新成功',1)
                 } else {
                   this.$Notice.error({title: res.data.message});
                   this.identity_arr = [];
@@ -608,10 +625,13 @@
                     this.identity_arr = value
                   },
                   'on-change': (arr) => {
-                    if (arr.indexOf('principal') != -1) {
-                      this.select_leader = true
-                      this.initLeaderList()
+                    if (arr.indexOf('principal') != -1 && this.tmp_arr.indexOf('principal') == -1) {
+                      this.select_leader = true;
+                      this.initLeaderList();
+                    } else {
+                      this.select_leader = false
                     }
+                    this.tmp_arr = arr;
                   }
                 }
               }, [

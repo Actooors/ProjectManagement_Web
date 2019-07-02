@@ -80,11 +80,11 @@ const router = new Router({
     {
       path: '/principal',
       component: Principal,
-      redirect: {name: 'newCategory'},
+      redirect: {name: 'myProject'},
       children: [
         {
           path: '',
-          redirect: 'newCategory'
+          redirect: 'myProject'
         },
         {
           path: 'newCategory',

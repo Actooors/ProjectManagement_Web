@@ -5,8 +5,7 @@
         <Button type="success" size="large" @click="Refresh" icon="md-refresh" ghost>刷新</Button>
       </ButtonGroup>
     </div>
-    <Tabs class="tab" type="card">
-        <Tabs class="tabs">
+    <Tabs class="tab">
           <TabPane label="已立项" name="1" icon="md-apps">
             <Table table="table" :columns="column1" :data="data1" :loading="loading" sriple border size="large"></Table>
           </TabPane>
@@ -22,7 +21,6 @@
           <TabPane label="已驳回" name="5" icon="md-bookmarks">
             <Table table="table" :columns="column5" :data="data7" :loading="loading" sriple border size="large"></Table>
           </TabPane>
-        </Tabs>
     </Tabs>
 
     <Modal v-if="modal_delay" v-model="modal_detail" :title="infoTitle" width="900px">
@@ -479,7 +477,6 @@
         }
     }
 </script>
-
 <style scoped lang="scss">
   @import "myProject";
 </style>
