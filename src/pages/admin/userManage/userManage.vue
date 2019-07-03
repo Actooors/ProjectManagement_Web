@@ -277,20 +277,21 @@
                     }
                   }
                 }, '删除'),
-                h('Button', {
-                  props: {
-                    type: 'warning',
-                    size: 'small'
-                  },
-                  style: {
-                    marginRight: '5px'
-                  },
-                  on: {
-                    click: () => {
-                      this.modifyPassword(params);
-                    }
-                  }
-                }, '改密码'),
+                // TODO 改密码以后再说
+                // h('Button', {
+                //   props: {
+                //     type: 'warning',
+                //     size: 'small'
+                //   },
+                //   style: {
+                //     marginRight: '5px'
+                //   },
+                //   on: {
+                //     click: () => {
+                //       this.modifyPassword(params);
+                //     }
+                //   }
+                // }, '改密码'),
                 h('Button', {
                   props: {
                     type: 'primary',

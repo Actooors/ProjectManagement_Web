@@ -392,12 +392,14 @@
         this.declaredAmount = null
         this.description = null
         this.read = false
+        this.step1disable=true
         this.items.splice(0, this.items.length)
         this.model1 = false
       },
       download(index) {
         const that = this
         var filename = this.data1[index].downLoadAddress.split('---')[1]  //---后为文件名
+        console.log(that.data1[index].downloadAddress)
         axios({
           url: that.data1[index].downLoadAddress,
           method: 'get',

@@ -30,11 +30,11 @@
     <div class="bg">
       <div class="wel">用户登录</div>
       <div class="user">
-        <div class="yonghu" style="">用户名</div>
+        <div class="yonghu" style="">学/工号</div>
         <input type="text" name="用户" value="" ref="userid"/>
       </div>
       <div class="password">
-        <div class="yonghu">密&nbsp;&nbsp;&nbsp;码</div>
+        <div class="yonghu">密&nbsp;&nbsp;&nbsp;&nbsp;码</div>
         <input class="" type="password" name="密码" value="" ref="password"/>
       </div>
       <div class="rem">
@@ -91,7 +91,7 @@
           render: (h) => {
             return h('div', [
               h('Icon', {
-                'class': 'demo-spin-icon-load',
+                'class': 'spin-icon-load',
                 props: {
                   type: 'ios-loading',
                   size: 18
@@ -148,7 +148,11 @@
             this.$Spin.hide();
           })
         } else {
-          this.$Message.info("请完整填写有关字段！");
+          if (!this.$refs.userid.value) {
+            this.$Message.info("请填写学/工号！");
+          }else if (!this.$refs.password.value) {
+            this.$Message.info("请填写密码！");
+          }
           this.$Spin.hide();
         }
       }
@@ -158,29 +162,12 @@
     }
   }
 </script>
-
+<style>
+  .spin-icon-load {
+    animation: ani-demo-spin 1s linear infinite;
+  }
+</style>
 <style scoped lang="scss">
   @import "login";
 </style>
 
-<style lang="scss">
-  .login-box {
-    .ivu-input {
-      background-color: transparent;
-      color: #f8f8f9ab;
-    }
-  }
-
-  .ivu-select-selection {
-    background-color: #fff0 !important;
-  }
-
-  .ivu-select-selected-value {
-    background-color: transparent;
-    color: #f8f8f9ab;
-  }
-
-  .ivu-select-arrow {
-    color: #f8f8f9ab;
-  }
-</style>

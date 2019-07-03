@@ -75,7 +75,7 @@
 
 <script>
   import axios from 'axios'
-
+  import download from '../../../assets/js/download'
     export default {
         name: "myProject",
         watch: {
@@ -456,6 +456,7 @@
             });
           },
           downloadProjectMaterial(address) {
+            console.log(address,'!!')
             const that = this
             var filename = address.split('---')[1]
             axios({
@@ -470,7 +471,8 @@
               } else {
                 this.$Message.error('下载失败！');
               }
-            }).catch(() => {
+            }).catch((err) => {
+              console.log(err)
               this.$Message.error('下载失败，请检查网络连接！')
             })
           }

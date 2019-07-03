@@ -132,6 +132,7 @@
         middleReportAddress: '',
         lastReportAddress: '',
         // i: 0,
+        uploadSg:false,
         uploadHeaders: {
           Authorization: localStorage.getItem('token')
         },
@@ -256,6 +257,7 @@
                   },
                   on: {
                     click: () => {
+                      console.log(params.index)
                       this.download(params.index, 1)
                     }
                   }
@@ -356,7 +358,8 @@
                 }, '下载模板'),
                 h('Button', {
                   props: {
-                    type: 'success'
+                    type: 'success',
+                    disable:this.uploadSg
                   },
                   on: {
                     click: () => {

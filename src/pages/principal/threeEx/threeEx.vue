@@ -72,7 +72,7 @@
           <br>
           <div style="display: inline-flex;line-height: 32px">
             <p>选择调整申请的经费：</p>
-            <InputNumber v-model="modifiedMoney" :max="projectMaxMoney"></InputNumber>&nbsp;元
+            <InputNumber v-model="modifiedMoney" :max="projectMaxMoney" :min="0"></InputNumber>&nbsp;元
           </div>
           <br>
         </div>

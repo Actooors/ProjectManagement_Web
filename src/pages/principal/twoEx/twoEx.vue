@@ -75,6 +75,31 @@
       <p v-if="data3.concludingAddress!==null">项目结题报告：<a
         @click="downloadProjectMaterial(data3.concludingAddress)">点击下载</a></p>
     </Modal>
+    <Modal
+      :mask-closable="false"
+      @on-cancel="cancel"
+      maxHeight="800"
+      ref="model"
+      title="修改项目经费"
+      v-model="modal3"
+      width="400">
+      <Form :label-width="180" style="margin-right: 25px;text-align: center">
+          <br>
+        <p>申请经费：<strong>{{this.projectMoney}}</strong>元，经费额度：<strong>{{this.projectMaxMoney}}</strong>元</p>
+          <br>
+          <div style="display: inline-flex;line-height: 32px">
+            <p>选择调整申请的经费：</p>
+            <InputNumber v-model="modifiedMoney" :max="parseInt(projectMaxMoney)" :min="0"></InputNumber>&nbsp;元
+          </div>
+          <br>
+      </Form>
+      <div slot="footer">
+        <Button @click.native="passConfirm(index)" style="margin-top: 20px;margin-left: 20px;width:100px"
+                type="primary">
+          完成
+        </Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -99,9 +124,14 @@
         modal1: false,
         modal2: false,
         modal2_delay: false,
+        modal3:false,
         infoTitle: null,
         index: 0,
         reason: '',
+        projectMoney:null,
+        projectMaxMoney:null,
+        modifiedMoney:null,
+        projectMaxMoney:null,
         columns1: [
           {
             title: '项目名称',
@@ -258,29 +288,26 @@
         this.modal1 = false
       },
       pass(index) {
+        var that=this
         this.$Modal.confirm({
           title: '请再次确认',
           content: '您确定跳过项目 ' + this.data1[index].projectName + ' 的专家审核阶段吗？',
           okText: '确定',
           cancelText: '再想想',
           onOk: () => {
-            axios({
-              url: apiRoot + '/admin/expertTrial',
-              method: 'post',
-              data: {
-                applicationId: this.data1[index].projectId,
-                judge: true,
-              }
-            }).then((res) => {
-              if (res.data.code === 'SUCCESS') {
-                this.data1.splice(index, 1)
-                this.$Message.success('该项目已通过专家审核阶段！');
-              } else {
-                this.$Message.error(res.data.message);
-              }
-            })
+            this.modifiedMoney = this.data1[index].projectMoney;
+
+            // 先判断是否上会，不上会需在本阶段完成经费修改
+            if (this.data1[index].hasMeeting === false) {
+              this.projectMoney = this.data1[index].projectMoney;
+              this.projectMaxMoney = this.data1[index].projectMaxMoney;
+              this.index=index
+              this.modal3 = true;
+            } else {
+              that.passConfirm(index);
+            }
           }
-        })
+        });
       },
       reject(index) {
         this.$Modal.confirm({
@@ -373,6 +400,25 @@
           this.loading = false;
         })
       },
+      passConfirm(index){
+        axios({
+          url: apiRoot + '/admin/expertTrial',
+          method: 'post',
+          data: {
+            applicationId: this.data1[index].projectId,
+            projectMoney:this.modifiedMoney,
+            judge: true,
+          }
+        }).then((res) => {
+          if (res.data.code === 'SUCCESS') {
+            this.data1.splice(index, 1)
+            this.$Message.success('该项目已通过专家审核阶段！');
+            this.modal3=false
+          } else {
+            this.$Message.error(res.data.message);
+          }
+        })
+      }
     }
   }
 </script>
