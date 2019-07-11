@@ -29,9 +29,6 @@
                 <Icon type="ios-stopwatch-outline"/>
                 待审核
               </template>
-              <!--<MenuItem name="exProject-projectCategory">-->
-                <!--项目大类-->
-              <!--</MenuItem>-->
               <MenuItem
                 name="exProject-reqProject"
               >项目初审
@@ -49,6 +46,10 @@
               <MenuItem
                 name="Project-projectList"
               >项目列表
+              </MenuItem>
+              <MenuItem
+                name="Project-allProject"
+              >项目大类
               </MenuItem>
               <MenuItem
                 name="Project-statistic"
@@ -179,10 +180,7 @@
         console.log("openNames", this.openNames)
       },
       initMenuActive(activeName) {
-        activeName =
-          activeName ||
-          this.$route.matched[this.$route.matched.length - 1].components.default
-            .name;
+        activeName = activeName || this.$route.matched[this.$route.matched.length - 1].components.default.name;
         console.log(this.$refs.menu)
         const that = this;
 

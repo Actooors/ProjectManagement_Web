@@ -6,35 +6,6 @@
       </Button>
     </ButtonGroup>
     <Table :columns="columns1" :data="data1" border :loading="loading" class="table" size="large" stripe></Table>
-    <Modal v-model="model_assign" title="项目任务书" width="900">
-      <p>项目描述：{{data2.projectDescription}}</p>
-      <br>
-      <p>业务员手机：{{data2.principalPhone}}</p>
-      <br>
-      <p>项目大类：{{data2.projectType}}</p>
-      <br>
-      <p>经费额度：{{data2.maxMoney}}元</p>
-      <br>
-      申报人类型：<p style="display: inline-flex;" v-for="item in data2.applicantType">{{item}}&nbsp;</p>
-      <br>
-      <br>
-      <p>项目成员(默认第一个为项目负责人)：</p>
-      <Table :columns="columns2" :data="data3.members" size="small" stripe></Table>
-      <br>
-      <p>项目申请书：<a @click="downloadProjectMaterial(data3.applicationAddress)">点击下载</a></p>
-      <br>
-      <p v-if="data3.interimAddress===null">项目中期报告：未提交</p>
-      <p v-if="data3.interimAddress!==null">项目中期报告：<a @click="downloadProjectMaterial(data3.interimAddress)">点击下载</a>
-      </p>
-      <br>
-      <p v-if="data3.concludingAddress===null">项目结题报告：未提交</p>
-      <p v-if="data3.concludingAddress!==null">项目结题报告：<a
-        @click="downloadProjectMaterial(data3.concludingAddress)">点击下载</a></p>
-      <br>
-      <p>项目指标：{{data3.projectIndex}}</p>
-      <br>
-      <p>申请的项目经费：{{data3.projectMoney}}&nbsp;元</p>
-    </Modal>
     <Modal
       @on-cancel="cancel"
       maxHeight="800"
@@ -132,7 +103,6 @@
         modal1: false,
         modal2: false,
         modal2_delay: false,
-        model_assign: false,
         infoTitle: null,
         index: 0,
         reason: '',
@@ -167,8 +137,7 @@
                 props: {type: 'primary'},
                 on: {
                   click: () => {
-                    this.details(params.index)
-                    this.model_assign = true
+                    this.downloadProjectMaterial(this.data1[params.index].indexContent)
                   }
                 },
               }, '任务书')]);
@@ -328,7 +297,7 @@
         const that = this
         var filename = this.data1[index].projectDownloadAddress.split('---')[1]
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + that.data1[index].projectDownloadAddress,
+          url: that.data1[index].projectDownloadAddress,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'

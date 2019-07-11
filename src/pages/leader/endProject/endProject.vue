@@ -279,7 +279,7 @@
         const that = this
         var filename = this.data1[index].projectApplicationDownloadAddress.split('---')[1]  //---后为文件名
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + this.data1[index].projectApplicationDownloadAddress,
+          url: this.data1[index].projectApplicationDownloadAddress,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'

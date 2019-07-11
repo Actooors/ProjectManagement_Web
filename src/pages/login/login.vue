@@ -31,11 +31,11 @@
       <div class="wel">用户登录</div>
       <div class="user">
         <div class="yonghu" style="">学/工号</div>
-        <input type="text" name="用户" value="" ref="userid"/>
+        <input type="text" name="用户" value="" ref="userid" v-focus @keyup.enter="login"/>
       </div>
       <div class="password">
         <div class="yonghu">密&nbsp;&nbsp;&nbsp;&nbsp;码</div>
-        <input class="" type="password" name="密码" value="" ref="password"/>
+        <input class="" type="password" name="密码" value="" ref="password" v-focus @keyup.enter="login"/>
       </div>
       <div class="rem">
         <input type="checkbox" name="" id="" value=""/>
@@ -58,6 +58,14 @@
 
   export default {
     name: "login",
+    directives: {
+      focus: {
+        // 指令的定义
+        inserted: function (el) {
+          el.focus()
+        }
+      }
+    },
     data() {
       return {
         fixStyle: '',
@@ -86,6 +94,11 @@
       }
     },
     methods: {
+      KeyDown(){
+        if (event.keyCode == 13) {
+          this.login()
+        }
+      },
       login() {
         this.$Spin.show({
           render: (h) => {
@@ -139,7 +152,7 @@
                 localStorage.setItem('authority',res.data.data.identity.split('|'))
               } else {
                 this.$Message.error(res.data.message);
-                this.loading = false
+                this.$Spin.hide();
               }
             }
           ).catch((err) => {

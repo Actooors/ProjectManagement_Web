@@ -64,7 +64,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess1"
             ref="upload1"
-            action="http://10.10.0.29/api/file/upload">
+            action="http://itproject.shu.edu.cn/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或将文件拖拽到这里上传</p>
@@ -77,7 +77,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess2"
             ref="upload2"
-            action="http://10.10.0.29/api/file/upload">
+            action="http://itproject.shu.edu.cn/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或将文件拖拽到这里上传</p>
@@ -230,10 +230,10 @@
             projectDescription: this.projectMes.description,
             projectType: this.projectMes.projectType,
             principalPhone: this.projectMes.telephone,
-            applicantType: this.projectMes.userType,  //这里申请人类型和项目类型相同,只不过申请人类型是一个数组
+            applicantType: this.projectMes.projectType,  //这里申请人类型和项目类型相同,只不过申请人类型是一个数组
             maxMoney: this.projectMes.maxMoney,
-            projectApplicationDownloadAddress: apiRoot + '/file/download?fileAddress=' + this.projectMes.uploadAddress,
-            projectIndex: apiRoot + '/file/download?fileAddress=' + this.projectMes.missionAddress,
+            projectApplicationDownloadAddress: this.projectMes.uploadAddress,
+            projectIndex: this.projectMes.missionAddress,
             isExistMeetingReview: this.projectMes.isMeeting,
             applicationStartTime: this.projectMes.applicationTime[0].Format("yyyy-MM-dd hh:mm"),
             applicationEndTime: this.projectMes.applicationTime[1].Format("yyyy-MM-dd hh:mm"),

@@ -47,7 +47,7 @@
               :headers="uploadHeaders"
               :on-success="uploadSuccess"
               ref="upload"
-              action="http://10.10.0.29/api/file/upload">
+              action="http://itproject.shu.edu.cn/api/file/upload">
               <div style="padding: 20px 0">
                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
                 <p>点击或将文件拖拽到这里上传</p>

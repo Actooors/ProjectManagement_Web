@@ -439,7 +439,7 @@
               }
             }
             axios({
-              url: apiRoot + '/file/download?fileAddress=' + address,
+              url: address,
               method: 'get',
               headers: {Authorization: localStorage.getItem('token')},
               responseType: 'blob'

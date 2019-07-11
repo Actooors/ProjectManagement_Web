@@ -47,8 +47,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env'),
-      //'apiRoot': "'http://129.204.71.113:8888/api'"
-      'apiRoot': "'http://10.10.0.29/api'"
+      'apiRoot': "'http://itproject.shu.edu.cn/api'"
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.

@@ -266,7 +266,7 @@
         const that = this
         var filename = this.data1[index].projectDownloadAddress.split('---')[1]
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + that.data1[index].projectDownloadAddress,
+          url: that.data1[index].projectDownloadAddress,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'
