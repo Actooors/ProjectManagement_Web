@@ -64,7 +64,7 @@
             trigger="custom"
           >
             <Avatar style="margin-bottom: 3px;margin-right: 5px;color: #f56a00;background-color: #fde3cf">user</Avatar>
-            <Dropdown :visible="visible" trigger="click">
+            <Dropdown :visible="visible">
               <a @click="handleOpen">
                 {{this.userName}}
                 <Icon type="ios-arrow-down"></Icon>

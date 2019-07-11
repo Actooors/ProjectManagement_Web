@@ -48,7 +48,7 @@
           <a style="font-size: 11px;" href="http://services.shu.edu.cn/">忘记密码？</a>
         </div>
       </div>
-      <input class="btn" type="submit" name="登录" value="登录" @click="login()" />
+      <input class="btn" type="submit" name="登录" value="登录" @click="login()"/>
     </div>
   </div>
 </template>
@@ -94,7 +94,7 @@
       }
     },
     methods: {
-      KeyDown(){
+      KeyDown() {
         if (event.keyCode == 13) {
           this.login()
         }
@@ -149,7 +149,7 @@
                 localStorage.setItem('token', res.data.data.token);
                 localStorage.setItem('userid', res.data.data.uid)
                 localStorage.setItem('username', res.data.data.username)
-                localStorage.setItem('authority',res.data.data.identity.split('|'))
+                localStorage.setItem('authority', res.data.data.identity.split('|'))
               } else {
                 this.$Message.error(res.data.message);
                 this.$Spin.hide();
@@ -163,7 +163,7 @@
         } else {
           if (!this.$refs.userid.value) {
             this.$Message.info("请填写学/工号！");
-          }else if (!this.$refs.password.value) {
+          } else if (!this.$refs.password.value) {
             this.$Message.info("请填写密码！");
           }
           this.$Spin.hide();
@@ -178,6 +178,12 @@
 <style>
   .spin-icon-load {
     animation: ani-demo-spin 1s linear infinite;
+  }
+
+</style>
+<style>
+  .ivu-spin-fullscreen .ivu-spin-fullscreen-wrapper {
+      background-color: rgba(0, 0, 0, 0.37);
   }
 </style>
 <style scoped lang="scss">
