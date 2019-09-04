@@ -27,7 +27,7 @@
             <Tag color="blue">项目负责人</Tag>&nbsp;{{item.userName}}
           </Col>
           <Col span="12" v-show="item.failureReason==null">
-            <Tag color="gold">项目经费</Tag>&nbsp;{{item.projectMoney}}元
+            <Tag color="gold">申请经费</Tag>&nbsp;{{item.projectMoney}}元
           </Col>
         </Row>
         <Row>
@@ -35,7 +35,7 @@
             <Tag color="geekblue">项目申请书</Tag>&nbsp;
             <a @click="download(item.projectApplicationUploadAddress)">点击下载</a>
           </Col>
-          <Col span="12">
+          <Col span="12" v-show="item.projectIndex!==null">
             <Tag color="green">项目指标</Tag>&nbsp;
             <a @click="download(item.projectIndex)">点击下载</a>
           </Col>
@@ -88,6 +88,11 @@
             align: 'center',
           },
           {
+            title:'项目经费',
+            key:'maxMoney',
+            align:'center'
+          },
+          {
             title: '操作',
             key: 'operation',
             align: 'center',
@@ -135,6 +140,7 @@
       },
       details(index) {
         this.drawer = true
+        console.log(this.data1[index])
         this.projectCategoryName = this.data1[index].projectCategoryName
         this.items = this.data1[index].applicationList
       },
