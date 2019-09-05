@@ -1,6 +1,6 @@
-# pm_web
+# 校园项目管理系统前端
 
-> A Vue.js project
+> website：itproject.shu.edu.cn（需使用SHU vpn）
 
 ## Build Setup
 
