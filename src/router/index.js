@@ -18,7 +18,7 @@ import LeaderReqProject from 'pages/leader/reqProject/reqProject'
 import LeaderEndProject from 'pages/leader/endProject/endProject'
 import LeaderProjectList from 'pages/leader/projectList/projectList'
 import LeaderStatistic from 'pages/leader/statistic/statistic'
-import LeaderAllProject from 'pages/leader/allproject/allproject'
+import LeaderAllProject from 'pages/leader/allProject/allProject'
 import LeaderInfo from 'pages/leader/myInfo/myInfo'
 import UserManage from 'pages/admin/userManage/userManage'
 import Error from 'pages/error404/error404'
@@ -31,7 +31,7 @@ import fourEx from 'pages/principal/fourEx/fourEx'
 import fiveEx from 'pages/principal/fiveEx/fiveEx'
 import Principal_MyProject from 'pages/principal/myProject/myProject'
 import PrincipalInfo from 'pages/principal/myInfo/myInfo'
-import AdminInfo from 'pages/admin/myinfo/myinfo'
+import AdminInfo from 'pages/admin/myInfo/myInfo'
 
 Vue.use(Router)
 
