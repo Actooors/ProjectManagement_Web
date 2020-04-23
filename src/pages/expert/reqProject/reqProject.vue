@@ -141,7 +141,7 @@
                       this.model1 = true
                     }
                   },
-                }, '评审内容详情页')]);
+                }, '详情页')]);
             }
           }
         ],
@@ -220,7 +220,7 @@
         const that = this
         var filename = this.data1[index].uploadAddress.split('---')[1]  //---后为文件名
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + that.data1[index].uploadAddress,
+          url:that.data1[index].uploadAddress,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'

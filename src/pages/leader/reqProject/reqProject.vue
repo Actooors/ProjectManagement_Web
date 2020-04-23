@@ -331,7 +331,7 @@
         console.log(this.data1[index])
         var filename = this.data1[index].projectDownloadAddress.split('---')[1]  //---后为文件名
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + this.data1[index].projectDownloadAddress,
+          url: this.data1[index].projectDownloadAddress,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'

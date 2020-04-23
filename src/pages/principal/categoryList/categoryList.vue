@@ -58,7 +58,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess1"
             ref="upload"
-            action="https://pm.alphalrx.cn/api/file/upload">
+            action="http://itproject.shu.edu.cn/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或将文件拖拽到这里上传</p>
@@ -98,7 +98,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess2"
             ref="upload"
-            action="https://pm.alphalrx.cn/api/file/upload">
+            action="http://itproject.shu.edu.cn/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或将文件拖拽到这里上传</p>
@@ -118,13 +118,12 @@
       </div>
     </Modal>
 
-    <Modal v-if="modal_change_delay" v-model="modal_change" title="修改项目详情" :z-index="1000">
-      <br>
-      <p>项目名称：</p><Input v-model="data1[index].projectName" :placeholder="data1[index].projectName"/>
+    <Modal v-if="modal_change_delay" v-model="modal_change" title="修改项目详情" :z-index="1000" @on-visible-change="onVisibleChange">
+      <p>项目名称：</p><Input v-model="data1[index].projectName" :placeholder="data1[index].projectName" disabled/>
       <br>
       <p>项目描述：</p><Input v-model="data1[index].projectDescription" :placeholder="data1[index].projectDescription"/>
       <br>
-      <p>项目类型：</p><Input v-model="data1[index].projectType" :placeholder="data1[index].projectType"/>
+      <p>项目类型：</p><Input v-model="data1[index].projectType" :placeholder="data1[index].projectType" disabled/>
       <br>
       <p>修改申请开始时间:</p>
       <DatePicker type="datetime" v-model="data1[index].applicationStartTime"
@@ -149,13 +148,13 @@
                   @on-change="setAllTime(index,...arguments,4)"
                   placeholder="修改项目截止时间"></DatePicker>
       <br>
-      <p>负责人电话：</p><Input v-model="data1[index].principalPhone" :placeholder="data1[index].principalPhone"/>
-      <br>
-      项目经费:<span style="font-weight: bold">{{this.data2[index].maxMoney}}元</span>
-      如需修改：
-      <br>
-      <InputNumber v-model="ChangeMoney" :max="10000" :min="0"></InputNumber>
-      <br>
+      <p>项目联系方式：</p><Input v-model="data1[index].principalPhone" :placeholder="data1[index].principalPhone"/>
+<!--      <br>-->
+<!--      项目经费:<span style="font-weight: bold">{{this.data2[index].maxMoney}}元</span>-->
+<!--      如需修改：-->
+<!--      <br>-->
+<!--      <InputNumber v-model="ChangeMoney" :max="10000" :min="0"></InputNumber>-->
+<!--      <br>-->
       <!--<span>上会状态：{{(data2[index].isExistMeetingReview===1?'是':'否')}}</span>
       如需修改：<br><Select v-model="ChangeIsExistMeetingReview" style="width: 100px">
         <Option v-for="item in trueOrfalse" :value="item.value" :key="item.value" >{{item.label}}</Option>
@@ -167,12 +166,12 @@
       </Select>
       <br>-->
 
-      <p>修改申报人类型：</p>
-      <CheckboxGroup v-model="data1[index].applicantType">
-        <Checkbox label="本科生"></Checkbox>
-        <Checkbox label="研究生"></Checkbox>
-        <Checkbox label="博士生"></Checkbox>
-      </CheckboxGroup>
+<!--      <p>修改申报人类型：</p>-->
+<!--      <CheckboxGroup v-model="data1[index].applicantType">-->
+<!--        <Checkbox label="本科生"></Checkbox>-->
+<!--        <Checkbox label="研究生"></Checkbox>-->
+<!--        <Checkbox label="博士生"></Checkbox>-->
+<!--      </CheckboxGroup>-->
       <br>
 
       <div slot="footer">
@@ -192,6 +191,7 @@
 <script>
 
   import axios from 'axios'
+  import {formatDate} from "./formatDate";
 
   export default {
     name: "categoryList",
@@ -349,7 +349,7 @@
           {
             title: '操作',
             key: 'operation',
-            width: 300,
+            width: 230,
             align: 'center',
             render: (h, params) => {
               return h('div', [
@@ -362,7 +362,6 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info("点击修改");
                       //alert(this.data1[index].projectName);
                       this.index = params.index;
                       console.log(this.index)
@@ -439,7 +438,6 @@
           if (res.data.code === 'SUCCESS') {
             this.data1 = res.data.data
             this.data2 = res.data.data
-            console.log(this.data1)
             for (let i = 0; i < res.data.data.length; i++) {       //将申请截止时间由string变成date
               if (this.data1[i].applicationEndTime) {
                 var arr1 = res.data.data[i].applicationEndTime.split(" ");
@@ -459,7 +457,7 @@
             this.$Message.success(msg)
             this.loading = false
           } else {
-            this.$Message.warnings(res.data.message)
+            this.$Message.warning(res.data.message)
             this.loading = false
           }
         }).catch((err) => {
@@ -507,7 +505,6 @@
             }).then((res) => {
               if (res.data.code === 'SUCCESS') {
                 this.data1[index].interimReport.isReportActivated = true;
-                //TODO startTime deadline undifined??
                 this.data1[index].interimReport.startTime = res.data.startTime;
                 this.data1[index].interimReport.deadline = res.data.endTime;
                 this.$forceUpdate()
@@ -550,9 +547,7 @@
                 this.$Message.success('开通结题报告成功！');
                 this.$refs['concludingReport'].resetFields()
                 this.modal4 = false;
-                // setTimeout(() => {
-                //   window.location.reload()
-                // }, 1000)
+                this.initData('更新成功！')
               } else {
                 this.$Message.error('开通失败！')
               }
@@ -573,33 +568,31 @@
         } else if (this.ChangeIsExistMeetingReview === 0) {
           status = false;
         }
-        console.log('!', this.data1[index])
         axios({
           url: apiRoot + '/admin/projectCategory/update',
           method: 'post',
-          timeout: 1000,
           data: {
             pid: this.data1[index].projectCategoryId,
             info: {
-              projectName: this.data1[index].projectName,
+              // projectName: this.data1[index].projectName,
               projectDescription: this.data1[index].projectDescription,
-              projectTypeName: this.data1[index].projectType,
-              applicationStartTime: this.data1[index].applicationStartTime,
-              applicationEndTime: this.data1[index].applicationEndTime,
-              projectStartTime: this.data1[index].projectStartTime,
-              projectEndTime: this.data1[index].projectEndTime,
+              // projectTypeName: this.data1[index].projectType,
+              applicationStartTime: typeof(this.data1[index].applicationStartTime.valueOf())!=='string'?(formatDate(this.data1[index].applicationStartTime)):(this.data1[index].applicationStartTime.valueOf()),
+              applicationEndTime: typeof(this.data1[index].applicationEndTime.valueOf())!=='string'?(formatDate(this.data1[index].applicationEndTime)):(this.data1[index].applicationEndTime.valueOf()),
+              projectStartTime: typeof(this.data1[index].projectStartTime.valueOf())!=='string'?(formatDate(this.data1[index].projectStartTime)):(this.data1[index].projectStartTime.valueOf()),
+              projectEndTime: typeof(this.data1[index].projectEndTime.valueOf())!=='string'?(formatDate(this.data1[index].projectEndTime)):(this.data1[index].projectEndTime.valueOf()),
               principalPhone: this.data1[index].principalPhone,
-              maxMoney: this.ChangeMoney,
+              // maxMoney: this.ChangeMoney,
               //isMeetingReviewNum: this.status,
               //application: this.data1[index].applicantType,
             },
           }
         }).then((res) => {
           if (res.data.code === 'SUCCESS') {
-            console.log("success!!")
+            this.$Message.success('修改成功！')
+            this.$router.go(0)
           } else {
-            this.$Message.error(res.data.message)
-            console.log('error!')
+            this.$Message.warning(res.data.message)
           }
         }).catch(() => {
           this.$Message.error('请检查网络连接！')
@@ -635,40 +628,33 @@
         // }
         this.concludingReportStartTime[index] = date
       },
-      setAllTime(index, date, flag, type) {
-        function formatDate(date) {
-          console.log(typeof date)
-          let y = date.getFullYear();
-          let m = date.getMonth() + 1;
-          m = m < 10 ? ('0' + m) : m;
-          let d = date.getDate();
-          d = d < 10 ? ('0' + d) : d;
-          let h = date.getHours();
-          let minute = date.getMinutes();
-          minute = minute < 10 ? ('0' + minute) : minute;
-          return y + '年' + m + '月' + d + '日 ' + h + ':' + minute;
-        }
-
-        if (type === 1) {
+      setAllTime(index, date, type, flag) {
+        console.log(date, type, flag)
+        if (flag === 1) {
           this.data1[index].applicationStartTime = date;
-          this.data1[index].applicationEndTime = formatDate(this.data1[index].applicationEndTime)
-          this.data1[index].projectStartTime = formatDate(this.data1[index].projectStartTime)
-          this.data1[index].projectEndTime = formatDate(this.data1[index].projectEndTime)
-        } else if (type === 2) {
+        } else if (flag === 2) {
           this.data1[index].applicationEndTime = date;
-          this.data1[index].applicationStartTime = formatDate(this.data1[index].applicationStartTime)
-          this.data1[index].projectStartTime = formatDate(this.data1[index].projectStartTime)
-          this.data1[index].projectEndTime = formatDate(this.data1[index].projectEndTime)
-        } else if (type === 3) {
+        } else if (flag === 3) {
           this.data1[index].projectStartTime = date;
-          this.data1[index].applicationStartTime = formatDate(this.data1[index].applicationStartTime)
-          this.data1[index].applicationEndTime = formatDate(this.data1[index].applicationEndTime)
-          this.data1[index].projectEndTime = formatDate(this.data1[index].projectEndTime)
-        } else if (type === 4) {
+        } else if (flag === 4) {
           this.data1[index].projectEndTime = date;
-          this.data1[index].applicationStartTime = formatDate(this.data1[index].applicationStartTime)
-          this.data1[index].applicationEndTime = formatDate(this.data1[index].applicationEndTime)
-          this.data1[index].projectStartTime = formatDate(this.data1[index].projectStartTime)
+        }
+        if (typeof (this.data1[index].applicationStartTime) == 'date') {
+          this.data1[index].applicationStartTime = formatDate(this.data1[index].applicationStartTime);
+        }
+        if (typeof (this.data1[index].applicationEndTime) == 'date') {
+          this.data1[index].applicationEndTime = formatDate(this.data1[index].applicationEndTime);
+        }
+        if (typeof (this.data1[index].projectStartTime) == 'date') {
+          this.data1[index].projectStartTime = formatDate(this.data1[index].projectStartTime);
+        }
+        if (typeof (this.data1[index].projectEndTime) == 'date') {
+          this.data1[index].projectEndTime = formatDate(this.data1[index].projectEndTime);
+        }
+      },
+      onVisibleChange(status){
+        if (status == false) {
+          this.Refresh()
         }
       }
     }

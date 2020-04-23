@@ -72,7 +72,7 @@
           <br>
           <div style="display: inline-flex;line-height: 32px">
             <p>选择调整申请的经费：</p>
-            <InputNumber v-model="modifiedMoney" :max="projectMaxMoney"></InputNumber>&nbsp;元
+            <InputNumber v-model="modifiedMoney" :max="projectMaxMoney" :min="0"></InputNumber>&nbsp;元
           </div>
           <br>
         </div>
@@ -418,7 +418,7 @@
         const that = this
         var filename = this.data1[index].projectDownloadAddress.split('---')[1]
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + that.data1[index].projectDownloadAddress,
+          url: that.data1[index].projectDownloadAddress,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'

@@ -23,7 +23,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess1"
             :on-error="uploadError1"
-            action="https://pm.alphalrx.cn/api/file/upload">
+            action="http://itproject.shu.edu.cn/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或拖拽文件以上传</p>
@@ -44,7 +44,7 @@
             :headers="uploadHeaders"
             :on-success="uploadSuccess2"
             :on-error="uploadError2"
-            action="https://pm.alphalrx.cn/api/file/upload">
+            action="http://itproject.shu.edu.cn/api/file/upload">
             <div style="padding: 20px 0">
               <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
               <p>点击或拖拽文件以上传</p>
@@ -132,6 +132,7 @@
         middleReportAddress: '',
         lastReportAddress: '',
         // i: 0,
+        uploadSg:false,
         uploadHeaders: {
           Authorization: localStorage.getItem('token')
         },
@@ -256,6 +257,7 @@
                   },
                   on: {
                     click: () => {
+                      console.log(params.index)
                       this.download(params.index, 1)
                     }
                   }
@@ -356,7 +358,8 @@
                 }, '下载模板'),
                 h('Button', {
                   props: {
-                    type: 'success'
+                    type: 'success',
+                    disable:this.uploadSg
                   },
                   on: {
                     click: () => {
@@ -572,7 +575,7 @@
           }
         }
         axios({
-          url: apiRoot + '/file/download?fileAddress=' + address,
+          url: address,
           method: 'get',
           headers: {Authorization: localStorage.getItem('token')},
           responseType: 'blob'

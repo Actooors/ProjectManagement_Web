@@ -94,6 +94,17 @@
                 <Icon type="ios-arrow-down"></Icon>
               </a>
               <DropdownMenu slot="list">
+                <Dropdown placement="left-start">
+                  <DropdownItem>
+                    <Icon type="ios-arrow-back"></Icon>
+                    选择身份
+                  </DropdownItem>
+                  <DropdownMenu slot="list">
+                    <DropdownItem v-for="item in authority" :key="item.index" @click.native="$router.push(item.router)">
+                      {{item.name}}
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
                 <DropdownItem @click.native="$router.push('myInfo')">
                   <Icon type="ios-person" style="margin-bottom: 3px" size="17"/>
                   我的信息
@@ -126,12 +137,14 @@
         MenuActiveName: null,
         visible: false,
         isCollapsed: false,
-        UserName: localStorage.getItem('username')
+        UserName: localStorage.getItem('username'),
+        authority: []
       }
     },
     //让页头出现标题，这里每个页面还没做出来
     mounted() {
       this.initMenuActive();
+      this.initAuthority();
     },
     watch: {
       $route() {
@@ -167,6 +180,34 @@
       Logout() {
         localStorage.clear()
         this.$router.push("/login")
+      },
+      initAuthority() {
+        let authority = localStorage.getItem('authority').split(',')
+        for (let i = 0; i < authority.length; i++) {
+          let name = '', router = ''
+          switch (authority[i]) {
+            case '1':
+              name = '普通用户', router = '/user'
+              break
+            case '2':
+              name = '业务员', router = '/principal'
+              break
+            case '3':
+              name = '审核专家', router = '/expert'
+              break
+            case '4':
+              name = '领导', router = '/leader'
+              break
+            case '5':
+              name = '系统管理员', router = '/admin'
+              break
+          }
+          let obj = {
+            name: name,
+            router: router
+          };
+          this.authority.push(obj)
+        }
       }
     },
     computed: {

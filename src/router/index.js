@@ -18,6 +18,7 @@ import LeaderReqProject from 'pages/leader/reqProject/reqProject'
 import LeaderEndProject from 'pages/leader/endProject/endProject'
 import LeaderProjectList from 'pages/leader/projectList/projectList'
 import LeaderStatistic from 'pages/leader/statistic/statistic'
+import LeaderAllProject from 'pages/leader/allproject/allproject'
 import LeaderInfo from 'pages/leader/myInfo/myInfo'
 import UserManage from 'pages/admin/userManage/userManage'
 import Error from 'pages/error404/error404'
@@ -80,11 +81,11 @@ const router = new Router({
     {
       path: '/principal',
       component: Principal,
-      redirect: {name: 'newCategory'},
+      redirect: {name: 'myProject'},
       children: [
         {
           path: '',
-          redirect: 'newCategory'
+          redirect: 'myProject'
         },
         {
           path: 'newCategory',
@@ -171,6 +172,10 @@ const router = new Router({
         {
           path: 'statistic',
           component: LeaderStatistic
+        },
+        {
+          path:'allProject',
+          component:LeaderAllProject
         },
         {
           path: 'myInfo',
